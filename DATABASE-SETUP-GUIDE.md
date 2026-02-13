@@ -2,7 +2,25 @@
 
 ## 🚀 Complete Implementation Checklist
 
-### Phase 1: Supabase Setup (30 minutes)
+### Phase 1: GoDaddy Hosting Setup (15 minutes)
+
+#### Step 1: GoDaddy Hosting Preparation
+1. **Choose Hosting Plan:** Business or Premium (required for SSL and security)
+2. **Enable SSL Certificate:** Free with hosting, essential for security
+3. **Set up CDN:** Enable GoDaddy CDN for performance and DDoS protection
+4. **Configure Backups:** Enable automatic daily backups
+5. **File Upload:** Use File Manager or FTP to upload website files
+
+#### Step 2: Security Configuration on GoDaddy
+1. **SSL Certificate:** Ensure HTTPS is forced (already configured in code)
+2. **File Permissions:** Set files to 644, directories to 755
+3. **Environment Variables:** Use GoDaddy's environment variable system
+4. **WAF (if available):** Enable Web Application Firewall protection
+5. **Monitoring:** Set up uptime monitoring
+
+**⚠️ IMPORTANT:** Do NOT launch without cyber insurance coverage!
+
+### Phase 2: Supabase Database Setup (30 minutes)
 
 #### Step 1: Create Supabase Project
 1. Go to [supabase.com](https://supabase.com) and create account
@@ -292,6 +310,83 @@ if (!supabase) {
 2. Implement caching for frequently accessed data
 3. Use Supabase edge functions for heavy computations
 4. Consider CDN for static assets
+
+## 🌐 GoDaddy Hosting Deployment
+
+### Upload Files to GoDaddy
+1. **Access File Manager:** Login to GoDaddy cPanel → File Manager
+2. **Navigate to public_html:** This is your website root directory
+3. **Upload Website Files:**
+   - `index.html` → Main homepage
+   - `courses.html` → Course catalog  
+   - `admin.html` → Admin panel (secure)
+   - `new-drtroy-logo.png` → Logo file
+   - `supabase-config.js` → Database configuration
+   - Any additional assets
+
+### Environment Variables Setup
+1. **In GoDaddy cPanel:** Look for "Environment Variables" or "Environment"
+2. **Add Database Variables:**
+   ```
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_ANON_KEY=your-anon-key-here
+   ```
+3. **Add Security Variables:**
+   ```
+   ADMIN_SESSION_SECRET=your-random-secret-here
+   ENCRYPTION_KEY=your-encryption-key-here
+   ```
+
+### Domain Configuration
+1. **If using custom domain (e.g., drtroy.com):**
+   - Point A records to GoDaddy IP address
+   - Set up SSL certificate for custom domain
+   - Configure DNS properly
+
+2. **If using GoDaddy subdomain:**
+   - Your site will be `yoursite.godaddysites.com` or similar
+   - SSL automatically configured
+
+### Security Checklist for GoDaddy
+- [ ] **SSL Certificate:** Enabled and working (check for https://)
+- [ ] **File Permissions:** 644 for files, 755 for directories
+- [ ] **Admin Access:** Test admin login works
+- [ ] **Database Connection:** Verify Supabase connection works
+- [ ] **Security Headers:** Verify they're working (F12 → Network → Response Headers)
+- [ ] **Rate Limiting:** Test that it prevents brute force attempts
+
+### Performance Optimization
+1. **Enable GoDaddy CDN:** Speeds up global loading
+2. **Compress Images:** Use optimized PNG/JPG files
+3. **Enable Caching:** Set proper cache headers
+4. **Minify Assets:** Reduce file sizes for faster loading
+
+### Monitoring Setup
+1. **GoDaddy Uptime Monitoring:** Enable if available
+2. **Google Analytics:** Add tracking code
+3. **Error Logging:** Monitor JavaScript console errors
+4. **Database Monitoring:** Watch Supabase logs
+
+### Testing on GoDaddy
+1. **Full User Journey:**
+   - Homepage loads correctly
+   - Account creation works
+   - Discipline selection functions
+   - Auto-login after registration
+   - Package selection works
+   - Admin panel accessible (with security)
+
+2. **Mobile Testing:**
+   - Test on iPhone Safari
+   - Test on Android Chrome
+   - Verify responsive design
+   - Check touch interactions
+
+3. **Security Testing:**
+   - Verify HTTPS redirect works
+   - Test admin rate limiting
+   - Check session security
+   - Validate input sanitization
 
 ## 🎉 Launch Checklist
 
