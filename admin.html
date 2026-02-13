@@ -693,8 +693,8 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-screen">
+    <!-- Login Screen (hidden for direct access) -->
+    <div id="loginScreen" class="login-screen" style="display: none;">
         <div class="login-container">
             <div class="login-header">
                 <img src="new-drtroy-logo.png" alt="DrTroy" style="height: 80px; margin-bottom: 1rem;">
@@ -719,8 +719,8 @@
         </div>
     </div>
 
-    <!-- Admin Panel (hidden until login) -->
-    <div id="adminPanel" style="display: none;">
+    <!-- Admin Panel (direct access for Troy) -->
+    <div id="adminPanel" style="display: block;">
         <div class="header">
             <h1>DrTroy Admin Panel</h1>
             <div style="display: flex; gap: 1rem; align-items: center;">
@@ -3186,11 +3186,9 @@
         // Check auth status on page load
         let employeeCodes, marketingCodes, allCodes;
         
-        if (!checkAuthStatus()) {
-            // Show login screen
-            document.getElementById('loginScreen').style.display = 'flex';
-            document.getElementById('adminPanel').style.display = 'none';
-        }
+        // SIMPLIFIED ACCESS FOR TROY - bypass authentication
+        console.log('🚀 Direct admin access activated - bypassing authentication');
+        showAdminPanel();
 
         // Tab switching
         function switchTab(tab) {
