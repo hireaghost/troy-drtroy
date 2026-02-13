@@ -44,6 +44,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
@@ -227,7 +231,18 @@
             margin-bottom: 1rem;
         }
 
-        /* Scroll positioning handled by JavaScript */
+        /* Navigation scroll positioning */
+        #packages {
+            scroll-margin-top: 120px;
+        }
+        
+        #about {
+            scroll-margin-top: 120px;
+        }
+        
+        #contact {
+            scroll-margin-top: 120px;
+        }
 
         .section-header p {
             color: var(--gray-600);
@@ -916,17 +931,18 @@
     </style>
 </head>
 <body>
+    <div id="top"></div>
     <header>
         <div class="header-container">
             <div class="logo">
                 <img src="new-drtroy-logo.png" alt="DrTroy PT/OT Continuing Education">
             </div>
             <nav>
-                <a href="#" onclick="scrollToTop(); return false;">Home</a>
-                <a href="#" onclick="scrollToPackages(); return false;">Packages</a>
+                <a href="#top">Home</a>
+                <a href="#packages">Packages</a>
                 <a href="courses.html">Course Catalog</a>
-                <a href="#" onclick="scrollToAbout(); return false;">About</a>
-                <a href="#" onclick="scrollToContact(); return false;">Contact</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
                 <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
@@ -2229,56 +2245,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             generateCaptcha();
         });
-
-        // Navigation scroll functions
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        function scrollToPackages() {
-            const packagesHeading = document.getElementById('packages');
-            if (packagesHeading) {
-                const headerOffset = 120; // Account for sticky header
-                const elementPosition = packagesHeading.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function scrollToAbout() {
-            const aboutHeading = document.getElementById('about');
-            if (aboutHeading) {
-                const headerOffset = 120; // Account for sticky header
-                const elementPosition = aboutHeading.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function scrollToContact() {
-            const contactHeading = document.getElementById('contact');
-            if (contactHeading) {
-                const headerOffset = 120; // Account for sticky header
-                const elementPosition = contactHeading.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
     </script>
 
     <!-- Duplicate footer removed -->
