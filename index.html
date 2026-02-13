@@ -204,6 +204,9 @@
             overflow: hidden;
             border: 2px solid transparent;
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .package-card:hover {
@@ -232,6 +235,9 @@
 
         .package-content {
             padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .package-content ul {
@@ -275,6 +281,7 @@
             font-weight: 600;
             text-align: center;
             transition: background 0.2s;
+            margin-top: auto;
         }
 
         .package-button:hover {
@@ -446,7 +453,10 @@
             <h2>Create Your Free Account</h2>
             <p>Get $10 off and save your course progress. Pick up right where you left off.</p>
             <form class="optin-form">
-                <input type="text" placeholder="Full name" required style="margin-bottom: 0.5rem; width: 100%;">
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <input type="text" placeholder="First name" required style="flex: 1;">
+                    <input type="text" placeholder="Last name" required style="flex: 1;">
+                </div>
                 <input type="email" placeholder="Email address" required style="margin-bottom: 0.5rem; width: 100%;">
                 <input type="password" placeholder="Create password" required style="margin-bottom: 0.5rem; width: 100%;">
                 <button type="submit">Create Free Account + Get $10 Off</button>
@@ -575,8 +585,10 @@
         // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = e.target.querySelector('input[type="text"]').value;
-            alert(`Welcome ${name}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now log back in anytime to continue your courses!`);
+            const firstName = e.target.querySelector('input[placeholder="First name"]').value;
+            const lastName = e.target.querySelector('input[placeholder="Last name"]').value;
+            const email = e.target.querySelector('input[type="email"]').value;
+            alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now log back in anytime to continue your courses!`);
         });
 
         // Package button clicks
