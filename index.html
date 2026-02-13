@@ -481,7 +481,11 @@
         /* Contact Section */
         .contact {
             background: white;
-            padding: 4rem 2rem;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            margin-top: -4rem;
         }
 
         .contact-container {
@@ -926,7 +930,7 @@
                 <a href="#packages">Packages</a>
                 <a href="courses.html">Course Catalog</a>
                 <a href="#about">About</a>
-                <a href="#" onclick="scrollToContact(); return false;">Contact</a>
+                <a href="#contact">Contact</a>
                 <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
@@ -2229,22 +2233,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             generateCaptcha();
         });
-
-        // Custom scroll function for Contact section
-        function scrollToContact() {
-            const contactSection = document.getElementById('contact');
-            const contactHeading = contactSection.querySelector('h2'); // "Send Us a Message" heading
-            
-            if (contactHeading) {
-                const headerHeight = 150; // Account for sticky header
-                const targetPosition = contactHeading.offsetTop - headerHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }
     </script>
 
     <!-- Duplicate footer removed -->
