@@ -470,6 +470,119 @@
                 padding: 1rem 0.75rem 1rem;
             }
         }
+
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            color: var(--navy);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .modal-success {
+            background: linear-gradient(135deg, var(--gold) 0%, #f6d55c 100%);
+            color: var(--navy);
+            border: 3px solid var(--gold);
+        }
+
+        .modal-success .modal-header {
+            color: var(--navy);
+        }
+
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-benefits {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .modal-benefits ul {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .modal-benefits li {
+            margin: 0.5rem 0;
+            color: var(--navy);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: var(--navy);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: #2a4a6b;
+            transform: translateY(-2px);
+        }
+
+        .modal-btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .modal-btn-secondary:hover {
+            background: var(--gray-300);
+        }
     </style>
 </head>
 <body>
@@ -693,7 +806,84 @@
         <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education. All rights reserved.</p>
     </footer>
 
+    <!-- Custom Modal -->
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-content" id="modalContent">
+            <div class="modal-header" id="modalHeader">Welcome!</div>
+            <div class="modal-body" id="modalBody">Your message here</div>
+            <div class="modal-buttons" id="modalButtons">
+                <button class="modal-btn modal-btn-primary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Custom Modal Functions
+        function showModal(title, message, isSuccess = false, buttons = null) {
+            const modal = document.getElementById('customModal');
+            const header = document.getElementById('modalHeader');
+            const body = document.getElementById('modalBody');
+            const content = document.getElementById('modalContent');
+            const buttonArea = document.getElementById('modalButtons');
+            
+            header.textContent = title;
+            body.innerHTML = message;
+            
+            // Apply success styling if needed
+            if (isSuccess) {
+                content.classList.add('modal-success');
+            } else {
+                content.classList.remove('modal-success');
+            }
+            
+            // Set custom buttons or default OK button
+            if (buttons) {
+                buttonArea.innerHTML = buttons;
+            } else {
+                buttonArea.innerHTML = '<button class="modal-btn modal-btn-primary" onclick="closeModal()">OK</button>';
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('show');
+        }
+        
+        // Close modal when clicking overlay
+        document.getElementById('customModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Handle create account from package selection
+        function createAccountNow(packageName, price) {
+            // Store the selected package for after account creation
+            localStorage.setItem('selectedPackage', JSON.stringify({
+                name: packageName,
+                price: price
+            }));
+            
+            closeModal();
+            
+            // Scroll to account creation section
+            document.querySelector('.optin').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Highlight the account creation form
+            const optinSection = document.querySelector('.optin');
+            optinSection.style.border = '3px solid #d69e2e';
+            optinSection.style.borderRadius = '8px';
+            setTimeout(() => {
+                optinSection.style.border = '';
+                optinSection.style.borderRadius = '';
+            }, 3000);
+        }
+
         // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -714,18 +904,50 @@
             
             if (selectedPackage) {
                 const packageData = JSON.parse(selectedPackage);
-                alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nNow proceeding to checkout for ${packageData.name} ($${packageData.price})...`);
+                const message = `
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">Welcome <strong>${firstName} ${lastName}</strong>!</p>
+                        <p style="margin-bottom: 1rem;">Your free account is created.</p>
+                        <div style="background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p style="font-size: 1.1rem; color: var(--navy);"><strong>Your $10 discount code: SAVE10</strong></p>
+                        </div>
+                        <p>Now proceeding to checkout for <strong>${packageData.name}</strong>...</p>
+                    </div>
+                `;
+                
+                showModal('Account Created! 🎉', message, true);
                 
                 // Clear the selected package
                 localStorage.removeItem('selectedPackage');
                 
-                // Here you would redirect to checkout or payment processing
-                // For now, just show success
+                // Show checkout after a delay
                 setTimeout(() => {
-                    alert(`Checkout for ${packageData.name} package ($${packageData.price} - $10 discount = $${packageData.price - 10})`);
-                }, 1000);
+                    const finalPrice = packageData.price - 10;
+                    const checkoutMessage = `
+                        <div style="text-align: center;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">${packageData.name}</h3>
+                            <div style="background: rgba(255,255,255,0.8); padding: 1.5rem; border-radius: 8px;">
+                                <p style="font-size: 1.1rem;">Original Price: $${packageData.price}</p>
+                                <p style="font-size: 1.1rem; color: #e53e3e;"><strong>Discount: -$10</strong></p>
+                                <p style="font-size: 1.3rem; font-weight: bold; color: var(--navy); border-top: 2px solid var(--gold); padding-top: 0.5rem; margin-top: 0.5rem;">Final Price: $${finalPrice}</p>
+                            </div>
+                        </div>
+                    `;
+                    showModal('Ready to Checkout', checkoutMessage, true);
+                }, 2000);
             } else {
-                alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now select any package and get your discount immediately!`);
+                const message = `
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">Welcome <strong>${firstName} ${lastName}</strong>!</p>
+                        <p style="margin-bottom: 1rem;">Your free account is created.</p>
+                        <div style="background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                            <p style="font-size: 1.1rem; color: var(--navy);"><strong>Your $10 discount code: SAVE10</strong></p>
+                        </div>
+                        <p>You can now select any package and get your discount immediately!</p>
+                    </div>
+                `;
+                
+                showModal('Welcome! 🎉', message, true);
             }
         });
 
@@ -741,33 +963,28 @@
                 
                 if (hasAccount) {
                     // Proceed to checkout
-                    alert(`Great! Proceeding to checkout for ${packageName} package ($${price})`);
+                    showModal('Ready to Go!', `Great! Proceeding to checkout for ${packageName} package ($${price})`, true);
                 } else {
                     // Prompt to create account
-                    const createAccount = confirm(`To purchase the ${packageName} package ($${price}), please create your free account first.\n\n✓ Get $10 off immediately\n✓ Save your progress\n✓ Pick up where you left off\n\nCreate your account now?`);
+                    const message = `
+                        <div style="text-align: center;">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem;">To purchase the <strong>${packageName}</strong> package ($${price}), please create your free account first.</p>
+                            <div class="modal-benefits">
+                                <ul>
+                                    <li>✓ Get <strong>$10 off immediately</strong></li>
+                                    <li>✓ Save your progress</li>
+                                    <li>✓ Pick up where you left off</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
                     
-                    if (createAccount) {
-                        // Store the selected package for after account creation
-                        localStorage.setItem('selectedPackage', JSON.stringify({
-                            name: packageName,
-                            price: price
-                        }));
-                        
-                        // Scroll to account creation section
-                        document.querySelector('.optin').scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        
-                        // Highlight the account creation form
-                        const optinSection = document.querySelector('.optin');
-                        optinSection.style.border = '3px solid #d69e2e';
-                        optinSection.style.borderRadius = '8px';
-                        setTimeout(() => {
-                            optinSection.style.border = '';
-                            optinSection.style.borderRadius = '';
-                        }, 3000);
-                    }
+                    const buttons = `
+                        <button class="modal-btn modal-btn-primary" onclick="createAccountNow('${packageName}', '${price}')">Create Account Now</button>
+                        <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Maybe Later</button>
+                    `;
+                    
+                    showModal('Create Your Free Account', message, false, buttons);
                 }
             });
         });
