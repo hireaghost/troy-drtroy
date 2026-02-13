@@ -181,6 +181,14 @@
             background: var(--navy-light);
         }
 
+        .password-match {
+            border: 2px solid #48bb78 !important;
+        }
+
+        .password-no-match {
+            border: 2px solid #f56565 !important;
+        }
+
         /* Course Packages */
         .packages {
             padding: 4rem 2rem;
@@ -654,8 +662,12 @@
                 </div>
                 <input type="email" placeholder="Email address" required style="margin-bottom: 0.5rem; width: 100%;">
                 <input type="password" placeholder="Create password" required style="margin-bottom: 0.5rem; width: 100%;">
+                <input type="password" placeholder="Confirm password" required style="margin-bottom: 0.5rem; width: 100%;">
                 <button type="submit">Create Free Account + Get $10 Off</button>
             </form>
+            <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-top: 1rem;">
+                Password must be at least 6 characters. Confirm password will show green when matching.
+            </p>
         </div>
     </section>
 
@@ -977,7 +989,7 @@
             
             if (existingAccount) {
                 const account = JSON.parse(existingAccount);
-                if (account.email === email) {
+                if (account.email === email && account.password === password) {
                     // Successful login
                     closeLoginModal();
                     showUserDashboard(account);
@@ -1073,18 +1085,64 @@
             }
         });
 
+        // Real-time password confirmation validation
+        function setupPasswordValidation() {
+            const passwordField = document.querySelector('input[placeholder="Create password"]');
+            const confirmField = document.querySelector('input[placeholder="Confirm password"]');
+            
+            function validatePasswords() {
+                const password = passwordField.value;
+                const confirm = confirmField.value;
+                
+                // Only show validation if both fields have content
+                if (password.length > 0 && confirm.length > 0) {
+                    if (password === confirm) {
+                        confirmField.classList.remove('password-no-match');
+                        confirmField.classList.add('password-match');
+                    } else {
+                        confirmField.classList.remove('password-match');
+                        confirmField.classList.add('password-no-match');
+                    }
+                } else {
+                    // Clear validation styling if either field is empty
+                    confirmField.classList.remove('password-match', 'password-no-match');
+                }
+            }
+            
+            passwordField.addEventListener('input', validatePasswords);
+            confirmField.addEventListener('input', validatePasswords);
+        }
+        
+        // Initialize password validation after DOM loads
+        document.addEventListener('DOMContentLoaded', setupPasswordValidation);
+
         // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const firstName = e.target.querySelector('input[placeholder="First name"]').value;
             const lastName = e.target.querySelector('input[placeholder="Last name"]').value;
             const email = e.target.querySelector('input[type="email"]').value;
+            const password = e.target.querySelector('input[placeholder="Create password"]').value;
+            const confirmPassword = e.target.querySelector('input[placeholder="Confirm password"]').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showModal('Passwords Don\'t Match', 'Please make sure both password fields are identical.', false);
+                return;
+            }
+            
+            // Validate password strength (basic)
+            if (password.length < 6) {
+                showModal('Password Too Short', 'Please choose a password with at least 6 characters.', false);
+                return;
+            }
             
             // Set account created flag
             localStorage.setItem('drtroyAccount', JSON.stringify({
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
+                password: password, // In real app, this would be hashed on server
                 created: new Date().toISOString()
             }));
             
