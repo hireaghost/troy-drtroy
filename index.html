@@ -548,7 +548,10 @@
                     <div class="compliance-note">
                         <p><strong>Note:</strong> 2-hour ethics requirement will be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
                     </div>
-                    <a href="courses.html" class="package-button">View Detailed Course List</a>
+                    <a href="#" class="package-button select-package" data-package="Physical Therapists" data-price="109">Select This Package</a>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <a href="courses.html" style="color: var(--warm-gray); text-decoration: none; font-size: 0.85rem;">View detailed course list</a>
+                    </div>
                 </div>
             </div>
 
@@ -577,7 +580,10 @@
                     <div class="compliance-note">
                         <p><strong>Note:</strong> 2-hour ethics requirement will be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
                     </div>
-                    <a href="courses.html" class="package-button">View Detailed Course List</a>
+                    <a href="#" class="package-button select-package" data-package="PT Assistants" data-price="89">Select This Package</a>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <a href="courses.html" style="color: var(--warm-gray); text-decoration: none; font-size: 0.85rem;">View detailed course list</a>
+                    </div>
                 </div>
             </div>
 
@@ -608,7 +614,10 @@
                     <div class="compliance-note">
                         <p><strong>Note:</strong> <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
                     </div>
-                    <a href="courses.html" class="package-button">View Detailed Course List</a>
+                    <a href="#" class="package-button select-package" data-package="Occupational Therapists" data-price="109">Select This Package</a>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <a href="courses.html" style="color: var(--warm-gray); text-decoration: none; font-size: 0.85rem;">View detailed course list</a>
+                    </div>
                 </div>
             </div>
 
@@ -639,7 +648,10 @@
                     <div class="compliance-note">
                         <p><strong>Note:</strong> <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
                     </div>
-                    <a href="courses.html" class="package-button">View Detailed Course List</a>
+                    <a href="#" class="package-button select-package" data-package="OT Assistants" data-price="89">Select This Package</a>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <a href="courses.html" style="color: var(--warm-gray); text-decoration: none; font-size: 0.85rem;">View detailed course list</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -688,15 +700,75 @@
             const firstName = e.target.querySelector('input[placeholder="First name"]').value;
             const lastName = e.target.querySelector('input[placeholder="Last name"]').value;
             const email = e.target.querySelector('input[type="email"]').value;
-            alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now log back in anytime to continue your courses!`);
+            
+            // Set account created flag
+            localStorage.setItem('drtroyAccount', JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                created: new Date().toISOString()
+            }));
+            
+            // Check if they had selected a package before creating account
+            const selectedPackage = localStorage.getItem('selectedPackage');
+            
+            if (selectedPackage) {
+                const packageData = JSON.parse(selectedPackage);
+                alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nNow proceeding to checkout for ${packageData.name} ($${packageData.price})...`);
+                
+                // Clear the selected package
+                localStorage.removeItem('selectedPackage');
+                
+                // Here you would redirect to checkout or payment processing
+                // For now, just show success
+                setTimeout(() => {
+                    alert(`Checkout for ${packageData.name} package ($${packageData.price} - $10 discount = $${packageData.price - 10})`);
+                }, 1000);
+            } else {
+                alert(`Welcome ${firstName} ${lastName}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now select any package and get your discount immediately!`);
+            }
         });
 
-        // Package button clicks
-        document.querySelectorAll('.package-button').forEach(button => {
+        // Package selection handling
+        document.querySelectorAll('.select-package').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                const packageName = this.closest('.package-card').querySelector('h3').textContent;
-                alert(`Starting enrollment for ${packageName} package!`);
+                const packageName = this.getAttribute('data-package');
+                const price = this.getAttribute('data-price');
+                
+                // Check if user has created an account (simple localStorage check)
+                const hasAccount = localStorage.getItem('drtroyAccount');
+                
+                if (hasAccount) {
+                    // Proceed to checkout
+                    alert(`Great! Proceeding to checkout for ${packageName} package ($${price})`);
+                } else {
+                    // Prompt to create account
+                    const createAccount = confirm(`To purchase the ${packageName} package ($${price}), please create your free account first.\n\n✓ Get $10 off immediately\n✓ Save your progress\n✓ Pick up where you left off\n\nCreate your account now?`);
+                    
+                    if (createAccount) {
+                        // Store the selected package for after account creation
+                        localStorage.setItem('selectedPackage', JSON.stringify({
+                            name: packageName,
+                            price: price
+                        }));
+                        
+                        // Scroll to account creation section
+                        document.querySelector('.optin').scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        
+                        // Highlight the account creation form
+                        const optinSection = document.querySelector('.optin');
+                        optinSection.style.border = '3px solid #d69e2e';
+                        optinSection.style.borderRadius = '8px';
+                        setTimeout(() => {
+                            optinSection.style.border = '';
+                            optinSection.style.borderRadius = '';
+                        }, 3000);
+                    }
+                }
             });
         });
     </script>
