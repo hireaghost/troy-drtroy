@@ -231,17 +231,11 @@
             margin-bottom: 1rem;
         }
 
-        /* Navigation scroll positioning */
-        #packages {
-            scroll-margin-top: 120px;
-        }
-        
-        #about {
-            scroll-margin-top: 120px;
-        }
-        
-        #contact {
-            scroll-margin-top: 120px;
+        /* Invisible anchor positioning */
+        .scroll-anchor {
+            position: relative;
+            top: -150px;
+            visibility: hidden;
         }
 
         .section-header p {
@@ -987,9 +981,10 @@
         </div>
     </section>
 
+    <div id="packages" class="scroll-anchor"></div>
     <section class="packages">
         <div class="section-header">
-            <h2 id="packages">Pick Your Package</h2>
+            <h2>Pick Your Package</h2>
             <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem; font-weight: 600;">Back to the Basics</h3>
             <p>One price. All the hours you need. No surprises.</p>
         </div>
@@ -1138,9 +1133,10 @@
         </div>
     </section>
 
+    <div id="about" class="scroll-anchor"></div>
     <section class="about">
         <div class="about-container">
-            <h2 id="about">Why DrTroy?</h2>
+            <h2>Why DrTroy?</h2>
             <p>We keep it simple. Quality CE courses at fair prices. No upsells, no hidden fees, no nonsense. Just the hours you need on an easy to use platform.</p>
         </div>
     </section>
@@ -1162,9 +1158,10 @@
         </div>
     </section>
 
+    <div id="contact" class="scroll-anchor"></div>
     <section class="contact">
         <div class="contact-container">
-            <h2 id="contact">Send Us a Message</h2>
+            <h2>Send Us a Message</h2>
             <p>Have a question about our courses or need help with your CE requirements? We're here to help.</p>
             
             <form class="contact-form" id="contactForm">
