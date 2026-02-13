@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrTroy Admin Panel - Discount Codes</title>
+    <title>DrTroy Admin Panel - Business Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
     <style>
         :root {
             --navy: #2c3e50;
@@ -384,9 +386,45 @@
         }
 
         /* Analytics Styles */
+        .analytics-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .analytics-tab {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .analytics-tab:hover {
+            color: var(--navy);
+            background: var(--gray-50);
+        }
+
+        .analytics-tab.active {
+            color: var(--navy);
+            border-bottom-color: var(--gold);
+        }
+
+        .analytics-tab-content {
+            display: none;
+        }
+
+        .analytics-tab-content.active {
+            display: block;
+        }
+
         .analytics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -578,11 +616,15 @@
         </div>
 
         <div class="container">
-        <!-- Security Info -->
+        <!-- Security & Database Info -->
         <div style="background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 6px; padding: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: var(--gray-600);">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                 <span>🔒 Secure session active</span>
                 <span id="sessionInfo"></span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="dbStatus">🔄 Checking database connection...</span>
+                <span id="dbMode">Demo Mode</span>
             </div>
         </div>
 
@@ -621,70 +663,430 @@
                 </div>
                 
                 <div id="analyticsSection" style="display: none;">
-                    <div class="analytics-grid">
-                        <!-- Revenue Metrics -->
-                        <div class="analytics-card">
-                            <h4>Revenue Metrics</h4>
-                            <div class="metric-item">
-                                <span>Monthly Revenue:</span>
-                                <span id="monthlyRevenue">$0</span>
+                    <!-- Analytics Tabs -->
+                    <div class="analytics-tabs">
+                        <button class="analytics-tab active" onclick="switchAnalyticsTab('overview')">Overview</button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('revenue')">Revenue</button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('customers')">Customers</button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('marketing')">Marketing</button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('operations')">Operations</button>
+                    </div>
+
+                    <!-- Overview Tab -->
+                    <div id="overviewTab" class="analytics-tab-content active">
+                        <div class="analytics-grid">
+                            <!-- Revenue Metrics -->
+                            <div class="analytics-card">
+                                <h4>📈 Revenue Health</h4>
+                                <div class="metric-item">
+                                    <span>Monthly Recurring Revenue (MRR):</span>
+                                    <span id="monthlyRevenue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Average Order Value (AOV):</span>
+                                    <span id="avgOrderValue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth Rate (MoM):</span>
+                                    <span id="growthRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Revenue per Customer:</span>
+                                    <span id="revenuePerCustomer">$0</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>Average Order Value:</span>
-                                <span id="avgOrderValue">$0</span>
+
+                            <!-- Customer Metrics -->
+                            <div class="analytics-card">
+                                <h4>👥 Customer Health</h4>
+                                <div class="metric-item">
+                                    <span>Total Active Customers:</span>
+                                    <span id="totalCustomers">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>New Customers (30d):</span>
+                                    <span id="newCustomers">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Retention Rate:</span>
+                                    <span id="retentionRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Lifetime Value (CLV):</span>
+                                    <span id="customerLTV">$0</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>Conversion Rate:</span>
-                                <span id="conversionRate">0%</span>
+
+                            <!-- Conversion Funnel -->
+                            <div class="analytics-card">
+                                <h4>🎯 Conversion Funnel</h4>
+                                <div class="metric-item">
+                                    <span>Website Visitors (30d):</span>
+                                    <span id="websiteVisitors">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Account Signups:</span>
+                                    <span id="accountSignups">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Purchase Conversion:</span>
+                                    <span id="conversionRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Course Completion Rate:</span>
+                                    <span id="completionRate">0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Key Performance -->
+                            <div class="analytics-card">
+                                <h4>🏆 Key Performance</h4>
+                                <div class="metric-item">
+                                    <span>Net Promoter Score (NPS):</span>
+                                    <span id="netPromoterScore">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Acquisition Cost (CAC):</span>
+                                    <span id="customerCAC">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>CLV:CAC Ratio:</span>
+                                    <span id="clvCacRatio">0:1</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Refund Rate:</span>
+                                    <span id="refundRate">0%</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Customer Metrics -->
-                        <div class="analytics-card">
-                            <h4>Customer Insights</h4>
-                            <div class="metric-item">
-                                <span>Total Customers:</span>
-                                <span id="totalCustomers">0</span>
+                    <!-- Revenue Tab -->
+                    <div id="revenueTab" class="analytics-tab-content">
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h4>💰 Revenue Breakdown</h4>
+                                <div class="metric-item">
+                                    <span>This Month Revenue:</span>
+                                    <span id="thisMonthRevenue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Last Month Revenue:</span>
+                                    <span id="lastMonthRevenue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Year-to-Date Revenue:</span>
+                                    <span id="ytdRevenue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Projected Annual Revenue:</span>
+                                    <span id="projectedRevenue">$0</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>New This Month:</span>
-                                <span id="newCustomers">0</span>
+
+                            <div class="analytics-card">
+                                <h4>📊 Revenue Sources</h4>
+                                <div class="metric-item">
+                                    <span>Full-Price Sales:</span>
+                                    <span id="fullPriceSales">$0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Discounted Sales:</span>
+                                    <span id="discountedSales">$0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Employee Sales:</span>
+                                    <span id="employeeSales">$0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Average Discount Given:</span>
+                                    <span id="avgDiscountGiven">$0</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>Repeat Rate:</span>
-                                <span id="repeatRate">0%</span>
+
+                            <div class="analytics-card">
+                                <h4>🎓 Package Revenue</h4>
+                                <div class="profession-breakdown">
+                                    <div class="prof-item">PT Revenue: <span id="ptRevenue">$0</span></div>
+                                    <div class="prof-item">PTA Revenue: <span id="ptaRevenue">$0</span></div>
+                                    <div class="prof-item">OT Revenue: <span id="otRevenue">$0</span></div>
+                                    <div class="prof-item">COTA Revenue: <span id="cotaRevenue">$0</span></div>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>💳 Payment Analysis</h4>
+                                <div class="metric-item">
+                                    <span>Successful Payments:</span>
+                                    <span id="successfulPayments">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Failed Payments:</span>
+                                    <span id="failedPayments">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Refunds Issued:</span>
+                                    <span id="refundsIssued">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Payment Method Split:</span>
+                                    <span id="paymentMethods">Card: 0%, PayPal: 0%</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Code Performance -->
-                        <div class="analytics-card">
-                            <h4>Discount Performance</h4>
-                            <div class="metric-item">
-                                <span>Most Used Code:</span>
-                                <span id="topCode">None</span>
+                    <!-- Customers Tab -->
+                    <div id="customersTab" class="analytics-tab-content">
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h4>👥 Customer Demographics</h4>
+                                <div class="metric-item">
+                                    <span>Physical Therapists:</span>
+                                    <span id="ptCustomers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>PT Assistants:</span>
+                                    <span id="ptaCustomers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Occupational Therapists:</span>
+                                    <span id="otCustomers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>OT Assistants:</span>
+                                    <span id="cotaCustomers">0 (0%)</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>Code Conversion:</span>
-                                <span id="codeConversion">0%</span>
+
+                            <div class="analytics-card">
+                                <h4>📍 Geographic Distribution</h4>
+                                <div class="metric-item">
+                                    <span>Texas Customers:</span>
+                                    <span id="texasCustomers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Out-of-State:</span>
+                                    <span id="outOfStateCustomers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Top Cities:</span>
+                                    <span id="topCities">Lubbock, Dallas, Houston</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Rural vs Urban:</span>
+                                    <span id="ruralUrbanSplit">Rural: 0%, Urban: 0%</span>
+                                </div>
                             </div>
-                            <div class="metric-item">
-                                <span>Avg Discount:</span>
-                                <span id="avgDiscount">$0</span>
+
+                            <div class="analytics-card">
+                                <h4>📱 Device & Usage</h4>
+                                <div class="metric-item">
+                                    <span>Mobile Users:</span>
+                                    <span id="mobileUsers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Desktop Users:</span>
+                                    <span id="desktopUsers">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Avg Session Duration:</span>
+                                    <span id="avgSessionDuration">0 min</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Peak Usage Hours:</span>
+                                    <span id="peakHours">7-9 PM</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>🔄 Customer Journey</h4>
+                                <div class="metric-item">
+                                    <span>Avg. Time to Purchase:</span>
+                                    <span id="timeToPurchase">0 days</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Multi-visit Purchases:</span>
+                                    <span id="multiVisitPurchases">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Cart Abandonment Rate:</span>
+                                    <span id="cartAbandonment">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Return Visitors:</span>
+                                    <span id="returnVisitors">0%</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Package Performance -->
-                        <div class="analytics-card">
-                            <h4>Package Performance</h4>
-                            <div class="metric-item">
-                                <span>Most Popular:</span>
-                                <span id="topPackage">PT ($109)</span>
+                    <!-- Marketing Tab -->
+                    <div id="marketingTab" class="analytics-tab-content">
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h4>🎯 Discount Code Performance</h4>
+                                <div class="metric-item">
+                                    <span>Most Used Code:</span>
+                                    <span id="topCode">None</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Code Conversion Rate:</span>
+                                    <span id="codeConversion">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Avg Discount Amount:</span>
+                                    <span id="avgDiscount">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Code ROI:</span>
+                                    <span id="codeROI">0:1</span>
+                                </div>
                             </div>
-                            <div class="profession-breakdown">
-                                <div class="prof-item">PT: <span id="ptSales">0</span></div>
-                                <div class="prof-item">PTA: <span id="ptaSales">0</span></div>
-                                <div class="prof-item">OT: <span id="otSales">0</span></div>
-                                <div class="prof-item">COTA: <span id="cotaSales">0</span></div>
+
+                            <div class="analytics-card">
+                                <h4>📈 Traffic Sources</h4>
+                                <div class="metric-item">
+                                    <span>Direct Traffic:</span>
+                                    <span id="directTraffic">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Referral Traffic:</span>
+                                    <span id="referralTraffic">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Social Media:</span>
+                                    <span id="socialTraffic">0 (0%)</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Search Engine:</span>
+                                    <span id="searchTraffic">0 (0%)</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>📧 Campaign Performance</h4>
+                                <div class="metric-item">
+                                    <span>Email Open Rate:</span>
+                                    <span id="emailOpenRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Email Click Rate:</span>
+                                    <span id="emailClickRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Social Media Reach:</span>
+                                    <span id="socialReach">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Content Engagement:</span>
+                                    <span id="contentEngagement">0%</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>🤝 Partnerships & Referrals</h4>
+                                <div class="metric-item">
+                                    <span>Partner Referrals:</span>
+                                    <span id="partnerReferrals">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Partner Revenue:</span>
+                                    <span id="partnerRevenue">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Top Referring Partner:</span>
+                                    <span id="topPartner">None</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Referral Conversion:</span>
+                                    <span id="referralConversion">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operations Tab -->
+                    <div id="operationsTab" class="analytics-tab-content">
+                        <div class="analytics-grid">
+                            <div class="analytics-card">
+                                <h4>🎓 Course Performance</h4>
+                                <div class="metric-item">
+                                    <span>Course Completion Rate:</span>
+                                    <span id="courseCompletionRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Avg Course Duration:</span>
+                                    <span id="avgCourseDuration">0 min</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Certificate Downloads:</span>
+                                    <span id="certificateDownloads">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Course Drop-off Rate:</span>
+                                    <span id="courseDropoff">0%</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>⚡ Technical Performance</h4>
+                                <div class="metric-item">
+                                    <span>Website Uptime:</span>
+                                    <span id="websiteUptime">99.9%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Page Load Speed:</span>
+                                    <span id="pageLoadSpeed">2.1s</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Error Rate:</span>
+                                    <span id="errorRate">0.1%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>API Response Time:</span>
+                                    <span id="apiResponseTime">150ms</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>🎧 Customer Support</h4>
+                                <div class="metric-item">
+                                    <span>Support Tickets:</span>
+                                    <span id="supportTickets">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Avg Response Time:</span>
+                                    <span id="responseTime">< 2 hours</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Resolution Rate:</span>
+                                    <span id="resolutionRate">100%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Satisfaction Score:</span>
+                                    <span id="supportSatisfaction">4.8/5</span>
+                                </div>
+                            </div>
+
+                            <div class="analytics-card">
+                                <h4>📊 Business Intelligence</h4>
+                                <div class="metric-item">
+                                    <span>Market Share (TX):</span>
+                                    <span id="marketShare">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Competitive Position:</span>
+                                    <span id="competitivePosition">#4 in TX</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Brand Awareness:</span>
+                                    <span id="brandAwareness">Low</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Seasonal Trends:</span>
+                                    <span id="seasonalTrends">Peak: Dec-Jan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -993,6 +1395,9 @@
 
         // Initialize admin panel functionality
         function initializeAdminPanel() {
+            // Check database connection status
+            checkDatabaseConnection();
+            
             // Load existing codes from localStorage
             employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
             marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
@@ -1005,13 +1410,56 @@
             
             // Initialize analytics with sample data
             if (document.getElementById('analyticsSection').style.display !== 'none') {
-                updateAnalytics();
+                updateAllAnalytics();
             }
             
             // Auto-logout warning at 23 hours
             setTimeout(() => {
                 alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
             }, 23 * 60 * 60 * 1000); // 23 hours
+        }
+
+        // Check database connection status
+        async function checkDatabaseConnection() {
+            const statusElement = document.getElementById('dbStatus');
+            const modeElement = document.getElementById('dbMode');
+            
+            try {
+                if (typeof DrTroyDB !== 'undefined' && DrTroyDB.getAnalytics) {
+                    // Try to connect to database
+                    const { data, error } = await DrTroyDB.getAnalytics();
+                    
+                    if (error && !error.includes('not available')) {
+                        // Database configured but has error
+                        statusElement.innerHTML = '⚠️ Database connection issues';
+                        statusElement.style.color = '#d69e2e';
+                        modeElement.textContent = 'Database Mode (Issues)';
+                        modeElement.style.color = '#d69e2e';
+                    } else if (!error) {
+                        // Database working perfectly
+                        statusElement.innerHTML = '✅ Database connected';
+                        statusElement.style.color = '#48bb78';
+                        modeElement.textContent = 'Live Database Mode';
+                        modeElement.style.color = '#48bb78';
+                    } else {
+                        // Database not configured yet
+                        statusElement.innerHTML = '📋 Database setup required';
+                        statusElement.style.color = '#d69e2e';
+                        modeElement.textContent = 'Demo Mode';
+                    }
+                } else {
+                    // No database configuration
+                    statusElement.innerHTML = '📋 Database setup required';
+                    statusElement.style.color = '#d69e2e';
+                    modeElement.textContent = 'Demo Mode';
+                }
+            } catch (err) {
+                // Error checking database
+                statusElement.innerHTML = '❌ Database configuration error';
+                statusElement.style.color = '#e53e3e';
+                modeElement.textContent = 'Demo Mode';
+                modeElement.style.color = '#e53e3e';
+            }
         }
 
         // Update session info display
@@ -1039,38 +1487,119 @@
             if (section.style.display === 'none') {
                 section.style.display = 'block';
                 button.textContent = 'Hide Analytics';
-                updateAnalytics();
+                updateAllAnalytics();
             } else {
                 section.style.display = 'none';
                 button.textContent = 'Show Analytics';
             }
         }
 
-        function updateAnalytics() {
-            // Mock analytics data (in real app, this would come from your analytics service)
-            const analytics = generateMockAnalytics();
+        function switchAnalyticsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.analytics-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchAnalyticsTab('${tabName}')"]`).classList.add('active');
             
-            // Update revenue metrics
-            document.getElementById('monthlyRevenue').textContent = '$' + analytics.monthlyRevenue.toLocaleString();
-            document.getElementById('avgOrderValue').textContent = '$' + analytics.avgOrderValue;
-            document.getElementById('conversionRate').textContent = analytics.conversionRate + '%';
+            // Update tab content
+            document.querySelectorAll('.analytics-tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
             
-            // Update customer metrics
-            document.getElementById('totalCustomers').textContent = analytics.totalCustomers;
-            document.getElementById('newCustomers').textContent = analytics.newCustomers;
-            document.getElementById('repeatRate').textContent = analytics.repeatRate + '%';
+            // Update relevant analytics for the tab
+            updateAllAnalytics();
+        }
+
+        function updateAllAnalytics() {
+            // Generate comprehensive analytics data
+            const analytics = generateComprehensiveAnalytics();
             
-            // Update code performance
-            document.getElementById('topCode').textContent = analytics.topCode || 'None';
-            document.getElementById('codeConversion').textContent = analytics.codeConversion + '%';
-            document.getElementById('avgDiscount').textContent = '$' + analytics.avgDiscount;
+            // Overview Tab Metrics
+            updateElement('monthlyRevenue', '$' + analytics.monthlyRevenue.toLocaleString());
+            updateElement('avgOrderValue', '$' + analytics.avgOrderValue);
+            updateElement('growthRate', analytics.growthRate + '%');
+            updateElement('revenuePerCustomer', '$' + analytics.revenuePerCustomer);
+            updateElement('totalCustomers', analytics.totalCustomers.toLocaleString());
+            updateElement('newCustomers', analytics.newCustomers);
+            updateElement('retentionRate', analytics.retentionRate + '%');
+            updateElement('customerLTV', '$' + analytics.customerLTV);
+            updateElement('websiteVisitors', analytics.websiteVisitors.toLocaleString());
+            updateElement('accountSignups', analytics.accountSignups);
+            updateElement('conversionRate', analytics.conversionRate + '%');
+            updateElement('completionRate', analytics.completionRate + '%');
+            updateElement('netPromoterScore', analytics.netPromoterScore);
+            updateElement('customerCAC', '$' + analytics.customerCAC);
+            updateElement('clvCacRatio', analytics.clvCacRatio);
+            updateElement('refundRate', analytics.refundRate + '%');
             
-            // Update package performance
-            document.getElementById('topPackage').textContent = analytics.topPackage;
-            document.getElementById('ptSales').textContent = analytics.packageSales.PT;
-            document.getElementById('ptaSales').textContent = analytics.packageSales.PTA;
-            document.getElementById('otSales').textContent = analytics.packageSales.OT;
-            document.getElementById('cotaSales').textContent = analytics.packageSales.COTA;
+            // Revenue Tab Metrics
+            updateElement('thisMonthRevenue', '$' + analytics.thisMonthRevenue.toLocaleString());
+            updateElement('lastMonthRevenue', '$' + analytics.lastMonthRevenue.toLocaleString());
+            updateElement('ytdRevenue', '$' + analytics.ytdRevenue.toLocaleString());
+            updateElement('projectedRevenue', '$' + analytics.projectedRevenue.toLocaleString());
+            updateElement('fullPriceSales', `$${analytics.fullPriceSales.toLocaleString()} (${analytics.fullPricePercent}%)`);
+            updateElement('discountedSales', `$${analytics.discountedSales.toLocaleString()} (${analytics.discountedPercent}%)`);
+            updateElement('employeeSales', `$${analytics.employeeSales.toLocaleString()} (${analytics.employeePercent}%)`);
+            updateElement('avgDiscountGiven', '$' + analytics.avgDiscountGiven);
+            updateElement('ptRevenue', '$' + analytics.packageRevenue.PT.toLocaleString());
+            updateElement('ptaRevenue', '$' + analytics.packageRevenue.PTA.toLocaleString());
+            updateElement('otRevenue', '$' + analytics.packageRevenue.OT.toLocaleString());
+            updateElement('cotaRevenue', '$' + analytics.packageRevenue.COTA.toLocaleString());
+            updateElement('successfulPayments', `${analytics.successfulPayments} (${analytics.paymentSuccessRate}%)`);
+            updateElement('failedPayments', `${analytics.failedPayments} (${100-analytics.paymentSuccessRate}%)`);
+            updateElement('refundsIssued', '$' + analytics.refundsIssued.toLocaleString());
+            updateElement('paymentMethods', analytics.paymentMethods);
+            
+            // Customer Tab Metrics
+            updateElement('ptCustomers', `${analytics.customerBreakdown.PT} (${analytics.customerPercents.PT}%)`);
+            updateElement('ptaCustomers', `${analytics.customerBreakdown.PTA} (${analytics.customerPercents.PTA}%)`);
+            updateElement('otCustomers', `${analytics.customerBreakdown.OT} (${analytics.customerPercents.OT}%)`);
+            updateElement('cotaCustomers', `${analytics.customerBreakdown.COTA} (${analytics.customerPercents.COTA}%)`);
+            updateElement('texasCustomers', `${analytics.texasCustomers} (${analytics.texasPercent}%)`);
+            updateElement('outOfStateCustomers', `${analytics.outOfStateCustomers} (${analytics.outOfStatePercent}%)`);
+            updateElement('topCities', analytics.topCities);
+            updateElement('ruralUrbanSplit', analytics.ruralUrbanSplit);
+            updateElement('mobileUsers', `${analytics.mobileUsers} (${analytics.mobilePercent}%)`);
+            updateElement('desktopUsers', `${analytics.desktopUsers} (${analytics.desktopPercent}%)`);
+            updateElement('avgSessionDuration', analytics.avgSessionDuration + ' min');
+            updateElement('peakHours', analytics.peakHours);
+            updateElement('timeToPurchase', analytics.timeToPurchase + ' days');
+            updateElement('multiVisitPurchases', analytics.multiVisitPurchases + '%');
+            updateElement('cartAbandonment', analytics.cartAbandonment + '%');
+            updateElement('returnVisitors', analytics.returnVisitors + '%');
+            
+            // Marketing Tab Metrics
+            updateElement('topCode', analytics.topCode || 'None');
+            updateElement('codeConversion', analytics.codeConversion + '%');
+            updateElement('avgDiscount', '$' + analytics.avgDiscount);
+            updateElement('codeROI', analytics.codeROI);
+            updateElement('directTraffic', `${analytics.trafficSources.direct} (${analytics.trafficPercents.direct}%)`);
+            updateElement('referralTraffic', `${analytics.trafficSources.referral} (${analytics.trafficPercents.referral}%)`);
+            updateElement('socialTraffic', `${analytics.trafficSources.social} (${analytics.trafficPercents.social}%)`);
+            updateElement('searchTraffic', `${analytics.trafficSources.search} (${analytics.trafficPercents.search}%)`);
+            updateElement('emailOpenRate', analytics.emailOpenRate + '%');
+            updateElement('emailClickRate', analytics.emailClickRate + '%');
+            updateElement('socialReach', analytics.socialReach.toLocaleString());
+            updateElement('contentEngagement', analytics.contentEngagement + '%');
+            updateElement('partnerReferrals', analytics.partnerReferrals);
+            updateElement('partnerRevenue', '$' + analytics.partnerRevenue.toLocaleString());
+            updateElement('topPartner', analytics.topPartner);
+            updateElement('referralConversion', analytics.referralConversion + '%');
+            
+            // Operations Tab Metrics
+            updateElement('courseCompletionRate', analytics.courseCompletionRate + '%');
+            updateElement('avgCourseDuration', analytics.avgCourseDuration + ' min');
+            updateElement('certificateDownloads', analytics.certificateDownloads.toLocaleString());
+            updateElement('courseDropoff', analytics.courseDropoff + '%');
+            updateElement('websiteUptime', analytics.websiteUptime + '%');
+            updateElement('pageLoadSpeed', analytics.pageLoadSpeed + 's');
+            updateElement('errorRate', analytics.errorRate + '%');
+            updateElement('apiResponseTime', analytics.apiResponseTime + 'ms');
+            updateElement('supportTickets', analytics.supportTickets);
+            updateElement('responseTime', analytics.responseTime);
+            updateElement('resolutionRate', analytics.resolutionRate + '%');
+            updateElement('supportSatisfaction', analytics.supportSatisfaction + '/5');
+            updateElement('marketShare', analytics.marketShare + '%');
+            updateElement('competitivePosition', analytics.competitivePosition);
+            updateElement('brandAwareness', analytics.brandAwareness);
+            updateElement('seasonalTrends', analytics.seasonalTrends);
             
             // Update progress bars
             updateProgressBar('revenueProgress', 'revenueGoal', analytics.monthlyRevenue, 10000);
@@ -1080,29 +1609,134 @@
             updateInsights(analytics);
         }
 
-        function generateMockAnalytics() {
-            // Generate realistic mock data based on current codes
+        function updateElement(id, value) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+
+        function generateComprehensiveAnalytics() {
+            // Generate realistic mock data based on current codes and business model
             const usedEmployeeCodes = employeeCodes.filter(c => c.status === 'used').length;
             const usedMarketingCodes = marketingCodes.reduce((sum, c) => sum + (c.totalUsed || 0), 0);
-            const totalSales = usedEmployeeCodes + usedMarketingCodes + 15; // Add some organic sales
+            const totalSales = usedEmployeeCodes + usedMarketingCodes + Math.floor(Math.random() * 25) + 15;
+            const monthlyRevenue = totalSales * 87 + Math.floor(Math.random() * 1000);
+            const totalCustomers = totalSales + Math.floor(Math.random() * 10) + 5;
+            const websiteVisitors = totalCustomers * 8 + Math.floor(Math.random() * 200);
+            
+            // Package distribution (PT heavy, as expected)
+            const ptSales = Math.floor(totalSales * 0.45);
+            const ptaSales = Math.floor(totalSales * 0.25);
+            const otSales = Math.floor(totalSales * 0.22);
+            const cotaSales = totalSales - ptSales - ptaSales - otSales;
             
             return {
-                monthlyRevenue: totalSales * 87 + Math.floor(Math.random() * 500), // ~$87 avg after discounts
-                avgOrderValue: 87,
-                conversionRate: Math.min(12 + Math.floor(Math.random() * 8), 25),
-                totalCustomers: totalSales + 5,
-                newCustomers: Math.floor(totalSales * 0.7) + 3,
-                repeatRate: Math.floor(Math.random() * 15) + 5,
+                // Overview Metrics
+                monthlyRevenue: monthlyRevenue,
+                avgOrderValue: Math.floor(monthlyRevenue / totalSales),
+                growthRate: Math.floor(Math.random() * 30) + 15,
+                revenuePerCustomer: Math.floor(monthlyRevenue / totalCustomers),
+                totalCustomers: totalCustomers,
+                newCustomers: Math.floor(totalCustomers * 0.7) + 3,
+                retentionRate: Math.floor(Math.random() * 20) + 15,
+                customerLTV: Math.floor(monthlyRevenue / totalCustomers) * 2.5,
+                websiteVisitors: websiteVisitors,
+                accountSignups: Math.floor(totalCustomers * 1.2),
+                conversionRate: Math.floor((totalSales / websiteVisitors) * 100),
+                completionRate: 85 + Math.floor(Math.random() * 10),
+                netPromoterScore: 45 + Math.floor(Math.random() * 25),
+                customerCAC: 15 + Math.floor(Math.random() * 20),
+                clvCacRatio: '3.2:1',
+                refundRate: Math.floor(Math.random() * 3) + 1,
+                
+                // Revenue Metrics
+                thisMonthRevenue: monthlyRevenue,
+                lastMonthRevenue: monthlyRevenue - Math.floor(Math.random() * 500) - 200,
+                ytdRevenue: monthlyRevenue * 3.2,
+                projectedRevenue: monthlyRevenue * 12,
+                fullPriceSales: Math.floor(monthlyRevenue * 0.35),
+                discountedSales: Math.floor(monthlyRevenue * 0.55),
+                employeeSales: Math.floor(monthlyRevenue * 0.10),
+                fullPricePercent: 35,
+                discountedPercent: 55,
+                employeePercent: 10,
+                avgDiscountGiven: 18 + Math.floor(Math.random() * 12),
+                packageRevenue: {
+                    PT: ptSales * 109,
+                    PTA: ptaSales * 89,
+                    OT: otSales * 109,
+                    COTA: cotaSales * 89
+                },
+                successfulPayments: totalSales,
+                failedPayments: Math.floor(totalSales * 0.03),
+                paymentSuccessRate: 97,
+                refundsIssued: Math.floor(monthlyRevenue * 0.02),
+                paymentMethods: 'Card: 78%, PayPal: 22%',
+                
+                // Customer Demographics
+                customerBreakdown: {
+                    PT: Math.floor(totalCustomers * 0.45),
+                    PTA: Math.floor(totalCustomers * 0.25),
+                    OT: Math.floor(totalCustomers * 0.22),
+                    COTA: Math.floor(totalCustomers * 0.08)
+                },
+                customerPercents: { PT: 45, PTA: 25, OT: 22, COTA: 8 },
+                texasCustomers: Math.floor(totalCustomers * 0.82),
+                outOfStateCustomers: Math.floor(totalCustomers * 0.18),
+                texasPercent: 82,
+                outOfStatePercent: 18,
+                topCities: 'Lubbock, Dallas, Houston, Austin, San Antonio',
+                ruralUrbanSplit: 'Rural: 45%, Urban: 55%',
+                mobileUsers: Math.floor(totalCustomers * 0.65),
+                desktopUsers: Math.floor(totalCustomers * 0.35),
+                mobilePercent: 65,
+                desktopPercent: 35,
+                avgSessionDuration: 12 + Math.floor(Math.random() * 8),
+                peakHours: '7-9 PM CST',
+                timeToPurchase: Math.floor(Math.random() * 3) + 1,
+                multiVisitPurchases: 35 + Math.floor(Math.random() * 15),
+                cartAbandonment: 25 + Math.floor(Math.random() * 10),
+                returnVisitors: 28 + Math.floor(Math.random() * 12),
+                
+                // Marketing Metrics
                 topCode: marketingCodes.length > 0 ? marketingCodes[0].code : 'SAVE10',
-                codeConversion: Math.floor(Math.random() * 30) + 45,
-                avgDiscount: Math.floor(Math.random() * 15) + 18,
-                topPackage: 'PT ($109)',
-                packageSales: {
-                    PT: Math.floor(totalSales * 0.4),
-                    PTA: Math.floor(totalSales * 0.25),
-                    OT: Math.floor(totalSales * 0.25),
-                    COTA: Math.floor(totalSales * 0.1)
-                }
+                codeConversion: 65 + Math.floor(Math.random() * 20),
+                avgDiscount: 22 + Math.floor(Math.random() * 8),
+                codeROI: '2.8:1',
+                trafficSources: {
+                    direct: Math.floor(websiteVisitors * 0.35),
+                    referral: Math.floor(websiteVisitors * 0.25),
+                    social: Math.floor(websiteVisitors * 0.20),
+                    search: Math.floor(websiteVisitors * 0.20)
+                },
+                trafficPercents: { direct: 35, referral: 25, social: 20, search: 20 },
+                emailOpenRate: 22 + Math.floor(Math.random() * 8),
+                emailClickRate: 3 + Math.floor(Math.random() * 4),
+                socialReach: 1200 + Math.floor(Math.random() * 800),
+                contentEngagement: 4 + Math.floor(Math.random() * 3),
+                partnerReferrals: Math.floor(Math.random() * 8) + 3,
+                partnerRevenue: Math.floor(monthlyRevenue * 0.15),
+                topPartner: 'Texas Tech Health Sciences Center',
+                referralConversion: 18 + Math.floor(Math.random() * 12),
+                
+                // Operations Metrics  
+                courseCompletionRate: 87 + Math.floor(Math.random() * 8),
+                avgCourseDuration: 45 + Math.floor(Math.random() * 15),
+                certificateDownloads: Math.floor(totalSales * 0.92),
+                courseDropoff: 8 + Math.floor(Math.random() * 7),
+                websiteUptime: 99.8 + (Math.random() * 0.2),
+                pageLoadSpeed: 1.8 + (Math.random() * 0.8),
+                errorRate: 0.1 + (Math.random() * 0.2),
+                apiResponseTime: 120 + Math.floor(Math.random() * 80),
+                supportTickets: Math.floor(totalCustomers * 0.05),
+                responseTime: '< ' + (1 + Math.floor(Math.random() * 2)) + ' hours',
+                resolutionRate: 96 + Math.floor(Math.random() * 4),
+                supportSatisfaction: 4.7 + (Math.random() * 0.3),
+                marketShare: 0.8 + (Math.random() * 1.2),
+                competitivePosition: '#4 in Texas CE',
+                brandAwareness: 'Growing',
+                seasonalTrends: 'Peak: Nov-Jan (License Renewals)'
             };
         }
 
