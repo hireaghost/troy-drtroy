@@ -3,567 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrTroy.com - Advanced Continuing Education for PT/OT Professionals</title>
-    <meta name="description" content="Practical continuing education from a practicing clinician. 25+ years of real-world PT/OT expertise for rural healthcare professionals.">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/styles.css">
-    
-    <!-- Google Fonts -->
+    <title>DrTroy | PT/OT Continuing Education</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --navy-light: #2c5282;
+            --gold: #d69e2e;
+            --gold-light: #ecc94b;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-600: #4a5568;
+            --gray-800: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav a {
+            color: var(--gray-600);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--navy);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Opt-in Section */
+        .optin {
+            background: var(--gold);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .optin-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .optin h2 {
+            color: var(--navy);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .optin p {
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .optin-form {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .optin-form input {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+
+        .optin-form button {
+            background: var(--navy);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .optin-form button:hover {
+            background: var(--navy-light);
+        }
+
+        /* Course Packages */
+        .packages {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            color: var(--navy);
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-color: var(--gold);
+        }
+
+        .package-header {
+            background: var(--navy);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .package-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .package-content {
+            padding: 1.5rem;
+        }
+
+        .package-content ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-content li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .package-content li:last-child {
+            border-bottom: none;
+        }
+
+        .hours {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .total-hours {
+            background: var(--gray-100);
+            padding: 0.75rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .package-button {
+            display: block;
+            background: var(--gold);
+            color: var(--navy);
+            padding: 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .package-button:hover {
+            background: var(--gold-light);
+        }
+
+        .compliance-note {
+            background: var(--gray-50);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--gold);
+        }
+
+        .compliance-note a {
+            color: var(--navy);
+            text-decoration: underline;
+        }
+
+        .compliance-note a:hover {
+            color: var(--navy-light);
+        }
+
+        /* Referral Section */
+        .referral {
+            background: var(--gray-50);
+            padding: 4rem 2rem;
+        }
+
+        .referral-steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .referral-step {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .referral-step h3 {
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .referral-step p {
+            color: var(--gray-600);
+        }
+
+        /* About Section - Minimal */
+        .about {
+            background: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about h2 {
+            color: var(--navy);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .about p {
+            color: var(--gray-600);
+        }
+
+        /* Accreditation */
+        .accreditation {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .accreditation h2 {
+            color: var(--navy);
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .accred-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .accred-item {
+            background: var(--gray-50);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--navy);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            nav {
+                display: none;
+            }
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="assets/images/drtroy-logo.png" alt="DrTroy.com Logo" class="logo-img">
-                <span class="logo-text">DrTroy.com</span>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="logo.svg" alt="DrTroy" style="height: 50px; width: auto;">
             </div>
-            
-            <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                    <li class="nav-item dropdown">
-                        <a href="#courses" class="nav-link">Courses <i class="fas fa-chevron-down"></i></a>
-                        <div class="dropdown-menu">
-                            <a href="#pt-courses">Physical Therapy</a>
-                            <a href="#ot-courses">Occupational Therapy</a>
-                            <a href="#practice-mgmt">Practice Management</a>
-                            <a href="#certifications">Certifications</a>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a href="#about" class="nav-link">About Dr. Troy</a></li>
-                    <li class="nav-item"><a href="#pricing" class="nav-link">Pricing</a></li>
-                    <li class="nav-item"><a href="#resources" class="nav-link">Resources</a></li>
-                </ul>
-            </div>
-            
-            <div class="nav-actions">
-                <a href="#login" class="nav-link login-link">Student Portal</a>
-                <a href="#trial" class="btn btn-primary">Start Free Trial</a>
-            </div>
-            
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+            <nav>
+                <a href="#packages">Courses</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">Advanced Continuing Education from a <span class="highlight">Practicing Clinician</span></h1>
-                    <p class="hero-subtitle">25+ years of real-world PT/OT expertise. Multi-location practice owner. Rural healthcare specialist delivering practical education that actually works in your practice.</p>
-                    
-                    <div class="hero-cta">
-                        <a href="#trial" class="btn btn-primary btn-lg">Start Free Trial</a>
-                        <a href="#courses" class="btn btn-outline btn-lg">View Course Catalog</a>
-                    </div>
-                    
-                    <div class="trust-indicators">
-                        <div class="trust-item">
-                            <i class="fas fa-users"></i>
-                            <span>500+ Healthcare Professionals Trained</span>
-                        </div>
-                        <div class="trust-item">
-                            <i class="fas fa-certificate"></i>
-                            <span>APTA Member Since 1998</span>
-                        </div>
-                        <div class="trust-item">
-                            <i class="fas fa-building"></i>
-                            <span>5-Location Practice Owner</span>
-                        </div>
-                        <div class="trust-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>West Texas Healthcare Leader</span>
-                        </div>
-                    </div>
+    <section class="hero">
+        <h1>Back to the Basics</h1>
+        <p>Simple, affordable CE courses for PTs, PTAs, OTs, and COTAs. Get your hours done without the headache.</p>
+        <div class="hero-badges">
+            <span class="badge">✓ Board Approved</span>
+            <span class="badge">✓ Instant Certificates</span>
+            <span class="badge">✓ One Price, All Courses</span>
+        </div>
+    </section>
+
+    <section class="optin">
+        <div class="optin-container">
+            <h2>Get $10 Off</h2>
+            <p>Enter your email for an instant $10 discount.</p>
+            <form class="optin-form">
+                <input type="email" placeholder="Your email" required>
+                <button type="submit">Get $10 Off</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="packages" id="packages">
+        <div class="section-header">
+            <h2>Pick Your Package</h2>
+            <p>One price. All the hours you need. No surprises.</p>
+        </div>
+        <div class="package-grid">
+            <div class="package-card">
+                <div class="package-header">
+                    <h3>Physical Therapists</h3>
+                    <div class="package-price">$109</div>
                 </div>
-                
-                <div class="hero-image">
-                    <img src="assets/images/dr-troy-hero.jpg" alt="Dr. Troy Hounshell, Physical Therapist" class="hero-img">
-                    <div class="credentials-badge">
-                        <span>Dr. Troy Hounshell</span>
-                        <small>PT, ScD, Practice Owner</small>
+                <div class="package-content">
+                    <div class="total-hours">27 Total CE Hours</div>
+                    <ul>
+                        <li><span>8 Courses</span> <span class="hours">3 hrs each</span></li>
+                        <li><span>3 Courses</span> <span class="hours">1 hr each</span></li>
+                    </ul>
+                    <div class="compliance-note">
+                        <p><strong>Note:</strong> 2-hour ethics requirement satisfied by Texas Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
                     </div>
+                    <a href="#" class="package-button">Get Started</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-header">
+                    <h3>PT Assistants</h3>
+                    <div class="package-price">$89</div>
+                </div>
+                <div class="package-content">
+                    <div class="total-hours">17 Total CE Hours</div>
+                    <ul>
+                        <li><span>5 Courses</span> <span class="hours">3 hrs each</span></li>
+                        <li><span>2 Courses</span> <span class="hours">1 hr each</span></li>
+                    </ul>
+                    <div class="compliance-note">
+                        <p><strong>Note:</strong> 2-hour ethics requirement satisfied by Texas Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
+                    </div>
+                    <a href="#" class="package-button">Get Started</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-header">
+                    <h3>Occupational Therapists</h3>
+                    <div class="package-price">$109</div>
+                </div>
+                <div class="package-content">
+                    <div class="total-hours">23 Total CE Hours</div>
+                    <ul>
+                        <li><span>7 Courses</span> <span class="hours">3 hrs each</span></li>
+                        <li><span>2 Courses</span> <span class="hours">1 hr each</span></li>
+                    </ul>
+                    <div class="compliance-note">
+                        <p><a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
+                    </div>
+                    <a href="#" class="package-button">Get Started</a>
+                </div>
+            </div>
+
+            <div class="package-card">
+                <div class="package-header">
+                    <h3>OT Assistants</h3>
+                    <div class="package-price">$89</div>
+                </div>
+                <div class="package-content">
+                    <div class="total-hours">23 Total CE Hours</div>
+                    <ul>
+                        <li><span>7 Courses</span> <span class="hours">3 hrs each</span></li>
+                        <li><span>2 Courses</span> <span class="hours">1 hr each</span></li>
+                    </ul>
+                    <div class="compliance-note">
+                        <p><a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a></p>
+                    </div>
+                    <a href="#" class="package-button">Get Started</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Problem/Solution Section -->
-    <section class="problem-solution">
-        <div class="container">
-            <div class="section-header">
-                <h2>Tired of Generic CE That Doesn't Apply to Your Practice?</h2>
-                <p>Get practical education from someone who's actually doing the work</p>
-            </div>
-            
-            <div class="solution-grid">
-                <div class="solution-card">
-                    <div class="solution-icon">
-                        <i class="fas fa-stethoscope"></i>
-                    </div>
-                    <h3>Real-World Expertise</h3>
-                    <p>Courses taught by a practicing clinician, not just academics. Learn what actually works in daily practice.</p>
-                </div>
-                
-                <div class="solution-card">
-                    <div class="solution-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3>Rural Healthcare Focus</h3>
-                    <p>Understand the unique challenges of small-town practice. Solutions for limited resources and creative problem-solving.</p>
-                </div>
-                
-                <div class="solution-card">
-                    <div class="solution-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Business + Clinical</h3>
-                    <p>Excel clinically AND grow your practice profitably. Integrated education for complete professional success.</p>
-                </div>
-            </div>
+    <section class="referral">
+        <div class="section-header">
+            <h2>Refer a Colleague, Save 10%</h2>
+            <p>After you complete your purchase, you'll get a unique referral link to share with colleagues. When they buy, you get 10% off your next purchase.</p>
         </div>
     </section>
 
-    <!-- Course Catalog Preview -->
-    <section class="courses-preview" id="courses">
-        <div class="container">
-            <div class="section-header">
-                <h2>Popular Courses</h2>
-                <p>Practical education designed for real-world application</p>
-            </div>
-            
-            <div class="courses-grid">
-                <div class="course-card">
-                    <div class="course-image">
-                        <img src="assets/images/geriatric-pt-course.jpg" alt="Geriatric PT Course">
-                        <div class="course-badge">3 CE Hours</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>Geriatric PT: Evidence-Based Care for Rural Populations</h3>
-                        <p>Specialized approaches for treating elderly patients in resource-limited settings.</p>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>4.9 (127 reviews)</span>
-                            </div>
-                            <div class="course-duration">3 hours</div>
-                        </div>
-                        <a href="#preview" class="btn btn-outline">Preview Course</a>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image">
-                        <img src="assets/images/practice-mgmt-course.jpg" alt="Practice Management Course">
-                        <div class="course-badge">2 CE Hours</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>Multi-Location Practice Management</h3>
-                        <p>Real strategies from building and managing 5 successful therapy locations.</p>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>4.8 (89 reviews)</span>
-                            </div>
-                            <div class="course-duration">2 hours</div>
-                        </div>
-                        <a href="#preview" class="btn btn-outline">Preview Course</a>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image">
-                        <img src="assets/images/snf-documentation.jpg" alt="SNF Documentation Course">
-                        <div class="course-badge">1.5 CE Hours</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>SNF Documentation: Medicare Compliance Made Simple</h3>
-                        <p>Navigate complex Medicare requirements with practical documentation strategies.</p>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>4.9 (156 reviews)</span>
-                            </div>
-                            <div class="course-duration">1.5 hours</div>
-                        </div>
-                        <a href="#preview" class="btn btn-outline">Preview Course</a>
-                    </div>
-                </div>
-                
-                <div class="course-card">
-                    <div class="course-image">
-                        <img src="assets/images/telehealth-course.jpg" alt="Telehealth Implementation Course">
-                        <div class="course-badge">2 CE Hours</div>
-                    </div>
-                    <div class="course-content">
-                        <h3>Telehealth Implementation for Rural Therapy</h3>
-                        <p>Successfully launch and manage telehealth services in underserved communities.</p>
-                        <div class="course-meta">
-                            <div class="course-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span>4.7 (73 reviews)</span>
-                            </div>
-                            <div class="course-duration">2 hours</div>
-                        </div>
-                        <a href="#preview" class="btn btn-outline">Preview Course</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="courses-cta">
-                <a href="#catalog" class="btn btn-primary">View All Courses</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Competitive Advantages -->
-    <section class="competitive-advantages">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose DrTroy Over Other CE Providers?</h2>
-                <p>See the difference real-world experience makes</p>
-            </div>
-            
-            <div class="comparison-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th class="highlight-col">DrTroy</th>
-                            <th>Medbridge</th>
-                            <th>PESI</th>
-                            <th>PhysicalTherapy.com</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Annual Price</strong></td>
-                            <td class="highlight-col"><span class="price">$199</span></td>
-                            <td>$500+</td>
-                            <td>Per Course ($150+)</td>
-                            <td>$129</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Instructor</strong></td>
-                            <td class="highlight-col"><i class="fas fa-check text-success"></i> Known Expert</td>
-                            <td><i class="fas fa-times text-danger"></i> Anonymous</td>
-                            <td><i class="fas fa-check text-success"></i> Celebrity Guests</td>
-                            <td><i class="fas fa-minus text-warning"></i> Various</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Focus</strong></td>
-                            <td class="highlight-col"><i class="fas fa-check text-success"></i> PT/OT + Business</td>
-                            <td><i class="fas fa-minus text-warning"></i> All Healthcare</td>
-                            <td><i class="fas fa-minus text-warning"></i> Mental Health</td>
-                            <td><i class="fas fa-minus text-warning"></i> PT Only</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Practice Integration</strong></td>
-                            <td class="highlight-col"><i class="fas fa-check text-success"></i> Real Experience</td>
-                            <td><i class="fas fa-check text-success"></i> Corporate</td>
-                            <td><i class="fas fa-times text-danger"></i> Academic Only</td>
-                            <td><i class="fas fa-times text-danger"></i> Basic</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Rural Healthcare</strong></td>
-                            <td class="highlight-col"><i class="fas fa-check text-success"></i> Specialized</td>
-                            <td><i class="fas fa-times text-danger"></i> Generic</td>
-                            <td><i class="fas fa-times text-danger"></i> Urban Focus</td>
-                            <td><i class="fas fa-times text-danger"></i> General</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Healthcare Professionals Are Saying</h2>
-                <p>Real feedback from practicing clinicians</p>
-            </div>
-            
-            <div class="testimonials-slider" id="testimonials-slider">
-                <div class="testimonial-card active">
-                    <div class="testimonial-content">
-                        <p>"Finally, CE that actually helps my practice. Dr. Troy understands the challenges we face in rural areas. His courses have directly improved both my clinical skills and business operations."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="assets/images/testimonial-sarah.jpg" alt="Sarah M." class="author-img">
-                        <div class="author-info">
-                            <h4>Sarah M.</h4>
-                            <span>Physical Therapist, Rural Kansas</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"The business courses paid for themselves in the first month. We increased our revenue by 23% using Dr. Troy's multi-location strategies. Best investment I've made for my practice."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="assets/images/testimonial-mike.jpg" alt="Mike R." class="author-img">
-                        <div class="author-info">
-                            <h4>Mike R.</h4>
-                            <span>Practice Owner, West Texas</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p>"Best CE investment I've made. Practical, relevant, and affordable. Dr. Troy's approach to geriatric care has transformed how I work with elderly patients in our small community."</p>
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="assets/images/testimonial-lisa.jpg" alt="Lisa K." class="author-img">
-                        <div class="author-info">
-                            <h4>Lisa K.</h4>
-                            <span>Occupational Therapist, Small Town Colorado</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-nav">
-                <button class="nav-dot active" data-slide="0"></button>
-                <button class="nav-dot" data-slide="1"></button>
-                <button class="nav-dot" data-slide="2"></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-header">
-                <h2>Affordable Plans for Every Practice</h2>
-                <p>Choose the plan that fits your professional development needs</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Individual</h3>
-                        <div class="price">
-                            <span class="currency">$</span>
-                            <span class="amount">199</span>
-                            <span class="period">/year</span>
-                        </div>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> Unlimited course access</li>
-                            <li><i class="fas fa-check"></i> Mobile learning platform</li>
-                            <li><i class="fas fa-check"></i> CE tracking & compliance</li>
-                            <li><i class="fas fa-check"></i> Certificate downloads</li>
-                            <li><i class="fas fa-check"></i> Email support</li>
-                        </ul>
-                    </div>
-                    <a href="#signup-individual" class="btn btn-outline btn-block">Start Free Trial</a>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="popular-badge">Most Popular</div>
-                    <div class="pricing-header">
-                        <h3>Small Team</h3>
-                        <div class="price">
-                            <span class="currency">$</span>
-                            <span class="amount">149</span>
-                            <span class="period">/person/year</span>
-                        </div>
-                        <small>3-9 clinicians</small>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> Everything in Individual</li>
-                            <li><i class="fas fa-check"></i> Team progress tracking</li>
-                            <li><i class="fas fa-check"></i> Group discounts</li>
-                            <li><i class="fas fa-check"></i> Priority support</li>
-                            <li><i class="fas fa-check"></i> Team management tools</li>
-                        </ul>
-                    </div>
-                    <a href="#signup-team" class="btn btn-primary btn-block">Start Free Trial</a>
-                </div>
-                
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Enterprise</h3>
-                        <div class="price">
-                            <span class="amount">Custom</span>
-                            <span class="period">pricing</span>
-                        </div>
-                        <small>10+ clinicians</small>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li><i class="fas fa-check"></i> Everything in Small Team</li>
-                            <li><i class="fas fa-check"></i> Custom course development</li>
-                            <li><i class="fas fa-check"></i> On-site training available</li>
-                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
-                            <li><i class="fas fa-check"></i> Advanced analytics</li>
-                        </ul>
-                    </div>
-                    <a href="#contact-enterprise" class="btn btn-outline btn-block">Contact Sales</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Dr. Troy Section -->
     <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="assets/images/dr-troy-about.jpg" alt="Dr. Troy Hounshell" class="about-img">
-                    <div class="credentials-overlay">
-                        <div class="credential-badge">Doctor of Science in Physical Therapy</div>
-                        <div class="credential-badge">25+ Years Clinical Experience</div>
-                        <div class="credential-badge">5-Location Practice Owner</div>
-                    </div>
-                </div>
-                
-                <div class="about-text">
-                    <h2>Meet Dr. Troy Hounshell</h2>
-                    <h3>Your Guide to Clinical Excellence and Practice Success</h3>
-                    
-                    <blockquote>
-                        "Real-world expertise matters. I'm not teaching from a textbook—I'm sharing what actually works in practice, especially in underserved communities where resources are limited and creativity is essential."
-                    </blockquote>
-                    
-                    <div class="about-story">
-                        <p>With over 25 years of hands-on experience, Dr. Troy has worked across every setting in rehabilitation—from acute care hospitals to rural outpatient clinics. As the owner and operator of Texas Therapy Pros, he's built and manages five successful therapy locations across West Texas.</p>
-                        
-                        <p>Dr. Troy's unique perspective comes from real-world practice management combined with deep clinical expertise. He understands the challenges of rural healthcare, the complexity of multi-location operations, and the importance of both clinical excellence and business success.</p>
-                        
-                        <p>His mission is simple: provide practical, affordable continuing education that actually improves your practice and your patients' outcomes.</p>
-                    </div>
-                    
-                    <div class="core-values">
-                        <h4>Core Values</h4>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Evidence-based practice</li>
-                            <li><i class="fas fa-check-circle"></i> Practical application</li>
-                            <li><i class="fas fa-check-circle"></i> Rural healthcare advocacy</li>
-                            <li><i class="fas fa-check-circle"></i> Professional excellence</li>
-                            <li><i class="fas fa-check-circle"></i> Affordable education</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="about-container">
+            <h2>Why DrTroy?</h2>
+            <p>We keep it simple. Quality CE courses at fair prices. No upsells, no hidden fees, no nonsense. Just the hours you need to keep your license current.</p>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Elevate Your Practice?</h2>
-                <p>Join hundreds of healthcare professionals who trust DrTroy for their continuing education needs.</p>
-                <div class="cta-buttons">
-                    <a href="#trial" class="btn btn-primary btn-lg">Start Your Free Trial</a>
-                    <a href="#demo" class="btn btn-outline btn-lg">Request a Demo</a>
-                </div>
-            </div>
+    <section class="accreditation">
+        <h2>Accreditation & Approvals</h2>
+        <div class="accred-grid">
+            <div class="accred-item">Texas PT Board</div>
+            <div class="accred-item">Texas OT Board</div>
+            <div class="accred-item">APTA Approved</div>
+            <div class="accred-item">AOTA Approved</div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="assets/images/drtroy-logo.png" alt="DrTroy.com Logo" class="footer-logo-img">
-                        <span class="footer-logo-text">DrTroy.com</span>
-                    </div>
-                    <p>Practical continuing education from a practicing clinician. Real-world expertise for healthcare professionals.</p>
-                    <div class="social-links">
-                        <a href="#linkedin" class="social-link"><i class="fab fa-linkedin"></i></a>
-                        <a href="#facebook" class="social-link"><i class="fab fa-facebook"></i></a>
-                        <a href="#twitter" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#youtube" class="social-link"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Courses</h4>
-                    <ul>
-                        <li><a href="#pt-courses">Physical Therapy</a></li>
-                        <li><a href="#ot-courses">Occupational Therapy</a></li>
-                        <li><a href="#practice-mgmt">Practice Management</a></li>
-                        <li><a href="#certifications">Certifications</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#state-requirements">State CE Requirements</a></li>
-                        <li><a href="#free-content">Free Content Library</a></li>
-                        <li><a href="#success-stories">Success Stories</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#help">Help Center</a></li>
-                        <li><a href="#contact">Contact Us</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#terms">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p>&copy; 2026 DrTroy.com. All rights reserved.</p>
-                    <div class="footer-links">
-                        <a href="#privacy">Privacy Policy</a>
-                        <a href="#terms">Terms of Service</a>
-                        <a href="#accessibility">Accessibility</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <footer id="contact">
+        <p>Troy@DrTroy.com</p>
+        <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="assets/js/main.js"></script>
+    <script>
+        // Simple form handling
+        document.querySelector('.optin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thanks! Your $10 discount code is: SAVE10');
+        });
+
+        // Package button clicks
+        document.querySelectorAll('.package-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const packageName = this.closest('.package-card').querySelector('h3').textContent;
+                alert(`Starting enrollment for ${packageName} package!`);
+            });
+        });
+    </script>
 </body>
 </html>
