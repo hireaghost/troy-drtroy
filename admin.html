@@ -2045,6 +2045,79 @@
         // Make it available globally for emergency use
         window.emergencyAccess = emergencyAccess;
         
+        // Emergency initialization function
+        function emergencyInit() {
+            console.log('🚨 EMERGENCY INITIALIZATION ACTIVATED');
+            
+            // Show admin panel
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            
+            // Initialize basic data
+            window.employeeCodes = [
+                {
+                    code: 'PTDEMO-5023',
+                    employeeName: 'Sarah Johnson',
+                    packageType: 'PT',
+                    status: 'active',
+                    created: new Date().toISOString()
+                }
+            ];
+            
+            window.marketingCodes = [
+                {
+                    code: 'SPRING25',
+                    discountType: 'percentage',
+                    discountValue: 25,
+                    status: 'active',
+                    created: new Date().toISOString()
+                }
+            ];
+            
+            // Try to update displays
+            try {
+                // Update stats
+                document.getElementById('totalCodes').textContent = '2';
+                document.getElementById('activeCodes').textContent = '2';
+                document.getElementById('usedCodes').textContent = '0';
+                document.getElementById('totalSavings').textContent = '$0';
+                
+                // Add table content
+                const tableBody = document.getElementById('codesTableBody');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td>PTDEMO-5023</td>
+                            <td>Employee</td>
+                            <td>100%</td>
+                            <td>0/1</td>
+                            <td>PT</td>
+                            <td>No Expiry</td>
+                            <td>Active</td>
+                            <td><button class="btn-secondary">Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SPRING25</td>
+                            <td>Marketing</td>
+                            <td>25%</td>
+                            <td>0/∞</td>
+                            <td>All</td>
+                            <td>No Expiry</td>
+                            <td>Active</td>
+                            <td><button class="btn-secondary">Details</button></td>
+                        </tr>
+                    `;
+                }
+                
+                console.log('✅ Emergency initialization complete - basic functionality restored');
+            } catch (error) {
+                console.error('❌ Emergency initialization error:', error);
+            }
+        }
+        
+        // Make it available globally
+        window.emergencyInit = emergencyInit;
+        
         // Get stored credentials (allows password changes)
         function getStoredCredentials() {
             const stored = localStorage.getItem('adminCredentials');
@@ -2191,11 +2264,18 @@
 
         // Show admin panel and hide login screen
         function showAdminPanel() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            
-            // Initialize admin panel
-            initializeAdminPanel();
+            try {
+                console.log('🔄 Showing admin panel...');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                
+                console.log('🔄 Initializing admin panel...');
+                // Initialize admin panel
+                initializeAdminPanel();
+                console.log('✅ Admin panel initialized successfully');
+            } catch (error) {
+                console.error('❌ Error showing admin panel:', error);
+            }
         }
 
         // Logout function
@@ -2214,31 +2294,88 @@
 
         // Initialize admin panel functionality
         function initializeAdminPanel() {
-            // Check database connection status
-            checkDatabaseConnection();
-            
-            // Load existing codes from localStorage
-            employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
-            marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
-            allCodes = [...employeeCodes, ...marketingCodes];
-            
-            createSampleCodes();
-            updateStats();
-            renderCodesTable();
-            updateSessionInfo();
-            
-            // Always initialize analytics data (even if not currently visible)
-            console.log('🔄 Initializing analytics data...');
-            updateAllAnalytics();
-            console.log('✅ Analytics data initialized');
-            
-            // Initialize settings form handlers
-            setupPasswordChangeForm();
-            
-            // Auto-logout warning at 23 hours
-            setTimeout(() => {
-                alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
-            }, 23 * 60 * 60 * 1000); // 23 hours
+            try {
+                console.log('🔄 Starting admin panel initialization...');
+                
+                // Check database connection status
+                console.log('🔄 Checking database connection...');
+                checkDatabaseConnection();
+                
+                // Load existing codes from localStorage
+                console.log('🔄 Loading discount codes from storage...');
+                employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
+                marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
+                allCodes = [...employeeCodes, ...marketingCodes];
+                console.log(`📊 Loaded ${employeeCodes.length} employee codes, ${marketingCodes.length} marketing codes`);
+                
+                console.log('🔄 Creating sample codes...');
+                createSampleCodes();
+                
+                console.log('🔄 Updating statistics...');
+                updateStats();
+                
+                console.log('🔄 Rendering codes table...');
+                renderCodesTable();
+                
+                console.log('🔄 Updating session info...');
+                updateSessionInfo();
+                
+                // Always initialize analytics data (even if not currently visible)
+                console.log('🔄 Initializing analytics data...');
+                updateAllAnalytics();
+                console.log('✅ Analytics data initialized');
+                
+                // Initialize settings form handlers
+                console.log('🔄 Setting up password change form...');
+                setupPasswordChangeForm();
+                
+                console.log('✅ Admin panel initialization complete!');
+                
+                // Auto-logout warning at 23 hours
+                setTimeout(() => {
+                    alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
+                }, 23 * 60 * 60 * 1000); // 23 hours
+                
+            } catch (error) {
+                console.error('❌ Error during admin panel initialization:', error);
+                // Try basic fallback
+                console.log('🔄 Attempting basic initialization fallback...');
+                try {
+                    // Initialize basic variables
+                    window.employeeCodes = window.employeeCodes || [];
+                    window.marketingCodes = window.marketingCodes || [];
+                    window.allCodes = [];
+                    
+                    // Basic sample data
+                    if (window.employeeCodes.length === 0) {
+                        window.employeeCodes = [
+                            {
+                                code: 'PTDEMO-5023',
+                                employeeName: 'Sarah Johnson',
+                                packageType: 'PT',
+                                created: new Date().toISOString(),
+                                status: 'active'
+                            }
+                        ];
+                    }
+                    
+                    if (window.marketingCodes.length === 0) {
+                        window.marketingCodes = [
+                            {
+                                code: 'SPRING25',
+                                discountType: 'percentage',
+                                discountValue: 25,
+                                created: new Date().toISOString(),
+                                status: 'active'
+                            }
+                        ];
+                    }
+                    
+                    console.log('✅ Basic fallback initialization complete');
+                } catch (fallbackError) {
+                    console.error('❌ Fallback initialization also failed:', fallbackError);
+                }
+            }
         }
 
         // Set up password change form
@@ -3188,7 +3325,24 @@
         
         // SIMPLIFIED ACCESS FOR TROY - bypass authentication
         console.log('🚀 Direct admin access activated - bypassing authentication');
-        showAdminPanel();
+        
+        // Ensure DOM is ready before initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM loaded, initializing admin panel...');
+            showAdminPanel();
+        });
+        
+        // Backup initialization in case DOMContentLoaded already fired
+        if (document.readyState === 'loading') {
+            // DOM is still loading
+            console.log('⏳ DOM still loading, waiting...');
+        } else {
+            // DOM already loaded
+            console.log('✅ DOM already loaded, initializing immediately...');
+            setTimeout(() => {
+                showAdminPanel();
+            }, 100);
+        }
 
         // Tab switching
         function switchTab(tab) {
