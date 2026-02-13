@@ -306,15 +306,131 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Login Screen Styles */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--navy) 0%, #34495e 100%);
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form .form-input {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .login-form .form-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
+            outline: none;
+        }
+
+        .login-error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .login-footer .back-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-footer .back-link:hover {
+            color: var(--navy);
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>DrTroy Admin Panel</h1>
-        <a href="index.html" class="back-link">← Back to Website</a>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <img src="new-drtroy-logo.png" alt="DrTroy" style="height: 80px; margin-bottom: 1rem;">
+                <h2>Admin Access Required</h2>
+                <p>Enter your credentials to access the admin panel</p>
+            </div>
+            <form id="adminLoginForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="adminUsername" class="form-input" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="adminPassword" class="form-input" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Access Admin Panel</button>
+                <div id="loginError" class="login-error" style="display: none;"></div>
+            </form>
+            <div class="login-footer">
+                <a href="index.html" class="back-link">← Back to Website</a>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
+    <!-- Admin Panel (hidden until login) -->
+    <div id="adminPanel" style="display: none;">
+        <div class="header">
+            <h1>DrTroy Admin Panel</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="color: var(--gold); font-size: 0.9rem;">Welcome, Dr. Hounshell</span>
+                <button onclick="logout()" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Logout</button>
+                <a href="index.html" class="back-link">← Back to Website</a>
+            </div>
+        </div>
+
+        <div class="container">
+        <!-- Security Info -->
+        <div style="background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 6px; padding: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: var(--gray-600);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>🔒 Secure session active</span>
+                <span id="sessionInfo"></span>
+            </div>
+        </div>
+
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-number" id="totalCodes">0</div>
@@ -479,6 +595,8 @@
         </div>
     </div>
 
+    </div> <!-- End Admin Panel -->
+
     <!-- Modal for code creation -->
     <div class="modal-overlay" id="codeModal">
         <div class="modal-content">
@@ -500,10 +618,149 @@
     </div>
 
     <script>
-        // Load existing codes from localStorage
-        let employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
-        let marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
-        let allCodes = [...employeeCodes, ...marketingCodes];
+        // Admin Authentication
+        // Credentials for Troy Hounshell:
+        // Username: troyhounshell
+        // Password: DrTroy2026!PT
+        const ADMIN_CREDENTIALS = {
+            username: 'troyhounshell',
+            password: 'DrTroy2026!PT'
+        };
+
+        // Check if already logged in
+        function checkAuthStatus() {
+            const adminSession = localStorage.getItem('adminSession');
+            if (adminSession) {
+                const session = JSON.parse(adminSession);
+                // Check if session is still valid (24 hours)
+                const now = new Date().getTime();
+                const sessionTime = new Date(session.timestamp).getTime();
+                const hoursSinceLogin = (now - sessionTime) / (1000 * 60 * 60);
+                
+                if (hoursSinceLogin < 24) {
+                    showAdminPanel();
+                    return true;
+                } else {
+                    // Session expired
+                    localStorage.removeItem('adminSession');
+                }
+            }
+            return false;
+        }
+
+        // Handle login form submission
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Successful login
+                const session = {
+                    username: username,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('adminSession', JSON.stringify(session));
+                showAdminPanel();
+            } else {
+                // Failed login
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Invalid username or password. Please try again.';
+                
+                // Clear password field
+                document.getElementById('adminPassword').value = '';
+                
+                // Hide error after 5 seconds
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+            }
+        });
+
+        // Show admin panel and hide login screen
+        function showAdminPanel() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            
+            // Initialize admin panel
+            initializeAdminPanel();
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('adminPanel').style.display = 'none';
+                
+                // Clear login form
+                document.getElementById('adminUsername').value = '';
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('loginError').style.display = 'none';
+            }
+        }
+
+        // Initialize admin panel functionality
+        function initializeAdminPanel() {
+            // Load existing codes from localStorage
+            employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
+            marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
+            allCodes = [...employeeCodes, ...marketingCodes];
+            
+            createSampleCodes();
+            updateStats();
+            renderCodesTable();
+            updateSessionInfo();
+            
+            // Auto-logout warning at 23 hours
+            setTimeout(() => {
+                alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
+            }, 23 * 60 * 60 * 1000); // 23 hours
+        }
+
+        // Update session info display
+        function updateSessionInfo() {
+            const session = JSON.parse(localStorage.getItem('adminSession'));
+            if (session) {
+                const loginTime = new Date(session.timestamp);
+                const now = new Date();
+                const hoursActive = Math.floor((now - loginTime) / (1000 * 60 * 60));
+                const minutesActive = Math.floor(((now - loginTime) % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('sessionInfo').textContent = 
+                    `Active ${hoursActive}h ${minutesActive}m • Expires in ${24 - hoursActive - (minutesActive > 0 ? 1 : 0)}h`;
+            }
+        }
+
+        // Update session info every minute
+        setInterval(updateSessionInfo, 60000);
+
+        // Security enhancements
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + L for quick logout
+            if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+                e.preventDefault();
+                logout();
+            }
+        });
+
+        // Hide admin panel if user switches tabs for security (commented out - too aggressive)
+        // document.addEventListener('visibilitychange', function() {
+        //     if (document.visibilityState === 'hidden') {
+        //         // Could add timeout logout here if needed
+        //     }
+        // });
+
+        // Check auth status on page load
+        let employeeCodes, marketingCodes, allCodes;
+        
+        if (!checkAuthStatus()) {
+            // Show login screen
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+        }
 
         // Tab switching
         function switchTab(tab) {
@@ -824,9 +1081,11 @@
             }
         });
 
+        // All admin functions (moved here to ensure they're available after login)
+        
         // Create some sample marketing codes for demo
         function createSampleCodes() {
-            if (marketingCodes.length === 0) {
+            if (marketingCodes && marketingCodes.length === 0) {
                 const sampleCodes = [
                     {
                         code: 'SPRING25',
@@ -863,11 +1122,6 @@
                 localStorage.setItem('marketingCodes', JSON.stringify(marketingCodes));
             }
         }
-
-        // Initialize page
-        createSampleCodes();
-        updateStats();
-        renderCodesTable();
     </script>
 </body>
 </html>
