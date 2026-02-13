@@ -623,6 +623,37 @@
         .modal-btn-secondary:hover {
             background: var(--gray-300);
         }
+
+        /* Login Modal Input Styling */
+        #loginModal input[type="email"],
+        #loginModal input[type="password"] {
+            outline: none;
+        }
+
+        #loginModal input[type="email"]:focus,
+        #loginModal input[type="password"]:focus {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1) !important;
+        }
+
+        #loginModal input[type="email"]:hover,
+        #loginModal input[type="password"]:hover {
+            border-color: #9ca3af !important;
+        }
+
+        /* Forgot Password Modal Input Styling */
+        #resetEmail {
+            outline: none;
+        }
+
+        #resetEmail:focus {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1) !important;
+        }
+
+        #resetEmail:hover {
+            border-color: #9ca3af !important;
+        }
     </style>
 </head>
 <body>
@@ -870,11 +901,11 @@
                 <form id="loginForm" style="text-align: left;">
                     <div style="margin-bottom: 1rem;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Email</label>
-                        <input type="email" id="loginEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem;">
+                        <input type="email" id="loginEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 6px; font-size: 1rem; box-sizing: border-box; transition: border-color 0.2s ease;">
                     </div>
                     <div style="margin-bottom: 1.5rem;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Password</label>
-                        <input type="password" id="loginPassword" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem;">
+                        <input type="password" id="loginPassword" required style="width: 100%; padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 6px; font-size: 1rem; box-sizing: border-box; transition: border-color 0.2s ease;">
                     </div>
                 </form>
             </div>
@@ -1045,7 +1076,7 @@
                     <p style="margin-bottom: 1.5rem;">Enter your email address and we'll send you a password reset link.</p>
                     <form id="forgotPasswordForm" style="text-align: left;">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Email Address</label>
-                        <input type="email" id="resetEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem; margin-bottom: 1rem;">
+                        <input type="email" id="resetEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 6px; font-size: 1rem; margin-bottom: 1rem; box-sizing: border-box; transition: border-color 0.2s ease;">
                     </form>
                 </div>
             `;
