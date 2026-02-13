@@ -1762,32 +1762,33 @@
             
             if (selectedPackage) {
                 const packageData = JSON.parse(selectedPackage);
-                const message = `
-                    <div style="text-align: center;">
-                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">Welcome <strong>${firstName} ${lastName}</strong>!</p>
-                        <p style="margin-bottom: 1rem;">Your free account is created.</p>
-                        <div style="background: rgba(255,255,255,0.8); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                            <p style="font-size: 1.1rem; color: var(--navy);"><strong>Your $10 discount code: SAVE10</strong></p>
-                        </div>
-                        <p>Now proceeding to checkout for <strong>${packageData.name}</strong>...</p>
-                    </div>
-                `;
                 
-                showModal('Account Created! 🎉', message, true);
+                // Map package names to short codes  
+                const packageMap = {
+                    'Physical Therapists': 'PT',
+                    'PT Assistants': 'PTA',
+                    'Occupational Therapists': 'OT', 
+                    'OT Assistants': 'COTA'
+                };
+                
+                const packageCode = packageMap[packageData.name] || 'PT';
+                
+                // Store package info for checkout
+                localStorage.setItem('selectedPackageCode', packageCode);
+                localStorage.setItem('packagePrice', packageData.price);
                 
                 // Clear the selected package
                 localStorage.removeItem('selectedPackage');
                 
-                // Show checkout after a delay
-                setTimeout(() => {
-                    closeModal();
-                    showCheckoutModal(packageData.name, packageData.price);
-                    // Auto-apply the SAVE10 discount
-                    setTimeout(() => {
-                        document.getElementById('discountCode').value = 'SAVE10';
-                        applyDiscountCode(packageData.name, packageData.price);
-                    }, 500);
-                }, 2000);
+                // Redirect to checkout with parameters
+                const params = new URLSearchParams({
+                    name: `${firstName} ${lastName}`,
+                    email: email,
+                    discipline: discipline,
+                    package: packageCode
+                });
+                
+                window.location.href = `checkout.html?${params.toString()}`;
             } else {
                 const message = `
                     <div style="text-align: center;">
@@ -1804,7 +1805,7 @@
             }
         });
 
-        // Package selection handling
+        // Package selection handling - Redirect to checkout page
         document.querySelectorAll('.select-package').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1815,8 +1816,30 @@
                 const hasAccount = localStorage.getItem('drtroyAccount');
                 
                 if (hasAccount) {
-                    // Proceed to checkout - ask for discount code
-                    showCheckoutModal(packageName, price);
+                    // Get stored account info
+                    const accountInfo = JSON.parse(localStorage.getItem('drtroyAccount'));
+                    
+                    // Map package names to short codes
+                    const packageMap = {
+                        'Physical Therapists': 'PT',
+                        'PT Assistants': 'PTA', 
+                        'Occupational Therapists': 'OT',
+                        'OT Assistants': 'COTA'
+                    };
+                    
+                    // Store selected package info
+                    localStorage.setItem('selectedPackage', packageMap[packageName] || packageName);
+                    localStorage.setItem('packagePrice', price);
+                    
+                    // Redirect to checkout with parameters
+                    const params = new URLSearchParams({
+                        name: `${accountInfo.firstName} ${accountInfo.lastName}`,
+                        email: accountInfo.email,
+                        discipline: accountInfo.discipline || packageMap[packageName] || 'PT',
+                        package: packageMap[packageName] || 'PT'
+                    });
+                    
+                    window.location.href = `checkout.html?${params.toString()}`;
                 } else {
                     // Prompt to create account
                     const message = `
@@ -2022,32 +2045,69 @@
                 // Log security event
                 console.log(`🔒 Account created: ${formData.email.substring(0, 3)}**** (${formData.discipline})`);
                 
-                // Auto-scroll to packages
-                setTimeout(() => {
-                    document.getElementById('packages').scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                // Check if user selected a package before creating account
+                const selectedPackage = localStorage.getItem('selectedPackage');
+                
+                if (selectedPackage) {
+                    // User came from package selection - redirect to checkout
+                    const packageData = JSON.parse(selectedPackage);
                     
-                    // Show welcome message
+                    // Map package names to short codes  
+                    const packageMap = {
+                        'Physical Therapists': 'PT',
+                        'PT Assistants': 'PTA',
+                        'Occupational Therapists': 'OT', 
+                        'OT Assistants': 'COTA'
+                    };
+                    
+                    const packageCode = packageMap[packageData.name] || formData.discipline;
+                    
+                    // Store package info for checkout
+                    localStorage.setItem('selectedPackageCode', packageCode);
+                    localStorage.setItem('packagePrice', packageData.price);
+                    
+                    // Clear the selected package
+                    localStorage.removeItem('selectedPackage');
+                    
+                    // Redirect to checkout with parameters
                     setTimeout(() => {
-                        showModal('Welcome to DrTroy!', `
-                            <div style="text-align: center;">
-                                <h3 style="color: var(--navy); margin-bottom: 1rem;">Account Created Successfully! 🎉</h3>
-                                <div style="background: #d4e6f1; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                                    <strong>Your Benefits:</strong>
-                                    <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
-                                        <li>✅ You're now logged in automatically</li>
-                                        <li>🎯 $10 discount applied to all packages</li>
-                                        <li>💾 Course progress will be saved</li>
-                                        <li>🔒 Secure, HIPAA-level encryption</li>
-                                    </ul>
-                                </div>
-                                <p><strong>Next Step:</strong> Choose your CE package below!</p>
-                            </div>
-                        `, true);
+                        const params = new URLSearchParams({
+                            name: `${formData.firstName} ${formData.lastName}`,
+                            email: formData.email,
+                            discipline: formData.discipline,
+                            package: packageCode
+                        });
+                        
+                        window.location.href = `checkout.html?${params.toString()}`;
                     }, 2000);
-                }, 3000);
+                } else {
+                    // Regular account creation - show packages
+                    setTimeout(() => {
+                        document.getElementById('packages').scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        
+                        // Show welcome message
+                        setTimeout(() => {
+                            showModal('Welcome to DrTroy!', `
+                                <div style="text-align: center;">
+                                    <h3 style="color: var(--navy); margin-bottom: 1rem;">Account Created Successfully! 🎉</h3>
+                                    <div style="background: #d4e6f1; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                                        <strong>Your Benefits:</strong>
+                                        <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
+                                            <li>✅ You're now logged in automatically</li>
+                                            <li>🎯 $10 discount applied to all packages</li>
+                                            <li>💾 Course progress will be saved</li>
+                                            <li>🔒 Secure, HIPAA-level encryption</li>
+                                        </ul>
+                                    </div>
+                                    <p><strong>Next Step:</strong> Choose your CE package below!</p>
+                                </div>
+                            `, true);
+                        }, 2000);
+                    }, 3000);
+                }
                 
                 return true;
                 
