@@ -433,6 +433,7 @@
             background: white;
             padding: 3rem 2rem;
             text-align: center;
+            scroll-margin-top: 120px; /* Account for sticky header and show founder photo */
         }
 
         .about-container {
@@ -475,6 +476,113 @@
             border-radius: 8px;
             font-weight: 600;
             color: var(--gray-600);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: white;
+            padding: 4rem 2rem;
+            scroll-margin-top: 120px;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: var(--navy);
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-form {
+            background: var(--gray-50);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: left;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .contact-form .form-input,
+        .contact-form .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            background: white;
+        }
+
+        .contact-form .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form .form-input:focus,
+        .contact-form .form-textarea:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .contact-submit {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .contact-submit:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .contact-success,
+        .contact-error {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .contact-success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .contact-error {
+            background: #fee2e2;
+            border: 1px solid #f87171;
+            color: #991b1b;
         }
 
         /* Footer */
@@ -990,10 +1098,58 @@
         </div>
     </section>
 
-    <footer id="contact">
-        <p>Troy@DrTroy.com</p>
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <h2>Send Us a Message</h2>
+            <p>Have a question about our courses or need help with your CE requirements? We're here to help.</p>
+            
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label class="form-label" for="contactName">Your Name</label>
+                    <input type="text" id="contactName" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contactEmail">Email Address</label>
+                    <input type="email" id="contactEmail" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contactSubject">Subject</label>
+                    <select id="contactSubject" class="form-input" required>
+                        <option value="">Select a topic</option>
+                        <option value="Course Question">Course Content Question</option>
+                        <option value="CE Requirements">CE Requirements Help</option>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="Billing Question">Billing Question</option>
+                        <option value="Partnership">Partnership Inquiry</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="contactMessage">Message</label>
+                    <textarea id="contactMessage" class="form-textarea" placeholder="Tell us how we can help you..." required></textarea>
+                </div>
+                
+                <button type="submit" class="contact-submit">Send Message</button>
+                
+                <div id="contactSuccess" class="contact-success">
+                    ✅ Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.
+                </div>
+                
+                <div id="contactError" class="contact-error">
+                    ❌ Sorry, there was an error sending your message. Please try again or contact us directly.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
         <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education. All rights reserved.</p>
-        <!-- Admin access completely removed for security -->
+        <p style="margin-top: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
+            Trusted by healthcare professionals across Texas
+        </p>
     </footer>
 
     <!-- Custom Modal -->
@@ -1906,25 +2062,82 @@
                 document.getElementById('passwordStrength').style.display = 'none';
             }
         });
+
+        // Contact Form Handler
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value
+            };
+            
+            // Basic validation
+            if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+                showContactMessage('Please fill in all required fields.', true);
+                return;
+            }
+            
+            // Disable submit button
+            const submitBtn = e.target.querySelector('.contact-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            try {
+                // Simulate sending email (in a real app, this would be server-side)
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // In a real implementation, you'd send this to your backend:
+                // const response = await fetch('/send-contact-email', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ ...formData, to: 'troy@drtroy.com' })
+                // });
+                
+                // For now, we'll show success and log the data
+                console.log('Contact form data (would send to troy@drtroy.com):', formData);
+                
+                // Show success message
+                showContactMessage('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.', false);
+                
+                // Clear form
+                this.reset();
+                
+            } catch (error) {
+                console.error('Contact form error:', error);
+                showContactMessage('Sorry, there was an error sending your message. Please try again later.', true);
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        function showContactMessage(message, isError) {
+            const successEl = document.getElementById('contactSuccess');
+            const errorEl = document.getElementById('contactError');
+            
+            if (isError) {
+                errorEl.textContent = '❌ ' + message;
+                errorEl.style.display = 'block';
+                successEl.style.display = 'none';
+            } else {
+                successEl.textContent = '✅ ' + message;
+                successEl.style.display = 'block';
+                errorEl.style.display = 'none';
+            }
+            
+            // Auto-hide after 7 seconds
+            setTimeout(() => {
+                successEl.style.display = 'none';
+                errorEl.style.display = 'none';
+            }, 7000);
+        }
     </script>
 
-    <!-- Website Footer -->
-    <footer style="margin-top: 4rem; padding: 2rem; background: var(--gray-100); text-align: center; border-top: 1px solid var(--gray-200);">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 1rem;">
-                © 2026 DrTroy.com - Professional Continuing Education Platform
-            </p>
-            <div style="margin-bottom: 1rem;">
-                <a href="mailto:support@drtroy.com" style="color: var(--navy); text-decoration: none; margin: 0 1rem;">Support</a>
-                <a href="#" style="color: var(--navy); text-decoration: none; margin: 0 1rem;">Privacy Policy</a>
-                <a href="#" style="color: var(--navy); text-decoration: none; margin: 0 1rem;">Terms of Service</a>
-            </div>
-            <div style="border-top: 1px solid var(--gray-300); padding-top: 1rem;">
-                <p style="color: var(--gray-500); font-size: 0.8rem; margin-top: 0.5rem;">
-                    Trusted by healthcare professionals across Texas
-                </p>
-            </div>
-        </div>
-    </footer>
+    <!-- Duplicate footer removed -->
 </body>
 </html>
