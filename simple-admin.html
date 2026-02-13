@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrTroy.com - Simple Admin Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #1e3a8a;
+            --gold: #f59e0b;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            color: var(--navy);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-600);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .bypass-btn {
+            width: 100%;
+            background: var(--gold);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bypass-btn:hover {
+            background: #d97706;
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4e6f1;
+            color: #1e3a8a;
+        }
+
+        .status-error {
+            background: #fef5f5;
+            color: #c53030;
+        }
+
+        .info-box {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            text-align: center;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: var(--gray-600);
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>DrTroy.com</h1>
+            <p>Simple Admin Access</p>
+        </div>
+
+        <div class="info-box">
+            🔧 <strong>Simplified Login:</strong> This page bypasses all complex authentication. Just enter your credentials and you'll be logged in immediately.
+        </div>
+
+        <form id="simpleLoginForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" id="username" class="form-input" value="troyhounshell" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                🔐 Simple Login
+            </button>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button onclick="bypassLogin()" class="bypass-btn">
+            ⚡ Bypass All Security (Emergency Access)
+        </button>
+
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script>
+        // Simple, direct authentication
+        function simpleAuth(username, password) {
+            // Accept current credentials or common variations
+            const validCredentials = [
+                { user: 'troyhounshell', pass: 'DrTroy2026!PT' },
+                { user: 'troy', pass: 'DrTroy2026!PT' },
+                { user: 'troyhounshell', pass: 'drtroy2026!pt' },
+                { user: 'admin', pass: 'DrTroy2026!PT' }
+            ];
+
+            const userLower = username.toLowerCase().trim();
+            
+            return validCredentials.some(cred => 
+                cred.user.toLowerCase() === userLower && cred.pass === password
+            );
+        }
+
+        // Create admin session
+        function createAdminSession(username) {
+            const session = {
+                user: {
+                    id: 'admin_001',
+                    username: username,
+                    role: 'admin',
+                    lastLogin: new Date().toISOString(),
+                    loginMethod: 'simple-admin'
+                },
+                timestamp: new Date().toISOString(),
+                expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours
+                fingerprint: btoa(navigator.userAgent.substring(0, 50)),
+                simple: true
+            };
+
+            localStorage.setItem('adminSession', JSON.stringify(session));
+            
+            // Clear any rate limiting
+            localStorage.removeItem('adminLoginAttempts');
+            
+            console.log('✅ Admin session created via simple login');
+            return session;
+        }
+
+        // Show status message
+        function showStatus(message, isSuccess = false) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + (isSuccess ? 'status-success' : 'status-error');
+            statusEl.style.display = 'block';
+
+            if (isSuccess) {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Handle simple login
+        document.getElementById('simpleLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showStatus('Please enter both username and password', false);
+                return;
+            }
+
+            if (simpleAuth(username, password)) {
+                createAdminSession(username);
+                showStatus('✅ Login successful! Redirecting to admin panel...', true);
+                
+                setTimeout(() => {
+                    window.location.href = './admin.html';
+                }, 1500);
+            } else {
+                showStatus('❌ Invalid credentials. Check your username and password.', false);
+            }
+        });
+
+        // Emergency bypass function
+        function bypassLogin() {
+            if (confirm('This will create an emergency admin session. Are you sure?')) {
+                createAdminSession('troyhounshell');
+                showStatus('🚨 Emergency access granted! Redirecting...', true);
+                
+                setTimeout(() => {
+                    window.location.href = './admin.html';
+                }, 1000);
+            }
+        }
+
+        // Auto-focus password field
+        document.getElementById('password').focus();
+    </script>
+</body>
+</html>
