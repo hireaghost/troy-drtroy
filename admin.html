@@ -382,6 +382,161 @@
         .login-footer .back-link:hover {
             color: var(--navy);
         }
+
+        /* Analytics Styles */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .analytics-card h4 {
+            color: var(--navy);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 0.5rem;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.75rem 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .metric-item:last-child {
+            border-bottom: none;
+        }
+
+        .metric-item span:last-child {
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .profession-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .prof-item {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .insights-section, .benchmarks-section {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .insights-section h4, .benchmarks-section h4 {
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .insight-item {
+            background: var(--gray-50);
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .insight-priority {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .insight-priority.high {
+            color: #e53e3e;
+        }
+
+        .insight-priority.medium {
+            color: #d69e2e;
+        }
+
+        .insight-priority.low {
+            color: #48bb78;
+        }
+
+        .benchmark-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .benchmark-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 6px;
+        }
+
+        .benchmark-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .benchmark-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .benchmark-progress {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -456,6 +611,116 @@
                 <div style="display: flex; gap: 1rem;">
                     <button id="employeeTab" class="tab-button active" onclick="switchTab('employee')">Employee Code</button>
                     <button id="marketingTab" class="tab-button" onclick="switchTab('marketing')">Marketing Code</button>
+                </div>
+            </div>
+            
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Business Analytics</h2>
+                    <button id="analyticsToggle" class="btn-secondary" onclick="toggleAnalytics()">Show Analytics</button>
+                </div>
+                
+                <div id="analyticsSection" style="display: none;">
+                    <div class="analytics-grid">
+                        <!-- Revenue Metrics -->
+                        <div class="analytics-card">
+                            <h4>Revenue Metrics</h4>
+                            <div class="metric-item">
+                                <span>Monthly Revenue:</span>
+                                <span id="monthlyRevenue">$0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Average Order Value:</span>
+                                <span id="avgOrderValue">$0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Conversion Rate:</span>
+                                <span id="conversionRate">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Customer Metrics -->
+                        <div class="analytics-card">
+                            <h4>Customer Insights</h4>
+                            <div class="metric-item">
+                                <span>Total Customers:</span>
+                                <span id="totalCustomers">0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>New This Month:</span>
+                                <span id="newCustomers">0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Repeat Rate:</span>
+                                <span id="repeatRate">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Code Performance -->
+                        <div class="analytics-card">
+                            <h4>Discount Performance</h4>
+                            <div class="metric-item">
+                                <span>Most Used Code:</span>
+                                <span id="topCode">None</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Code Conversion:</span>
+                                <span id="codeConversion">0%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span>Avg Discount:</span>
+                                <span id="avgDiscount">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Package Performance -->
+                        <div class="analytics-card">
+                            <h4>Package Performance</h4>
+                            <div class="metric-item">
+                                <span>Most Popular:</span>
+                                <span id="topPackage">PT ($109)</span>
+                            </div>
+                            <div class="profession-breakdown">
+                                <div class="prof-item">PT: <span id="ptSales">0</span></div>
+                                <div class="prof-item">PTA: <span id="ptaSales">0</span></div>
+                                <div class="prof-item">OT: <span id="otSales">0</span></div>
+                                <div class="prof-item">COTA: <span id="cotaSales">0</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Insights -->
+                    <div class="insights-section">
+                        <h4>📊 Key Insights & Recommendations</h4>
+                        <div id="insightsList" class="insights-list">
+                            <!-- Insights will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Success Benchmarks -->
+                    <div class="benchmarks-section">
+                        <h4>🎯 Success Benchmarks</h4>
+                        <div class="benchmark-grid">
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Monthly Revenue Goal</div>
+                                <div class="benchmark-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="revenueProgress" style="width: 5%"></div>
+                                    </div>
+                                    <span id="revenueGoal">$500 / $10,000</span>
+                                </div>
+                            </div>
+                            <div class="benchmark-item">
+                                <div class="benchmark-label">Active Users Goal</div>
+                                <div class="benchmark-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="usersProgress" style="width: 15%"></div>
+                                    </div>
+                                    <span id="usersGoal">15 / 100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -738,6 +1003,11 @@
             renderCodesTable();
             updateSessionInfo();
             
+            // Initialize analytics with sample data
+            if (document.getElementById('analyticsSection').style.display !== 'none') {
+                updateAnalytics();
+            }
+            
             // Auto-logout warning at 23 hours
             setTimeout(() => {
                 alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
@@ -760,6 +1030,170 @@
 
         // Update session info every minute
         setInterval(updateSessionInfo, 60000);
+
+        // Analytics Functions
+        function toggleAnalytics() {
+            const section = document.getElementById('analyticsSection');
+            const button = document.getElementById('analyticsToggle');
+            
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                button.textContent = 'Hide Analytics';
+                updateAnalytics();
+            } else {
+                section.style.display = 'none';
+                button.textContent = 'Show Analytics';
+            }
+        }
+
+        function updateAnalytics() {
+            // Mock analytics data (in real app, this would come from your analytics service)
+            const analytics = generateMockAnalytics();
+            
+            // Update revenue metrics
+            document.getElementById('monthlyRevenue').textContent = '$' + analytics.monthlyRevenue.toLocaleString();
+            document.getElementById('avgOrderValue').textContent = '$' + analytics.avgOrderValue;
+            document.getElementById('conversionRate').textContent = analytics.conversionRate + '%';
+            
+            // Update customer metrics
+            document.getElementById('totalCustomers').textContent = analytics.totalCustomers;
+            document.getElementById('newCustomers').textContent = analytics.newCustomers;
+            document.getElementById('repeatRate').textContent = analytics.repeatRate + '%';
+            
+            // Update code performance
+            document.getElementById('topCode').textContent = analytics.topCode || 'None';
+            document.getElementById('codeConversion').textContent = analytics.codeConversion + '%';
+            document.getElementById('avgDiscount').textContent = '$' + analytics.avgDiscount;
+            
+            // Update package performance
+            document.getElementById('topPackage').textContent = analytics.topPackage;
+            document.getElementById('ptSales').textContent = analytics.packageSales.PT;
+            document.getElementById('ptaSales').textContent = analytics.packageSales.PTA;
+            document.getElementById('otSales').textContent = analytics.packageSales.OT;
+            document.getElementById('cotaSales').textContent = analytics.packageSales.COTA;
+            
+            // Update progress bars
+            updateProgressBar('revenueProgress', 'revenueGoal', analytics.monthlyRevenue, 10000);
+            updateProgressBar('usersProgress', 'usersGoal', analytics.totalCustomers, 100);
+            
+            // Generate insights
+            updateInsights(analytics);
+        }
+
+        function generateMockAnalytics() {
+            // Generate realistic mock data based on current codes
+            const usedEmployeeCodes = employeeCodes.filter(c => c.status === 'used').length;
+            const usedMarketingCodes = marketingCodes.reduce((sum, c) => sum + (c.totalUsed || 0), 0);
+            const totalSales = usedEmployeeCodes + usedMarketingCodes + 15; // Add some organic sales
+            
+            return {
+                monthlyRevenue: totalSales * 87 + Math.floor(Math.random() * 500), // ~$87 avg after discounts
+                avgOrderValue: 87,
+                conversionRate: Math.min(12 + Math.floor(Math.random() * 8), 25),
+                totalCustomers: totalSales + 5,
+                newCustomers: Math.floor(totalSales * 0.7) + 3,
+                repeatRate: Math.floor(Math.random() * 15) + 5,
+                topCode: marketingCodes.length > 0 ? marketingCodes[0].code : 'SAVE10',
+                codeConversion: Math.floor(Math.random() * 30) + 45,
+                avgDiscount: Math.floor(Math.random() * 15) + 18,
+                topPackage: 'PT ($109)',
+                packageSales: {
+                    PT: Math.floor(totalSales * 0.4),
+                    PTA: Math.floor(totalSales * 0.25),
+                    OT: Math.floor(totalSales * 0.25),
+                    COTA: Math.floor(totalSales * 0.1)
+                }
+            };
+        }
+
+        function updateProgressBar(barId, labelId, current, target) {
+            const percentage = Math.min((current / target) * 100, 100);
+            document.getElementById(barId).style.width = percentage + '%';
+            document.getElementById(labelId).textContent = 
+                `$${current.toLocaleString()} / $${target.toLocaleString()}`;
+        }
+
+        function updateInsights(analytics) {
+            const insights = generateInsights(analytics);
+            const insightsList = document.getElementById('insightsList');
+            
+            insightsList.innerHTML = insights.map(insight => `
+                <div class="insight-item">
+                    <div class="insight-priority ${insight.priority}">${insight.priority} Priority</div>
+                    <div><strong>${insight.title}</strong></div>
+                    <div>${insight.description}</div>
+                </div>
+            `).join('');
+        }
+
+        function generateInsights(analytics) {
+            const insights = [];
+            
+            // Revenue insights
+            if (analytics.monthlyRevenue < 2000) {
+                insights.push({
+                    priority: 'high',
+                    title: 'Revenue Growth Opportunity',
+                    description: `At $${analytics.monthlyRevenue.toLocaleString()} monthly, focus on customer acquisition. Consider partnerships with therapy clinics or targeted LinkedIn ads to PTs/OTs.`
+                });
+            }
+            
+            // Conversion insights
+            if (analytics.conversionRate < 10) {
+                insights.push({
+                    priority: 'high',
+                    title: 'Conversion Rate Needs Improvement',
+                    description: `${analytics.conversionRate}% is below industry average. Test different pricing, add testimonials, or create urgency with limited-time offers.`
+                });
+            } else if (analytics.conversionRate > 20) {
+                insights.push({
+                    priority: 'low',
+                    title: 'Excellent Conversion Rate',
+                    description: `${analytics.conversionRate}% conversion is outstanding! Consider raising prices or expanding to other states.`
+                });
+            }
+            
+            // Package performance insights
+            const ptSales = analytics.packageSales.PT;
+            const otSales = analytics.packageSales.OT;
+            
+            if (ptSales > otSales * 2) {
+                insights.push({
+                    priority: 'medium',
+                    title: 'OT Market Underperforming',
+                    description: `PT sales (${ptSales}) significantly outpace OT (${otSales}). Consider OT-specific marketing or partnerships with OT programs.`
+                });
+            }
+            
+            // Code performance insights
+            if (analytics.codeConversion > 70) {
+                insights.push({
+                    priority: 'low',
+                    title: 'High Discount Code Usage',
+                    description: `${analytics.codeConversion}% of sales use codes. This shows strong marketing effectiveness but may be training customers to expect discounts.`
+                });
+            }
+            
+            // Growth insights
+            if (analytics.repeatRate < 10) {
+                insights.push({
+                    priority: 'medium',
+                    title: 'Focus on Customer Retention',
+                    description: `Only ${analytics.repeatRate}% repeat customers. Build email list, create loyalty program, or offer multi-year packages.`
+                });
+            }
+            
+            // Success insights
+            if (analytics.totalCustomers > 50) {
+                insights.push({
+                    priority: 'low',
+                    title: 'Strong Initial Traction',
+                    description: `${analytics.totalCustomers} customers shows market validation. Time to scale with automation and partnerships.`
+                });
+            }
+            
+            return insights.slice(0, 4); // Show top 4 insights
+        }
 
         // Security enhancements
         document.addEventListener('keydown', function(e) {
