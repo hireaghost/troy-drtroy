@@ -1845,10 +1845,10 @@
             renderCodesTable();
             updateSessionInfo();
             
-            // Initialize analytics with sample data
-            if (document.getElementById('analyticsSection').style.display !== 'none') {
-                updateAllAnalytics();
-            }
+            // Always initialize analytics data (even if not currently visible)
+            console.log('🔄 Initializing analytics data...');
+            updateAllAnalytics();
+            console.log('✅ Analytics data initialized');
             
             // Auto-logout warning at 23 hours
             setTimeout(() => {
@@ -1941,15 +1941,33 @@
             document.querySelectorAll('.main-tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName + '-tab').classList.add('active');
             
-            // Show analytics by default when switching to analytics tab
+            // Initialize analytics when switching to analytics tab
             if (tabName === 'analytics') {
                 const analyticsSection = document.getElementById('analyticsSection');
                 const analyticsButton = document.getElementById('analyticsToggle');
-                if (analyticsSection.style.display === 'none') {
-                    analyticsSection.style.display = 'block';
-                    analyticsButton.textContent = 'Hide Analytics';
+                
+                // Always show analytics section and update data when switching to analytics tab
+                analyticsSection.style.display = 'block';
+                analyticsButton.textContent = 'Hide Analytics';
+                
+                // Small delay to ensure tab content is rendered before updating analytics
+                setTimeout(() => {
+                    console.log('📊 Analytics tab activated - loading comprehensive business data');
+                    
+                    // Test if essential elements exist
+                    const testElements = ['essentialMRR', 'essentialCustomers', 'essentialConversion'];
+                    testElements.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            console.log(`✅ Element ${id} found`);
+                        } else {
+                            console.warn(`❌ Element ${id} missing`);
+                        }
+                    });
+                    
+                    // Always update analytics data when switching to this tab
                     updateAllAnalytics();
-                }
+                }, 100);
             }
             
             console.log(`📊 Switched to ${tabName === 'analytics' ? 'Analytics' : 'Discount Codes'} tab`);
@@ -1974,10 +1992,14 @@
         }
 
         function updateAllAnalytics() {
+            console.log('📊 Starting analytics update...');
+            
             // Generate comprehensive analytics data
             const analytics = generateComprehensiveAnalytics();
+            console.log('📊 Analytics data generated:', analytics);
             
             // Essential Tab Metrics (Most Important)
+            console.log('📊 Updating essential metrics...');
             updateElement('essentialMRR', '$' + analytics.monthlyRevenue.toLocaleString());
             updateElement('essentialAOV', '$' + analytics.avgOrderValue);
             updateElement('essentialGrowth', analytics.growthRate + '%');
@@ -2092,12 +2114,16 @@
             
             // Generate insights
             updateInsights(analytics);
+            
+            console.log('✅ Analytics update completed successfully');
         }
 
         function updateElement(id, value) {
             const element = document.getElementById(id);
             if (element) {
                 element.textContent = value;
+            } else {
+                console.warn(`⚠️ Element with id "${id}" not found in DOM`);
             }
         }
 
