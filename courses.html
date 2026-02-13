@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Catalog | DrTroy CE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --navy-light: #2c5282;
+            --gold: #d69e2e;
+            --gold-light: #ecc94b;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-600: #4a5568;
+            --gray-800: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo img {
+            height: 300px;
+            width: auto;
+            max-width: 1200px;
+        }
+
+        nav {
+            margin-top: 1.5rem;
+        }
+
+        nav a {
+            color: var(--gray-600);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--navy);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            opacity: 0.9;
+        }
+
+        .catalog {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .profession-section {
+            margin-bottom: 3rem;
+        }
+
+        .profession-header {
+            background: var(--navy);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profession-header h2 {
+            font-size: 1.25rem;
+        }
+
+        .total-badge {
+            background: var(--gold);
+            color: var(--navy);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .course-list {
+            background: white;
+            border: 1px solid var(--gray-100);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+        }
+
+        .course-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-item:last-child {
+            border-bottom: none;
+        }
+
+        .course-item:hover {
+            background: var(--gray-50);
+        }
+
+        .course-title {
+            font-weight: 500;
+        }
+
+        .course-hours {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .compliance-banner {
+            background: var(--gold-light);
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--gold);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .compliance-banner a {
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: var(--navy);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: var(--navy);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .profession-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .course-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="new-drtroy-logo.png" alt="DrTroy PT/OT Continuing Education">
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <h1>Course Catalog</h1>
+        <p>Every course included in your package</p>
+    </section>
+
+    <section class="catalog">
+        <div class="profession-section">
+            <div class="profession-header">
+                <h2>Physical Therapists</h2>
+                <span class="total-badge">27 Hours</span>
+            </div>
+            <div class="course-list">
+                <div class="course-item">
+                    <span class="course-title">Musculoskeletal Evaluation and Treatment</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Fall Prevention in Older Adults</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Post-Surgical Rehabilitation</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Chronic Pain Management</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Balance and Vestibular Disorders</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Sports Injury Rehabilitation</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Documentation and Billing Best Practices</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Geriatric Physical Therapy Considerations</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Human Trafficking Prevention for Healthcare Providers</span>
+                    <span class="course-hours">2 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Ethics in Physical Therapy Practice*</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+            </div>
+            <div class="compliance-banner">
+                <strong>*Note:</strong> 2-hour ethics requirement can be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            </div>
+        </div>
+
+        <div class="profession-section">
+            <div class="profession-header">
+                <h2>PT Assistants</h2>
+                <span class="total-badge">17 Hours</span>
+            </div>
+            <div class="course-list">
+                <div class="course-item">
+                    <span class="course-title">Therapeutic Exercise Techniques</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Modalities and Physical Agents</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Transfer and Mobility Training</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Gait Training and Assessment</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Wound Care Basics for PTAs</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Human Trafficking Prevention for Healthcare Providers</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Ethics in Physical Therapy Practice*</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+            </div>
+            <div class="compliance-banner">
+                <strong>*Note:</strong> 2-hour ethics requirement can be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            </div>
+        </div>
+
+        <div class="profession-section">
+            <div class="profession-header">
+                <h2>Occupational Therapists</h2>
+                <span class="total-badge">23 Hours</span>
+            </div>
+            <div class="course-list">
+                <div class="course-item">
+                    <span class="course-title">Activities of Daily Living (ADL) Assessment</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Upper Extremity Rehabilitation</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Cognitive Assessment and Intervention</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Home Modification and Safety</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Pediatric Occupational Therapy</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Adaptive Equipment and Assistive Technology</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Mental Health in Occupational Therapy</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Human Trafficking Prevention for Healthcare Providers</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Ethics in Occupational Therapy Practice</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+            </div>
+            <div class="compliance-banner">
+                <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            </div>
+        </div>
+
+        <div class="profession-section">
+            <div class="profession-header">
+                <h2>OT Assistants</h2>
+                <span class="total-badge">23 Hours</span>
+            </div>
+            <div class="course-list">
+                <div class="course-item">
+                    <span class="course-title">Therapeutic Activities in OT</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Functional Mobility Training</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Patient-Centered Care Techniques</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Orthotics and Splinting Basics</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Group Intervention Strategies</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Documentation for COTAs</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Pediatric Interventions for COTAs</span>
+                    <span class="course-hours">3 Hours</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Human Trafficking Prevention for Healthcare Providers</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+                <div class="course-item">
+                    <span class="course-title">Ethics in Occupational Therapy Practice</span>
+                    <span class="course-hours">1 Hour</span>
+                </div>
+            </div>
+            <div class="compliance-banner">
+                <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Packages</a>
+    </section>
+
+    <footer>
+        <p>Troy@DrTroy.com</p>
+        <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education</p>
+    </footer>
+</body>
+</html>
