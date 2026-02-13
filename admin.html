@@ -437,6 +437,11 @@
         <div class="header-info">
             <span class="status-indicator">● Online</span>
             <span>Last updated: <span id="lastUpdate">Loading...</span></span>
+            <button onclick="logout()" style="background: #dc2626; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-left: 1rem; font-size: 0.9rem; font-weight: 600;" 
+                    onmouseover="this.style.background='#b91c1c'" 
+                    onmouseout="this.style.background='#dc2626'">
+                🚪 Logout
+            </button>
         </div>
     </div>
 
@@ -885,6 +890,9 @@
                         <button onclick="clearSampleData()" class="btn btn-secondary">
                             🧹 Clear Sample Data
                         </button>
+                        <button onclick="extendSession()" class="btn btn-secondary">
+                            ⏰ Extend Session (+8h)
+                        </button>
                         <button onclick="resetToDefaults()" class="btn btn-danger">
                             🔄 Reset to Defaults
                         </button>
@@ -904,6 +912,48 @@
     </div>
 
     <script>
+        // Authentication check - redirect to login if not authenticated
+        function checkAuthentication() {
+            const adminSession = localStorage.getItem('drtroyAdminSession');
+            
+            if (!adminSession) {
+                console.log('🚨 No admin session found, redirecting to login...');
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            try {
+                const session = JSON.parse(adminSession);
+                const now = new Date().getTime();
+                const expiresTime = new Date(session.expires).getTime();
+                
+                if (now >= expiresTime) {
+                    console.log('🕒 Admin session expired, redirecting to login...');
+                    localStorage.removeItem('drtroyAdminSession');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                console.log('✅ Valid admin session found');
+                return true;
+                
+            } catch (error) {
+                console.error('Session validation error:', error);
+                localStorage.removeItem('drtroyAdminSession');
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('drtroyAdminSession');
+                console.log('👋 Admin logged out');
+                window.location.href = 'login.html';
+            }
+        }
+
         // Global data storage
         let employeeCodes = [];
         let marketingCodes = [];
@@ -911,6 +961,10 @@
 
         // Initialize admin dashboard
         function initAdmin() {
+            // Check authentication first
+            if (!checkAuthentication()) {
+                return; // Will redirect to login
+            }
             console.log('🚀 Initializing DrTroy Admin Dashboard...');
             updateLastUpdate();
             loadStoredData();
@@ -921,7 +975,7 @@
             console.log('✅ Admin dashboard ready');
         }
 
-        // Update last update timestamp
+        // Update last update timestamp and session info
         function updateLastUpdate() {
             const now = new Date();
             document.getElementById('lastUpdate').textContent = now.toLocaleString('en-US', {
@@ -933,6 +987,58 @@
                 timeZoneName: 'short'
             });
             document.getElementById('systemUpdate').textContent = now.toLocaleDateString();
+            
+            // Update session info
+            updateSessionInfo();
+        }
+
+        // Update session information
+        function updateSessionInfo() {
+            try {
+                const adminSession = localStorage.getItem('drtroyAdminSession');
+                if (adminSession) {
+                    const session = JSON.parse(adminSession);
+                    const created = new Date(session.created);
+                    const expires = new Date(session.expires);
+                    const now = new Date();
+                    
+                    // Calculate session duration
+                    const durationMs = now - created;
+                    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+                    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    // Calculate time until expiration
+                    const timeLeft = expires - now;
+                    const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+                    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    // Update header info
+                    const statusEl = document.querySelector('.status-indicator');
+                    if (statusEl && session.user) {
+                        statusEl.title = `Logged in as: ${session.user.username}\nSession duration: ${hours}h ${minutes}m\nExpires in: ${hoursLeft}h ${minutesLeft}m`;
+                    }
+                }
+            } catch (error) {
+                console.warn('Error updating session info:', error);
+            }
+        }
+
+        // Extend session by 8 hours
+        function extendSession() {
+            try {
+                const adminSession = localStorage.getItem('drtroyAdminSession');
+                if (adminSession) {
+                    const session = JSON.parse(adminSession);
+                    session.expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
+                    localStorage.setItem('drtroyAdminSession', JSON.stringify(session));
+                    
+                    alert('✅ Session extended by 8 hours!');
+                    updateSessionInfo();
+                }
+            } catch (error) {
+                console.error('Error extending session:', error);
+                alert('❌ Failed to extend session. Please refresh the page.');
+            }
         }
 
         // Load data from localStorage
@@ -1303,13 +1409,20 @@
                 updated: new Date().toISOString()
             };
             
+            // Update password in credentials if provided
             if (password) {
-                settings.password = password;
+                const credentials = {
+                    username: 'troyhounshell',
+                    password: password,
+                    updated: new Date().toISOString()
+                };
+                localStorage.setItem('drtroyAdminCredentials', JSON.stringify(credentials));
+                settings.passwordUpdated = true;
             }
             
             localStorage.setItem('drtroyAdminSettings', JSON.stringify(settings));
             
-            showMessage('settingsSuccess', '✅ Settings updated successfully!');
+            showMessage('settingsSuccess', '✅ Settings updated successfully!' + (password ? ' Your new password is now active.' : ''));
             
             document.getElementById('adminPassword').value = '';
         });
@@ -1417,11 +1530,20 @@
         document.addEventListener('DOMContentLoaded', function() {
             initAdmin();
             
-            // Update timestamps every minute
+            // Update timestamps and session info every minute
             setInterval(updateLastUpdate, 60000);
             
             // Update analytics every 5 minutes
             setInterval(updateAnalytics, 300000);
+            
+            // Session timeout warning (7.5 hours = 30 minutes before expiration)
+            setTimeout(() => {
+                if (localStorage.getItem('drtroyAdminSession')) {
+                    if (confirm('⏰ Your admin session will expire in 30 minutes. Would you like to extend it by 8 hours?')) {
+                        extendSession();
+                    }
+                }
+            }, 7.5 * 60 * 60 * 1000); // 7.5 hours
         });
     </script>
 </body>
