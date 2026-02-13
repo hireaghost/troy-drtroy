@@ -143,7 +143,8 @@
             border-bottom: 1px solid var(--gray-100);
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 1rem;
         }
 
         .course-item:last-child {
@@ -156,6 +157,8 @@
 
         .course-title {
             font-weight: 500;
+            flex: 1;
+            line-height: 1.4;
         }
 
         .course-hours {
@@ -163,6 +166,9 @@
             font-size: 0.9rem;
             font-weight: 600;
             white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 30px;
+            text-align: right;
         }
 
         .compliance-banner {
@@ -322,11 +328,11 @@
                 </div>
                 <div class="course-item">
                     <span class="course-title">Wound Care Basics for PTAs</span>
-                    <span class="course-hours">3</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Neurological Rehabilitation</span>
-                    <span class="course-hours">1</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Infection Control and Patient Safety</span>
@@ -374,11 +380,11 @@
                 </div>
                 <div class="course-item">
                     <span class="course-title">Mental Health in Occupational Therapy</span>
-                    <span class="course-hours">3</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Neurological Rehabilitation</span>
-                    <span class="course-hours">1</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Infection Control and Patient Safety</span>
@@ -426,11 +432,11 @@
                 </div>
                 <div class="course-item">
                     <span class="course-title">Pediatric Interventions for COTAs</span>
-                    <span class="course-hours">3</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Neurological Rehabilitation</span>
-                    <span class="course-hours">1</span>
+                    <span class="course-hours">2</span>
                 </div>
                 <div class="course-item">
                     <span class="course-title">Infection Control and Patient Safety</span>
