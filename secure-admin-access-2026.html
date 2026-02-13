@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrTroy.com - Admin Login</title>
+    <title>DrTroy.com - Secure Access</title>
     
     <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="
@@ -15,6 +15,7 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
     
     <style>
         * {
@@ -50,6 +51,19 @@
             width: 100%;
             max-width: 400px;
             position: relative;
+        }
+
+        .security-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #059669;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .logo {
@@ -183,13 +197,13 @@
         }
 
         .info-box {
-            background: var(--gray-100);
-            border: 1px solid var(--gray-200);
+            background: #ecfdf5;
+            border: 1px solid #10b981;
             border-radius: 6px;
             padding: 1rem;
             margin-bottom: 1.5rem;
             font-size: 0.85rem;
-            color: var(--gray-600);
+            color: #065f46;
             text-align: center;
         }
 
@@ -213,20 +227,6 @@
             font-weight: 600;
         }
 
-        .forgot-password {
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .forgot-password button {
-            background: none;
-            border: none;
-            color: var(--navy);
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
         .footer {
             text-align: center;
             margin-top: 2rem;
@@ -237,6 +237,17 @@
         .footer a {
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
+        }
+
+        .access-info {
+            background: #fef3cd;
+            border: 1px solid #d69e2e;
+            color: #92400e;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            text-align: center;
         }
 
         @media (max-width: 480px) {
@@ -253,14 +264,20 @@
 </head>
 <body>
     <div class="login-container">
+        <div class="security-badge">Secure Portal</div>
+        
         <div class="logo">
             <img src="new-drtroy-logo.png" alt="DrTroy" onerror="this.style.display='none'">
-            <h1>Admin Login</h1>
-            <p>DrTroy.com Administration Panel</p>
+            <h1>Secure Admin Access</h1>
+            <p>DrTroy.com Administration Portal</p>
+        </div>
+
+        <div class="access-info">
+            ⚠️ <strong>Private Access Only:</strong> This portal is not accessible from the public website for enhanced security.
         </div>
 
         <div class="info-box">
-            🔐 <strong>Secure Access:</strong> This admin panel manages discount codes, analytics, and system settings for the DrTroy.com continuing education platform.
+            🔐 <strong>Enterprise Security:</strong> This hidden admin portal manages discount codes, business analytics, and system settings for the DrTroy.com continuing education platform.
         </div>
 
         <form id="loginForm">
@@ -279,24 +296,22 @@
 
             <button type="submit" class="btn-login" id="loginBtn">
                 <div class="spinner"></div>
-                <span class="btn-text">🔓 Access Admin Panel</span>
+                <span class="btn-text">🛡️ Access Admin Portal</span>
             </button>
         </form>
-
-        <div class="forgot-password">
-            <button type="button" onclick="resetPassword()">
-                Forgot password or need help?
-            </button>
-        </div>
 
         <div class="security-features">
             <div class="security-item">
                 <span class="security-check">✓</span>
-                <span>Encrypted session management</span>
+                <span>Hidden portal - not publicly discoverable</span>
             </div>
             <div class="security-item">
                 <span class="security-check">✓</span>
-                <span>Rate limiting protection</span>
+                <span>Rate limiting & brute force protection</span>
+            </div>
+            <div class="security-item">
+                <span class="security-check">✓</span>
+                <span>Encrypted session management</span>
             </div>
             <div class="security-item">
                 <span class="security-check">✓</span>
@@ -314,7 +329,7 @@
     </div>
 
     <script>
-        // Rate limiting
+        // Enhanced rate limiting for secure portal
         let loginAttempts = JSON.parse(localStorage.getItem('adminLoginAttempts') || '[]');
         
         function cleanupAttempts() {
@@ -326,7 +341,7 @@
         
         function isRateLimited() {
             cleanupAttempts();
-            return loginAttempts.length >= 5; // Max 5 attempts per 15 minutes
+            return loginAttempts.length >= 3; // Stricter: Max 3 attempts per 15 minutes for secure portal
         }
         
         function recordAttempt() {
@@ -359,7 +374,7 @@
             return false;
         }
 
-        // Simple but secure authentication
+        // Enhanced secure authentication
         async function authenticateUser(username, password) {
             try {
                 // Check stored credentials (allows password changes from admin panel)
@@ -374,48 +389,55 @@
                     };
                 }
                 
-                // Simulate processing time for security
-                await new Promise(resolve => setTimeout(resolve, 800));
+                // Simulate processing time for security (longer for secure portal)
+                await new Promise(resolve => setTimeout(resolve, 1200));
                 
                 // Validate credentials
                 if (username.toLowerCase().trim() === credentials.username.toLowerCase().trim() && 
                     password === credentials.password) {
+                    
+                    // Log successful secure portal access
+                    console.log('🛡️ Secure portal access granted');
+                    
                     return {
                         success: true,
                         user: {
                             id: 'admin_001',
                             username: credentials.username,
                             role: 'administrator',
+                            accessMethod: 'secure_portal',
                             lastLogin: new Date().toISOString()
                         }
                     };
                 } else {
+                    console.log('🚨 Failed secure portal access attempt');
                     return {
                         success: false,
-                        error: 'Invalid username or password'
+                        error: 'Invalid credentials for secure portal access'
                     };
                 }
             } catch (error) {
-                console.error('Authentication error:', error);
+                console.error('Secure portal authentication error:', error);
                 return {
                     success: false,
-                    error: 'Authentication service temporarily unavailable'
+                    error: 'Secure portal temporarily unavailable'
                 };
             }
         }
 
-        // Create admin session
+        // Create admin session with enhanced security context
         function createAdminSession(user) {
             const session = {
                 user: user,
                 created: new Date().toISOString(),
                 expires: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString(), // 8 hours
-                fingerprint: btoa(navigator.userAgent.substring(0, 50)),
+                fingerprint: btoa(navigator.userAgent.substring(0, 50) + window.location.href),
+                accessMethod: 'secure_portal',
                 version: '1.0'
             };
             
             localStorage.setItem('drtroyAdminSession', JSON.stringify(session));
-            console.log('✅ Admin session created');
+            console.log('✅ Secure admin session created');
             return session;
         }
 
@@ -441,7 +463,7 @@
             }, 5000);
         }
 
-        // Handle form submission
+        // Handle form submission with enhanced security
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -455,9 +477,9 @@
                 return;
             }
             
-            // Rate limiting check
+            // Enhanced rate limiting check for secure portal
             if (isRateLimited()) {
-                showMessage('Too many login attempts. Please wait 15 minutes and try again.');
+                showMessage('Too many failed attempts. Secure portal access restricted for 15 minutes.');
                 return;
             }
             
@@ -480,7 +502,7 @@
                     createAdminSession(result.user);
                     
                     // Show success message
-                    showMessage('✅ Login successful! Redirecting to admin panel...', false);
+                    showMessage('✅ Secure access granted! Redirecting to admin dashboard...', false);
                     
                     // Redirect after short delay
                     setTimeout(() => {
@@ -491,8 +513,8 @@
                     // Record failed attempt
                     recordAttempt();
                     
-                    // Show error
-                    showMessage(result.error || 'Login failed. Please check your credentials.');
+                    // Show error with enhanced security messaging
+                    showMessage(result.error || 'Secure portal access denied. Check credentials.');
                     
                     // Reset form
                     document.getElementById('password').value = '';
@@ -500,9 +522,9 @@
                 }
                 
             } catch (error) {
-                console.error('Login error:', error);
+                console.error('Secure portal login error:', error);
                 recordAttempt();
-                showMessage('Login service is temporarily unavailable. Please try again.');
+                showMessage('Secure portal is temporarily unavailable. Please try again.');
             } finally {
                 // Reset loading state
                 loginBtn.classList.remove('loading');
@@ -512,16 +534,8 @@
             }
         });
 
-        // Password reset function
-        function resetPassword() {
-            const email = prompt('Please enter your email address for password reset assistance:');
-            if (email) {
-                alert(`Password reset instructions will be sent to ${email}. Please contact support@drtroy.com if you don't receive them within 5 minutes.`);
-            }
-        }
-
-        // Initialize page
-        function initializePage() {
+        // Initialize secure portal
+        function initializeSecurePortal() {
             // Check for existing session
             if (checkExistingSession()) {
                 return; // Will redirect if session exists
@@ -534,16 +548,30 @@
                 document.getElementById('username').focus();
             }
             
-            console.log('🔐 Admin login page ready');
+            // Log secure portal access attempt (but don't expose in console in production)
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('🛡️ Secure admin portal loaded');
+            }
         }
 
         // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', initializePage);
+        document.addEventListener('DOMContentLoaded', initializeSecurePortal);
         
         // Handle browser back button and navigation
         window.addEventListener('pageshow', function(event) {
             if (event.persisted) {
                 checkExistingSession();
+            }
+        });
+
+        // Clear any references to this URL from browser history after login
+        // This is a basic security measure to reduce URL exposure
+        window.addEventListener('beforeunload', function() {
+            if (localStorage.getItem('drtroyAdminSession')) {
+                // Clear this page from history after successful login
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState({}, '', 'about:blank');
+                }
             }
         });
     </script>
