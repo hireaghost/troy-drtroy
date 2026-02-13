@@ -517,7 +517,7 @@
                     <div class="package-title" id="sidebarPackageTitle">PT Package</div>
                     <div class="package-hours" id="sidebarPackageHours">27 Contact Hours + Jurisprudence</div>
                     
-                    <div class="discount-applied" id="discountApplied" style="display: none;">
+                    <div class="discount-applied" id="discountApplied">
                         New Customer Discount Applied!
                     </div>
                     
@@ -529,7 +529,7 @@
                         <span>Subtotal:</span>
                         <span id="subtotalAmount">$119</span>
                     </div>
-                    <div class="price-row discount-row" id="discountRow" style="display: none;">
+                    <div class="price-row discount-row" id="discountRow">
                         <span>New Customer Discount:</span>
                         <span id="discountAmount">-$10</span>
                     </div>
@@ -622,26 +622,30 @@
                 'PT': {
                     title: 'PT Package',
                     hours: '27 Contact Hours + Jurisprudence',
-                    price: 109,
-                    originalPrice: 119
+                    homepagePrice: 109,  // Price shown on homepage
+                    originalPrice: 119,  // Original price before discount
+                    finalPrice: 109      // Final price after $10 discount
                 },
                 'PTA': {
                     title: 'PTA Package', 
                     hours: '17 Contact Hours + Jurisprudence',
-                    price: 89,
-                    originalPrice: 99
+                    homepagePrice: 89,   // Price shown on homepage  
+                    originalPrice: 99,   // Original price before discount
+                    finalPrice: 89       // Final price after $10 discount
                 },
                 'OT': {
                     title: 'OT Package',
                     hours: '23 Contact Hours + Jurisprudence', 
-                    price: 109,
-                    originalPrice: 119
+                    homepagePrice: 109,  // Price shown on homepage
+                    originalPrice: 119,  // Original price before discount  
+                    finalPrice: 109      // Final price after $10 discount
                 },
                 'COTA': {
                     title: 'COTA Package',
                     hours: '23 Contact Hours + Jurisprudence',
-                    price: 89,
-                    originalPrice: 99
+                    homepagePrice: 89,   // Price shown on homepage
+                    originalPrice: 99,   // Original price before discount
+                    finalPrice: 89       // Final price after $10 discount
                 }
             };
 
@@ -650,25 +654,17 @@
             // Update main display
             document.getElementById('selectedPackageName').textContent = pkg.title;
             
-            // Update sidebar
+            // Update sidebar - always show discount breakdown
             document.getElementById('sidebarPackageTitle').textContent = pkg.title;
             document.getElementById('sidebarPackageHours').textContent = pkg.hours;
-            document.getElementById('sidebarPackagePrice').textContent = `$${pkg.price}`;
+            document.getElementById('sidebarPackagePrice').textContent = `$${pkg.finalPrice}`;
             
-            // Show discount if new customer discount applied
-            const hasDiscount = pkg.originalPrice > pkg.price;
-            if (hasDiscount) {
-                document.getElementById('discountApplied').style.display = 'inline-block';
-                document.getElementById('discountRow').style.display = 'flex';
-                document.getElementById('subtotalAmount').textContent = `$${pkg.originalPrice}`;
-                document.getElementById('discountAmount').textContent = `-$${pkg.originalPrice - pkg.price}`;
-            } else {
-                document.getElementById('discountApplied').style.display = 'none';
-                document.getElementById('discountRow').style.display = 'none';
-                document.getElementById('subtotalAmount').textContent = `$${pkg.price}`;
-            }
-            
-            document.getElementById('totalAmount').textContent = `$${pkg.price}`;
+            // Always show new customer discount
+            document.getElementById('discountApplied').style.display = 'inline-block';
+            document.getElementById('discountRow').style.display = 'flex';
+            document.getElementById('subtotalAmount').textContent = `$${pkg.originalPrice}`;
+            document.getElementById('discountAmount').textContent = `-$10`;
+            document.getElementById('totalAmount').textContent = `$${pkg.finalPrice}`;
         }
 
         // Handle form submission
