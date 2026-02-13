@@ -438,6 +438,16 @@
         }
 
         @media (max-width: 768px) {
+            .logo img {
+                height: 200px;
+                max-width: 95vw;
+                width: auto;
+            }
+            
+            .header-container {
+                padding: 1.5rem 1rem 1rem;
+            }
+            
             .hero h1 {
                 font-size: 2rem;
             }
@@ -446,6 +456,18 @@
             }
             .package-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo img {
+                height: 150px;
+                max-width: 90vw;
+                width: auto;
+            }
+            
+            .header-container {
+                padding: 1rem 0.75rem 1rem;
             }
         }
     </style>
