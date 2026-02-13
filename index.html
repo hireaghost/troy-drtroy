@@ -1304,7 +1304,80 @@
                 }
             }
             
-            // Check regular discount codes
+            // Check marketing codes
+            const marketingCodes = JSON.parse(localStorage.getItem('marketingCodes') || '[]');
+            const marketingCode = marketingCodes.find(c => c.code === code && c.status === 'active');
+            
+            if (marketingCode) {
+                // Validate expiry date
+                if (marketingCode.expiryDate && new Date() > new Date(marketingCode.expiryDate)) {
+                    resultDiv.innerHTML = '<div class="discount-error">This code has expired</div>';
+                    return;
+                }
+                
+                // Validate usage limit
+                if (marketingCode.usageType === 'single' && marketingCode.totalUsed > 0) {
+                    resultDiv.innerHTML = '<div class="discount-error">This code has already been used</div>';
+                    return;
+                }
+                
+                if (marketingCode.usageType === 'limited' && marketingCode.totalUsed >= marketingCode.maxUses) {
+                    resultDiv.innerHTML = '<div class="discount-error">This code has reached its usage limit</div>';
+                    return;
+                }
+                
+                // Validate package compatibility
+                const packageTypes = {
+                    'Physical Therapists': 'PT',
+                    'PT Assistants': 'PTA', 
+                    'Occupational Therapists': 'OT',
+                    'OT Assistants': 'COTA'
+                };
+                
+                if (marketingCode.appliesTo !== 'all' && packageTypes[packageName] !== marketingCode.appliesTo) {
+                    resultDiv.innerHTML = '<div class="discount-error">This code does not apply to this package type</div>';
+                    return;
+                }
+                
+                // Validate minimum purchase
+                if (marketingCode.minPurchase && originalPrice < marketingCode.minPurchase) {
+                    resultDiv.innerHTML = `<div class="discount-error">Minimum purchase of $${marketingCode.minPurchase} required</div>`;
+                    return;
+                }
+                
+                // Calculate discount amount
+                let discountAmount = 0;
+                let discountLabel = marketingCode.code;
+                
+                switch(marketingCode.discountType) {
+                    case 'percentage':
+                        discountAmount = Math.round((originalPrice * marketingCode.discountValue) / 100);
+                        discountLabel += ` (${marketingCode.discountValue}% off)`;
+                        break;
+                    case 'fixed':
+                        discountAmount = Math.min(marketingCode.discountValue, originalPrice);
+                        discountLabel += ` ($${marketingCode.discountValue} off)`;
+                        break;
+                    case 'free':
+                        discountAmount = originalPrice;
+                        discountLabel += ' (FREE)';
+                        break;
+                }
+                
+                // Apply the discount
+                resultDiv.innerHTML = `<div class="discount-success">✓ ${discountLabel} applied!</div>`;
+                updatePriceDisplay(originalPrice, discountAmount, discountLabel);
+                
+                // Track usage (in real app, this would be server-side)
+                marketingCode.totalUsed = (marketingCode.totalUsed || 0) + 1;
+                if (marketingCode.usageType === 'single') {
+                    marketingCode.status = 'used';
+                }
+                localStorage.setItem('marketingCodes', JSON.stringify(marketingCodes));
+                return;
+            }
+            
+            // Check built-in codes
             if (code === 'SAVE10') {
                 resultDiv.innerHTML = '<div class="discount-success">✓ $10 discount applied!</div>';
                 updatePriceDisplay(originalPrice, 10, 'SAVE10 Discount');
@@ -1312,7 +1385,7 @@
             }
             
             // Invalid code
-            resultDiv.innerHTML = '<div class="discount-error">Invalid discount code</div>';
+            resultDiv.innerHTML = '<div class="discount-error">Invalid or expired discount code</div>';
         }
 
         function updatePriceDisplay(originalPrice, discountAmount, discountLabel) {
