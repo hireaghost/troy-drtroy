@@ -130,9 +130,11 @@
 
         .optin-form {
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
+            max-width: 350px;
+            margin: 0 auto;
         }
 
         .optin-form input {
@@ -140,7 +142,7 @@
             border: none;
             border-radius: 6px;
             font-size: 1rem;
-            min-width: 250px;
+            width: 100%;
         }
 
         .optin-form button {
@@ -435,11 +437,13 @@
 
     <section class="optin">
         <div class="optin-container">
-            <h2>Get $10 Off</h2>
-            <p>Enter your email for an instant $10 discount.</p>
+            <h2>Create Your Free Account</h2>
+            <p>Get $10 off and save your course progress. Pick up right where you left off.</p>
             <form class="optin-form">
-                <input type="email" placeholder="Your email" required>
-                <button type="submit">Get $10 Off</button>
+                <input type="text" placeholder="Full name" required style="margin-bottom: 0.5rem; width: 100%;">
+                <input type="email" placeholder="Email address" required style="margin-bottom: 0.5rem; width: 100%;">
+                <input type="password" placeholder="Create password" required style="margin-bottom: 0.5rem; width: 100%;">
+                <button type="submit">Create Free Account + Get $10 Off</button>
             </form>
         </div>
     </section>
@@ -554,10 +558,11 @@
     </footer>
 
     <script>
-        // Simple form handling
+        // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Thanks! Your $10 discount code is: SAVE10');
+            const name = e.target.querySelector('input[type="text"]').value;
+            alert(`Welcome ${name}! Your free account is created.\n\nYour $10 discount code: SAVE10\n\nYou can now log back in anytime to continue your courses!`);
         });
 
         // Package button clicks
