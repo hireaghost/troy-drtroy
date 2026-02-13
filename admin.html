@@ -2022,6 +2022,29 @@
         // Make it available globally for debugging
         window.clearRateLimit = clearRateLimit;
         
+        // Emergency access function (for debugging only)
+        function emergencyAccess() {
+            console.log('🚨 EMERGENCY ACCESS ACTIVATED');
+            localStorage.removeItem('adminLoginAttempts');
+            localStorage.removeItem('adminSession');
+            loginAttempts = [];
+            
+            // Create emergency session
+            const session = {
+                user: { id: 'admin_001', username: 'troyhounshell', role: 'admin' },
+                timestamp: new Date().toISOString(),
+                expires: new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString(),
+                fingerprint: btoa(navigator.userAgent.substring(0, 50))
+            };
+            localStorage.setItem('adminSession', JSON.stringify(session));
+            
+            console.log('✅ Emergency access granted - refreshing page...');
+            window.location.reload();
+        }
+        
+        // Make it available globally for emergency use
+        window.emergencyAccess = emergencyAccess;
+        
         // Get stored credentials (allows password changes)
         function getStoredCredentials() {
             const stored = localStorage.getItem('adminCredentials');
