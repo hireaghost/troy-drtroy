@@ -926,7 +926,7 @@
                 <a href="#packages">Packages</a>
                 <a href="courses.html">Course Catalog</a>
                 <a href="#about">About</a>
-                <a href="#contact-anchor">Contact</a>
+                <a href="#" onclick="scrollToContact(); return false;">Contact</a>
                 <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
@@ -1146,9 +1146,6 @@
         </div>
     </section>
 
-    <!-- Contact scroll anchor positioned exactly where we want the scroll to land -->
-    <div id="contact-anchor" style="position: relative; top: -120px; visibility: hidden;"></div>
-    
     <section class="contact" id="contact">
         <div class="contact-container">
             <h2>Send Us a Message</h2>
@@ -2232,6 +2229,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             generateCaptcha();
         });
+
+        // Custom scroll function for Contact section
+        function scrollToContact() {
+            const contactSection = document.getElementById('contact');
+            const contactHeading = contactSection.querySelector('h2'); // "Send Us a Message" heading
+            
+            if (contactHeading) {
+                const headerHeight = 150; // Account for sticky header
+                const targetPosition = contactHeading.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
     </script>
 
     <!-- Duplicate footer removed -->
