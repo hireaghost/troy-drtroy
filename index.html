@@ -654,6 +654,82 @@
         #resetEmail:hover {
             border-color: #9ca3af !important;
         }
+
+        /* Checkout Modal Styling */
+        .checkout-section {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: 6px;
+        }
+
+        .checkout-section h4 {
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+        }
+
+        .discount-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .discount-input input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
+        .discount-input button {
+            padding: 0.5rem 1rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .price-breakdown {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+
+        .price-total {
+            border-top: 2px solid var(--gold);
+            padding-top: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .discount-success {
+            background: #48bb78;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+
+        .discount-error {
+            background: #f56565;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -880,6 +956,9 @@
     <footer id="contact">
         <p>Troy@DrTroy.com</p>
         <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.7rem; opacity: 0.3;">
+            <a href="admin.html" style="color: inherit; text-decoration: none;">admin</a>
+        </p>
     </footer>
 
     <!-- Custom Modal -->
@@ -1147,6 +1226,145 @@
         // Initialize password validation after DOM loads
         document.addEventListener('DOMContentLoaded', setupPasswordValidation);
 
+        // Checkout Modal Functions
+        function showCheckoutModal(packageName, originalPrice) {
+            const message = `
+                <div style="text-align: left;">
+                    <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--navy);">Checkout - ${packageName}</h3>
+                    
+                    <div class="checkout-section">
+                        <h4>Have a discount code?</h4>
+                        <div class="discount-input">
+                            <input type="text" id="discountCode" placeholder="Enter code" style="text-transform: uppercase;">
+                            <button onclick="applyDiscountCode('${packageName}', ${originalPrice})">Apply</button>
+                        </div>
+                        <div id="discountResult"></div>
+                    </div>
+                    
+                    <div class="price-breakdown">
+                        <div class="price-line">
+                            <span>Package:</span>
+                            <span>$${originalPrice}</span>
+                        </div>
+                        <div class="price-line" id="discountLine" style="display: none;">
+                            <span id="discountLabel">Discount:</span>
+                            <span id="discountAmount">-$0</span>
+                        </div>
+                        <div class="price-line price-total">
+                            <span>Total:</span>
+                            <span id="finalPrice">$${originalPrice}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const buttons = `
+                <button class="modal-btn modal-btn-primary" onclick="proceedToPayment('${packageName}', ${originalPrice})">Complete Purchase</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Cancel</button>
+            `;
+            
+            showModal('Checkout', message, false, buttons);
+        }
+
+        function applyDiscountCode(packageName, originalPrice) {
+            const codeInput = document.getElementById('discountCode');
+            const code = codeInput.value.trim().toUpperCase();
+            const resultDiv = document.getElementById('discountResult');
+            
+            if (!code) {
+                resultDiv.innerHTML = '<div class="discount-error">Please enter a discount code</div>';
+                return;
+            }
+            
+            // Check employee codes first
+            const employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
+            const employeeCode = employeeCodes.find(c => c.code === code && c.status === 'active');
+            
+            if (employeeCode) {
+                // Validate package type matches
+                const packageTypes = {
+                    'Physical Therapists': 'PT',
+                    'PT Assistants': 'PTA', 
+                    'Occupational Therapists': 'OT',
+                    'OT Assistants': 'COTA'
+                };
+                
+                if (packageTypes[packageName] === employeeCode.packageType) {
+                    // Valid employee code - 100% discount
+                    resultDiv.innerHTML = '<div class="discount-success">✓ Employee code applied - FREE access!</div>';
+                    updatePriceDisplay(originalPrice, originalPrice, 'Employee Discount');
+                    // Mark code as used (in real app, this would be server-side)
+                    employeeCode.status = 'used';
+                    employeeCode.usedOn = new Date().toISOString();
+                    localStorage.setItem('employeeCodes', JSON.stringify(employeeCodes));
+                    return;
+                } else {
+                    resultDiv.innerHTML = '<div class="discount-error">This code is for a different package type</div>';
+                    return;
+                }
+            }
+            
+            // Check regular discount codes
+            if (code === 'SAVE10') {
+                resultDiv.innerHTML = '<div class="discount-success">✓ $10 discount applied!</div>';
+                updatePriceDisplay(originalPrice, 10, 'SAVE10 Discount');
+                return;
+            }
+            
+            // Invalid code
+            resultDiv.innerHTML = '<div class="discount-error">Invalid discount code</div>';
+        }
+
+        function updatePriceDisplay(originalPrice, discountAmount, discountLabel) {
+            const discountLine = document.getElementById('discountLine');
+            const discountLabelEl = document.getElementById('discountLabel');
+            const discountAmountEl = document.getElementById('discountAmount');
+            const finalPriceEl = document.getElementById('finalPrice');
+            
+            if (discountAmount > 0) {
+                discountLine.style.display = 'flex';
+                discountLabelEl.textContent = discountLabel + ':';
+                discountAmountEl.textContent = '-$' + discountAmount;
+                
+                const finalPrice = Math.max(0, originalPrice - discountAmount);
+                finalPriceEl.textContent = finalPrice === 0 ? 'FREE' : '$' + finalPrice;
+            } else {
+                discountLine.style.display = 'none';
+                finalPriceEl.textContent = '$' + originalPrice;
+            }
+        }
+
+        function proceedToPayment(packageName, originalPrice) {
+            const finalPriceEl = document.getElementById('finalPrice');
+            const finalPrice = finalPriceEl.textContent;
+            
+            if (finalPrice === 'FREE') {
+                showModal('Access Granted!', `
+                    <div style="text-align: center;">
+                        <h3 style="color: var(--navy); margin-bottom: 1rem;">Welcome to ${packageName}!</h3>
+                        <p style="margin-bottom: 1rem;">Your employee discount has been applied.</p>
+                        <div style="background: var(--gray-100); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                            <h4 style="margin-bottom: 1rem;">You now have access to:</h4>
+                            <ul style="text-align: left; margin: 0; padding-left: 1.2rem;">
+                                <li>All CE courses in your package</li>
+                                <li>Downloadable certificates</li>
+                                <li>Progress tracking</li>
+                                <li>24/7 course access</li>
+                            </ul>
+                        </div>
+                        <p style="color: var(--gray-600); font-size: 0.9rem;">Course access functionality coming soon!</p>
+                    </div>
+                `, true);
+            } else {
+                showModal('Proceed to Payment', `
+                    <div style="text-align: center;">
+                        <p style="margin-bottom: 1rem;">Final amount: <strong>${finalPrice}</strong></p>
+                        <p style="color: var(--gray-600);">Payment processing would be integrated here with Stripe, PayPal, or another payment provider.</p>
+                    </div>
+                `, true);
+            }
+        }
+
         // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1200,18 +1418,13 @@
                 
                 // Show checkout after a delay
                 setTimeout(() => {
-                    const finalPrice = packageData.price - 10;
-                    const checkoutMessage = `
-                        <div style="text-align: center;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">${packageData.name}</h3>
-                            <div style="background: rgba(255,255,255,0.8); padding: 1.5rem; border-radius: 8px;">
-                                <p style="font-size: 1.1rem;">Original Price: $${packageData.price}</p>
-                                <p style="font-size: 1.1rem; color: #e53e3e;"><strong>Discount: -$10</strong></p>
-                                <p style="font-size: 1.3rem; font-weight: bold; color: var(--navy); border-top: 2px solid var(--gold); padding-top: 0.5rem; margin-top: 0.5rem;">Final Price: $${finalPrice}</p>
-                            </div>
-                        </div>
-                    `;
-                    showModal('Ready to Checkout', checkoutMessage, true);
+                    closeModal();
+                    showCheckoutModal(packageData.name, packageData.price);
+                    // Auto-apply the SAVE10 discount
+                    setTimeout(() => {
+                        document.getElementById('discountCode').value = 'SAVE10';
+                        applyDiscountCode(packageData.name, packageData.price);
+                    }, 500);
                 }, 2000);
             } else {
                 const message = `
@@ -1240,8 +1453,8 @@
                 const hasAccount = localStorage.getItem('drtroyAccount');
                 
                 if (hasAccount) {
-                    // Proceed to checkout
-                    showModal('Ready to Go!', `Great! Proceeding to checkout for ${packageName} package ($${price})`, true);
+                    // Proceed to checkout - ask for discount code
+                    showCheckoutModal(packageName, price);
                 } else {
                     // Prompt to create account
                     const message = `

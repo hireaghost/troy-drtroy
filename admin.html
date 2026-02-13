@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrTroy Admin Panel - Discount Codes</title>
+    <style>
+        :root {
+            --navy: #2c3e50;
+            --gold: #d69e2e;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gray-50);
+            color: var(--navy);
+        }
+
+        .header {
+            background: var(--navy);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+        }
+
+        .back-link {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background: #c53030;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .codes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .codes-table th,
+        .codes-table td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .codes-table th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .status-active {
+            background: #48bb78;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-used {
+            background: var(--gray-600);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--navy);
+            background: var(--gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--navy);
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DrTroy Admin Panel</h1>
+        <a href="index.html" class="back-link">← Back to Website</a>
+    </div>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCodes">0</div>
+                <div class="stat-label">Total Codes Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeCodes">0</div>
+                <div class="stat-label">Active Codes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="usedCodes">0</div>
+                <div class="stat-label">Used Codes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSavings">$0</div>
+                <div class="stat-label">Total Employee Savings</div>
+            </div>
+        </div>
+
+        <div class="admin-card">
+            <div class="card-header">
+                <h2 class="card-title">Create Employee Discount Code</h2>
+            </div>
+            
+            <form id="createCodeForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Employee Name</label>
+                        <input type="text" id="employeeName" class="form-input" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Package Type</label>
+                        <select id="packageType" class="form-input" required>
+                            <option value="">Select package</option>
+                            <option value="PT">Physical Therapists ($109)</option>
+                            <option value="PTA">PT Assistants ($89)</option>
+                            <option value="OT">Occupational Therapists ($109)</option>
+                            <option value="COTA">OT Assistants ($89)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Notes (Optional)</label>
+                    <input type="text" id="codeNotes" class="form-input" placeholder="Department, position, etc.">
+                </div>
+                
+                <button type="submit" class="btn-primary">Generate Free Access Code</button>
+            </form>
+        </div>
+
+        <div class="admin-card">
+            <div class="card-header">
+                <h2 class="card-title">Active Employee Codes</h2>
+            </div>
+            
+            <table class="codes-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Employee Name</th>
+                        <th>Package</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Used On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="codesTableBody">
+                    <!-- Codes will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal for code creation -->
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-content">
+            <div class="modal-header">Code Created Successfully!</div>
+            <div id="modalBody">
+                <p style="margin-bottom: 1rem;">Employee discount code generated:</p>
+                <div style="background: var(--gray-100); padding: 1rem; border-radius: 6px; text-align: center; margin: 1rem 0;">
+                    <div id="generatedCode" style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold; color: var(--navy);"></div>
+                </div>
+                <p style="color: var(--gray-600); font-size: 0.9rem; text-align: center;">
+                    This code can only be used once and will give 100% discount on the selected package.
+                </p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="copyCodeToClipboard()">Copy Code</button>
+                <button class="btn-primary" onclick="closeModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load existing codes from localStorage
+        let employeeCodes = JSON.parse(localStorage.getItem('employeeCodes') || '[]');
+
+        function generateRandomCode() {
+            // Generate format: TTPPPP-NNNN (TT = package type, PPPP = random letters, NNNN = random numbers)
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            
+            let code = '';
+            // Add 4 random letters
+            for (let i = 0; i < 4; i++) {
+                code += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            code += '-';
+            // Add 4 random numbers
+            for (let i = 0; i < 4; i++) {
+                code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+            }
+            
+            return code;
+        }
+
+        function saveCodesAndUpdateStats() {
+            localStorage.setItem('employeeCodes', JSON.stringify(employeeCodes));
+            updateStats();
+            renderCodesTable();
+        }
+
+        function updateStats() {
+            const totalCodes = employeeCodes.length;
+            const activeCodes = employeeCodes.filter(code => code.status === 'active').length;
+            const usedCodes = employeeCodes.filter(code => code.status === 'used').length;
+            const totalSavings = employeeCodes.filter(code => code.status === 'used').reduce((sum, code) => sum + code.originalPrice, 0);
+
+            document.getElementById('totalCodes').textContent = totalCodes;
+            document.getElementById('activeCodes').textContent = activeCodes;
+            document.getElementById('usedCodes').textContent = usedCodes;
+            document.getElementById('totalSavings').textContent = '$' + totalSavings;
+        }
+
+        function renderCodesTable() {
+            const tbody = document.getElementById('codesTableBody');
+            
+            if (employeeCodes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--gray-600); padding: 2rem;">No codes created yet</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = employeeCodes.map(code => `
+                <tr>
+                    <td><span class="code-display">${code.code}</span></td>
+                    <td>${code.employeeName}</td>
+                    <td>${code.packageDisplay}</td>
+                    <td>${new Date(code.created).toLocaleDateString()}</td>
+                    <td><span class="status-${code.status}">${code.status.toUpperCase()}</span></td>
+                    <td>${code.usedOn ? new Date(code.usedOn).toLocaleDateString() : '-'}</td>
+                    <td>
+                        ${code.status === 'active' ? 
+                            `<button class="btn-danger" onclick="deactivateCode('${code.code}')">Deactivate</button>` : 
+                            '-'
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deactivateCode(codeToDeactivate) {
+            if (confirm('Are you sure you want to deactivate this code? This cannot be undone.')) {
+                const code = employeeCodes.find(c => c.code === codeToDeactivate);
+                if (code) {
+                    code.status = 'deactivated';
+                    saveCodesAndUpdateStats();
+                }
+            }
+        }
+
+        // Form submission
+        document.getElementById('createCodeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const employeeName = document.getElementById('employeeName').value.trim();
+            const packageType = document.getElementById('packageType').value;
+            const notes = document.getElementById('codeNotes').value.trim();
+
+            if (!employeeName || !packageType) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const packagePrices = {
+                'PT': { price: 109, display: 'Physical Therapists ($109)' },
+                'PTA': { price: 89, display: 'PT Assistants ($89)' },
+                'OT': { price: 109, display: 'Occupational Therapists ($109)' },
+                'COTA': { price: 89, display: 'OT Assistants ($89)' }
+            };
+
+            const newCode = {
+                code: packageType + generateRandomCode(),
+                employeeName: employeeName,
+                packageType: packageType,
+                packageDisplay: packagePrices[packageType].display,
+                originalPrice: packagePrices[packageType].price,
+                notes: notes,
+                created: new Date().toISOString(),
+                status: 'active',
+                usedOn: null
+            };
+
+            employeeCodes.unshift(newCode); // Add to beginning of array
+            saveCodesAndUpdateStats();
+
+            // Show success modal
+            document.getElementById('generatedCode').textContent = newCode.code;
+            document.getElementById('codeModal').classList.add('show');
+
+            // Clear form
+            document.getElementById('createCodeForm').reset();
+        });
+
+        function closeModal() {
+            document.getElementById('codeModal').classList.remove('show');
+        }
+
+        function copyCodeToClipboard() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(function() {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('codeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Initialize page
+        updateStats();
+        renderCodesTable();
+    </script>
+</body>
+</html>
