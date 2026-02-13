@@ -70,6 +70,21 @@
             color: var(--navy);
         }
 
+        .login-link {
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .login-link:hover {
+            background: #f6d55c !important;
+            color: var(--navy) !important;
+            transform: translateY(-2px) !important;
+        }
+
         .page-header {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
             color: white;
@@ -256,6 +271,7 @@
                 <a href="index.html">Home</a>
                 <a href="courses.html">Courses</a>
                 <a href="index.html#contact">Contact</a>
+                <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
     </header>
@@ -477,5 +493,14 @@
         <p>Troy@DrTroy.com</p>
         <p style="margin-top: 0.5rem;">© 2026 DrTroy Continuing Education</p>
     </footer>
+
+    <script>
+        // Login link handler - redirect to homepage with login modal
+        document.getElementById('loginLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirect to home page and open login modal
+            window.location.href = 'index.html?login=true';
+        });
+    </script>
 </body>
 </html>

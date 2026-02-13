@@ -71,6 +71,21 @@
             color: var(--navy);
         }
 
+        .login-link {
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .login-link:hover {
+            background: #f6d55c !important;
+            color: var(--navy) !important;
+            transform: translateY(-2px) !important;
+        }
+
         /* Hero */
         .hero {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
@@ -446,13 +461,30 @@
             
             .header-container {
                 padding: 1.5rem 1rem 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav {
+                margin-top: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            nav a {
+                margin: 0;
+                font-size: 0.9rem;
+            }
+            
+            .login-link {
+                padding: 0.4rem 0.8rem !important;
+                font-size: 0.9rem !important;
             }
             
             .hero h1 {
                 font-size: 2rem;
-            }
-            nav {
-                display: none;
             }
             .package-grid {
                 grid-template-columns: 1fr;
@@ -596,6 +628,7 @@
                 <a href="courses.html">Course Catalog</a>
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
+                <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
     </header>
@@ -817,6 +850,34 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">Welcome Back!</div>
+            <div class="modal-body">
+                <form id="loginForm" style="text-align: left;">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Email</label>
+                        <input type="email" id="loginEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Password</label>
+                        <input type="password" id="loginPassword" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-primary" onclick="handleLogin()">Log In</button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeLoginModal()">Cancel</button>
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--gray-200);">
+                <p style="margin-bottom: 1rem; color: var(--gray-600);">Don't have an account yet?</p>
+                <button class="modal-btn modal-btn-secondary" onclick="showCreateAccountFromLogin()" style="margin-right: 0.5rem;">Create Account</button>
+                <button class="modal-btn modal-btn-secondary" onclick="showForgotPassword()">Forgot Password?</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Custom Modal Functions
         function showModal(title, message, isSuccess = false, buttons = null) {
@@ -858,6 +919,12 @@
             }
         });
         
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+        
         // Handle create account from package selection
         function createAccountNow(packageName, price) {
             // Store the selected package for after account creation
@@ -883,6 +950,128 @@
                 optinSection.style.borderRadius = '';
             }, 3000);
         }
+
+        // Login Modal Functions
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            // Clear form
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+        
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showModal('Missing Information', 'Please enter both email and password.');
+                return;
+            }
+            
+            // Check if account exists (in real app, this would be server-side)
+            const existingAccount = localStorage.getItem('drtroyAccount');
+            
+            if (existingAccount) {
+                const account = JSON.parse(existingAccount);
+                if (account.email === email) {
+                    // Successful login
+                    closeLoginModal();
+                    showUserDashboard(account);
+                    return;
+                }
+            }
+            
+            // Login failed
+            showModal('Login Failed', 'Email or password is incorrect. Please try again or create a new account.');
+        }
+        
+        function showUserDashboard(account) {
+            const message = `
+                <div style="text-align: center;">
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">Welcome back, ${account.firstName}!</h3>
+                    <div style="text-align: left; background: rgba(255,255,255,0.8); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                        <h4 style="margin-bottom: 1rem; color: var(--navy);">Your Dashboard:</h4>
+                        <ul style="margin: 0; padding-left: 1.2rem;">
+                            <li style="margin: 0.5rem 0;">📚 Continue your courses</li>
+                            <li style="margin: 0.5rem 0;">📜 Download certificates</li>
+                            <li style="margin: 0.5rem 0;">📊 View progress history</li>
+                            <li style="margin: 0.5rem 0;">⚙️ Update account settings</li>
+                        </ul>
+                    </div>
+                    <p style="color: var(--gray-600); font-size: 0.9rem;">Dashboard functionality coming soon!</p>
+                </div>
+            `;
+            
+            showModal('Your DrTroy Dashboard', message, true);
+        }
+        
+        function showCreateAccountFromLogin() {
+            closeLoginModal();
+            // Scroll to account creation section
+            document.querySelector('.optin').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+            
+            // Highlight the account creation form
+            const optinSection = document.querySelector('.optin');
+            optinSection.style.border = '3px solid #d69e2e';
+            optinSection.style.borderRadius = '8px';
+            setTimeout(() => {
+                optinSection.style.border = '';
+                optinSection.style.borderRadius = '';
+            }, 3000);
+        }
+        
+        function showForgotPassword() {
+            const message = `
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 1.5rem;">Enter your email address and we'll send you a password reset link.</p>
+                    <form id="forgotPasswordForm" style="text-align: left;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--navy);">Email Address</label>
+                        <input type="email" id="resetEmail" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--gray-200); border-radius: 6px; font-size: 1rem; margin-bottom: 1rem;">
+                    </form>
+                </div>
+            `;
+            
+            const buttons = `
+                <button class="modal-btn modal-btn-primary" onclick="sendPasswordReset()">Send Reset Link</button>
+                <button class="modal-btn modal-btn-secondary" onclick="showLoginModal(); closeModal();">Back to Login</button>
+            `;
+            
+            showModal('Reset Your Password', message, false, buttons);
+        }
+        
+        function sendPasswordReset() {
+            const email = document.getElementById('resetEmail').value;
+            if (!email) {
+                showModal('Missing Email', 'Please enter your email address.');
+                return;
+            }
+            
+            // In real app, this would send actual reset email
+            showModal('Reset Link Sent!', `Password reset instructions have been sent to ${email}. Check your inbox and spam folder.`, true);
+        }
+        
+        // Login link handler
+        document.getElementById('loginLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoginModal();
+        });
+
+        // Check for login parameter on page load
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'true') {
+                setTimeout(() => {
+                    showLoginModal();
+                }, 500); // Small delay for page to load completely
+            }
+        });
 
         // Account creation form handling
         document.querySelector('.optin-form').addEventListener('submit', function(e) {
