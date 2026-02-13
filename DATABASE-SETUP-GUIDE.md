@@ -183,7 +183,16 @@ Analytics: Google Analytics + Custom dashboard
 
 ## 📊 What You Get Immediately
 
-### Real Analytics Dashboard
+### Essential Metrics Dashboard (START HERE)
+- **Monthly Revenue** - Your north star metric
+- **Total Customers** - Growing user base
+- **Conversion Rate** - Visitors to buyers percentage  
+- **Package Performance** - PT vs OT vs PTA vs COTA sales
+- **Top Discount Codes** - Which promotions work best
+- **Course Completion Rate** - Product quality indicator
+- **Quick Action Buttons** - One-click optimization suggestions
+
+### Advanced Analytics Dashboard  
 - **Revenue tracking:** Every purchase automatically recorded
 - **Customer insights:** Demographics, behavior, retention
 - **Conversion funnels:** Signup → purchase → completion

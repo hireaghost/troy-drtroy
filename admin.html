@@ -414,6 +414,20 @@
             border-bottom-color: var(--gold);
         }
 
+        .analytics-tab.advanced-tab {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        .analytics-tab.advanced-tab:hover {
+            color: var(--gray-700);
+        }
+
+        .analytics-tab.advanced-tab.active {
+            color: var(--navy);
+            border-bottom-color: var(--gray-400);
+        }
+
         .analytics-tab-content {
             display: none;
         }
@@ -434,6 +448,44 @@
             border: 1px solid var(--gray-200);
             border-radius: 8px;
             padding: 1.5rem;
+        }
+
+        .priority-card {
+            border: 2px solid var(--gold);
+            background: linear-gradient(135deg, #fef5e7 0%, #fff8f0 100%);
+        }
+
+        .priority-card h4 {
+            color: var(--navy);
+        }
+
+        .action-card {
+            background: linear-gradient(135deg, #e6fffa 0%, #f0fdfa 100%);
+            border: 2px solid #4fd1c7;
+        }
+
+        .metric-item.priority-high {
+            background: rgba(214, 158, 46, 0.1);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .quick-action-btn {
+            background: linear-gradient(135deg, var(--navy) 0%, #34495e 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
         }
 
         .analytics-card h4 {
@@ -665,15 +717,209 @@
                 <div id="analyticsSection" style="display: none;">
                     <!-- Analytics Tabs -->
                     <div class="analytics-tabs">
-                        <button class="analytics-tab active" onclick="switchAnalyticsTab('overview')">Overview</button>
+                        <button class="analytics-tab active" onclick="switchAnalyticsTab('essential')">Essential Metrics</button>
                         <button class="analytics-tab" onclick="switchAnalyticsTab('revenue')">Revenue</button>
                         <button class="analytics-tab" onclick="switchAnalyticsTab('customers')">Customers</button>
                         <button class="analytics-tab" onclick="switchAnalyticsTab('marketing')">Marketing</button>
                         <button class="analytics-tab" onclick="switchAnalyticsTab('operations')">Operations</button>
+                        <button class="analytics-tab advanced-tab" onclick="switchAnalyticsTab('advanced')">Advanced</button>
                     </div>
 
-                    <!-- Overview Tab -->
-                    <div id="overviewTab" class="analytics-tab-content active">
+                    <!-- Essential Metrics Tab -->
+                    <div id="essentialTab" class="analytics-tab-content active">
+                        <div class="priority-notice" style="background: linear-gradient(135deg, var(--gold) 0%, #f6d55c 100%); color: var(--navy); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; font-weight: 600;">
+                            🎯 <strong>START HERE:</strong> Focus on these core metrics first. Master these before diving into advanced analytics.
+                        </div>
+                        
+                        <div class="analytics-grid">
+                            <!-- Core Business Health -->
+                            <div class="analytics-card priority-card">
+                                <h4>💰 Revenue (Most Important)</h4>
+                                <div class="metric-item priority-high">
+                                    <span>Monthly Revenue:</span>
+                                    <span id="essentialMRR">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Average Order Value:</span>
+                                    <span id="essentialAOV">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Growth Rate (MoM):</span>
+                                    <span id="essentialGrowth">0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Customer Essentials -->
+                            <div class="analytics-card priority-card">
+                                <h4>👥 Customers (Critical)</h4>
+                                <div class="metric-item priority-high">
+                                    <span>Total Customers:</span>
+                                    <span id="essentialCustomers">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>New This Month:</span>
+                                    <span id="essentialNewCustomers">0</span>
+                                </div>
+                                <div class="metric-item priority-high">
+                                    <span>Conversion Rate:</span>
+                                    <span id="essentialConversion">0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Package Performance -->
+                            <div class="analytics-card">
+                                <h4>📚 Package Sales</h4>
+                                <div class="metric-item">
+                                    <span>Most Popular:</span>
+                                    <span id="essentialTopPackage">PT ($109)</span>
+                                </div>
+                                <div class="profession-breakdown">
+                                    <div class="prof-item">PT: <span id="essentialPTSales">0</span></div>
+                                    <div class="prof-item">PTA: <span id="essentialPTASales">0</span></div>
+                                    <div class="prof-item">OT: <span id="essentialOTSales">0</span></div>
+                                    <div class="prof-item">COTA: <span id="essentialCOTASales">0</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Marketing Essentials -->
+                            <div class="analytics-card">
+                                <h4>🎯 Marketing Performance</h4>
+                                <div class="metric-item">
+                                    <span>Best Performing Code:</span>
+                                    <span id="essentialTopCode">None</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Code Usage Rate:</span>
+                                    <span id="essentialCodeUsage">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Avg Discount Given:</span>
+                                    <span id="essentialAvgDiscount">$0</span>
+                                </div>
+                            </div>
+
+                            <!-- Key Health Indicators -->
+                            <div class="analytics-card">
+                                <h4>🏥 Business Health</h4>
+                                <div class="metric-item">
+                                    <span>Course Completion Rate:</span>
+                                    <span id="essentialCompletion">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Satisfaction:</span>
+                                    <span id="essentialSatisfaction">4.8/5</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Refund Rate:</span>
+                                    <span id="essentialRefunds">0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="analytics-card action-card">
+                                <h4>⚡ Quick Actions</h4>
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <button class="quick-action-btn" onclick="focusOnConversion()">🎯 Improve Conversion Rate</button>
+                                    <button class="quick-action-btn" onclick="analyzeTopCodes()">💰 Analyze Best Codes</button>
+                                    <button class="quick-action-btn" onclick="reviewPackagePerformance()">📊 Review Package Mix</button>
+                                    <button class="quick-action-btn" onclick="checkCustomerFeedback()">💬 Check Customer Feedback</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Analytics Tab (Previous Overview) -->
+                    <div id="advancedTab" class="analytics-tab-content">
+                        <div class="advanced-notice" style="background: var(--gray-100); border: 1px solid var(--gray-200); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; color: var(--gray-600);">
+                            📈 <strong>Advanced Metrics:</strong> Comprehensive analytics for deep business insights. Use these once you've mastered the Essential Metrics.
+                        </div>
+                        
+                        <div class="analytics-grid">
+                            <!-- Detailed Revenue Health -->
+                            <div class="analytics-card">
+                                <h4>📈 Advanced Revenue Health</h4>
+                                <div class="metric-item">
+                                    <span>Revenue per Customer:</span>
+                                    <span id="revenuePerCustomer">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Lifetime Value:</span>
+                                    <span id="customerLTV">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Acquisition Cost:</span>
+                                    <span id="customerCAC">$0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>CLV:CAC Ratio:</span>
+                                    <span id="clvCacRatio">0:1</span>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Customer Metrics -->
+                            <div class="analytics-card">
+                                <h4>👥 Advanced Customer Health</h4>
+                                <div class="metric-item">
+                                    <span>Website Visitors (30d):</span>
+                                    <span id="websiteVisitors">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Account Signups:</span>
+                                    <span id="accountSignups">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Customer Retention Rate:</span>
+                                    <span id="retentionRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Net Promoter Score:</span>
+                                    <span id="netPromoterScore">0</span>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Performance -->
+                            <div class="analytics-card">
+                                <h4>🏆 Advanced Performance</h4>
+                                <div class="metric-item">
+                                    <span>Course Completion Rate:</span>
+                                    <span id="completionRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Refund Rate:</span>
+                                    <span id="refundRate">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Support Satisfaction:</span>
+                                    <span id="supportSatisfaction">4.8/5</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Market Share (TX):</span>
+                                    <span id="marketShare">0%</span>
+                                </div>
+                            </div>
+
+                            <!-- Technical Metrics -->
+                            <div class="analytics-card">
+                                <h4>⚡ Technical Performance</h4>
+                                <div class="metric-item">
+                                    <span>Website Uptime:</span>
+                                    <span id="websiteUptime">99.9%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Page Load Speed:</span>
+                                    <span id="pageLoadSpeed">2.1s</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Error Rate:</span>
+                                    <span id="errorRate">0.1%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span>API Response Time:</span>
+                                    <span id="apiResponseTime">150ms</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <div class="analytics-grid">
                             <!-- Revenue Metrics -->
                             <div class="analytics-card">
@@ -1505,13 +1751,37 @@
             
             // Update relevant analytics for the tab
             updateAllAnalytics();
+            
+            // Show helpful message for essential metrics
+            if (tabName === 'essential') {
+                console.log('📊 Essential Metrics loaded - Focus on Revenue, Customers, and Conversion Rate');
+            }
         }
 
         function updateAllAnalytics() {
             // Generate comprehensive analytics data
             const analytics = generateComprehensiveAnalytics();
             
-            // Overview Tab Metrics
+            // Essential Tab Metrics (Most Important)
+            updateElement('essentialMRR', '$' + analytics.monthlyRevenue.toLocaleString());
+            updateElement('essentialAOV', '$' + analytics.avgOrderValue);
+            updateElement('essentialGrowth', analytics.growthRate + '%');
+            updateElement('essentialCustomers', analytics.totalCustomers.toLocaleString());
+            updateElement('essentialNewCustomers', analytics.newCustomers);
+            updateElement('essentialConversion', analytics.conversionRate + '%');
+            updateElement('essentialTopPackage', analytics.topPackage);
+            updateElement('essentialPTSales', analytics.packageSales?.PT || 0);
+            updateElement('essentialPTASales', analytics.packageSales?.PTA || 0);
+            updateElement('essentialOTSales', analytics.packageSales?.OT || 0);
+            updateElement('essentialCOTASales', analytics.packageSales?.COTA || 0);
+            updateElement('essentialTopCode', analytics.topCode || 'None');
+            updateElement('essentialCodeUsage', analytics.codeConversion + '%');
+            updateElement('essentialAvgDiscount', '$' + analytics.avgDiscount);
+            updateElement('essentialCompletion', analytics.courseCompletionRate + '%');
+            updateElement('essentialSatisfaction', analytics.supportSatisfaction + '/5');
+            updateElement('essentialRefunds', analytics.refundRate + '%');
+            
+            // Advanced Tab Metrics (Previous Overview)
             updateElement('monthlyRevenue', '$' + analytics.monthlyRevenue.toLocaleString());
             updateElement('avgOrderValue', '$' + analytics.avgOrderValue);
             updateElement('growthRate', analytics.growthRate + '%');
@@ -1827,6 +2097,83 @@
             }
             
             return insights.slice(0, 4); // Show top 4 insights
+        }
+
+        // Quick Action Functions
+        function focusOnConversion() {
+            showModal('Conversion Rate Optimization', `
+                <div style="text-align: left;">
+                    <h4 style="color: var(--navy); margin-bottom: 1rem;">🎯 Improve Your Conversion Rate</h4>
+                    <div style="background: var(--gray-50); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <strong>Quick Wins:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Add customer testimonials to homepage</li>
+                            <li>Create urgency with "Limited time" messaging</li>
+                            <li>Simplify checkout process</li>
+                            <li>A/B testing different pricing displays</li>
+                        </ul>
+                    </div>
+                    <div style="background: #e6fffa; padding: 1rem; border-radius: 6px; border-left: 4px solid #4fd1c7;">
+                        <strong>Current Status:</strong> Monitor conversion rate in Essential Metrics daily
+                    </div>
+                </div>
+            `, true);
+        }
+
+        function analyzeTopCodes() {
+            showModal('Discount Code Analysis', `
+                <div style="text-align: left;">
+                    <h4 style="color: var(--navy); margin-bottom: 1rem;">💰 Analyze Your Best Performing Codes</h4>
+                    <div style="background: var(--gray-50); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <strong>Action Items:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Identify which codes drive most sales</li>
+                            <li>Calculate ROI for each promotional code</li>
+                            <li>Create similar codes for successful patterns</li>
+                            <li>Remove or modify underperforming codes</li>
+                        </ul>
+                    </div>
+                    <p><strong>Next Step:</strong> Check the Marketing tab for detailed code performance metrics</p>
+                </div>
+            `, false);
+        }
+
+        function reviewPackagePerformance() {
+            showModal('Package Performance Review', `
+                <div style="text-align: left;">
+                    <h4 style="color: var(--navy); margin-bottom: 1rem;">📊 Review Package Mix</h4>
+                    <div style="background: var(--gray-50); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <strong>Analysis Points:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Which profession buys most? (Usually PT)</li>
+                            <li>Are you underserving OT/PTA markets?</li>
+                            <li>Should pricing be adjusted per profession?</li>
+                            <li>Geographic trends by profession</li>
+                        </ul>
+                    </div>
+                    <p><strong>Current Focus:</strong> PTs typically dominate sales. Consider targeted OT marketing.</p>
+                </div>
+            `, false);
+        }
+
+        function checkCustomerFeedback() {
+            showModal('Customer Feedback Review', `
+                <div style="text-align: left;">
+                    <h4 style="color: var(--navy); margin-bottom: 1rem;">💬 Customer Feedback Analysis</h4>
+                    <div style="background: var(--gray-50); padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <strong>Feedback Sources:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Course completion surveys</li>
+                            <li>Support ticket sentiment</li>
+                            <li>Email responses and replies</li>
+                            <li>Social media mentions</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fef5e7; padding: 1rem; border-radius: 6px; border-left: 4px solid var(--gold);">
+                        <strong>Key Metric:</strong> Aim for 4.5+ satisfaction score and 85%+ completion rate
+                    </div>
+                </div>
+            `, false);
         }
 
         // Security enhancements
