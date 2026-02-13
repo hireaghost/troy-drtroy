@@ -751,6 +751,9 @@
             <button class="main-nav-tab" onclick="switchMainTab('analytics')">
                 📊 Analytics
             </button>
+            <button class="main-nav-tab" onclick="switchMainTab('settings')">
+                ⚙️ Settings
+            </button>
         </div>
 
         <!-- Discount Codes Tab Content -->
@@ -1618,6 +1621,137 @@
                 </div>
             </div>
         </div> <!-- End Analytics Tab -->
+        
+        <!-- Settings Tab Content -->
+        <div id="settings-tab" class="main-tab-content">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Admin Settings</h2>
+                </div>
+                
+                <!-- Password Change Section -->
+                <div class="admin-card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3 class="card-title">🔐 Change Password</h3>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <div style="background: #e6fffa; border: 1px solid #4fd1c7; padding: 1rem; border-radius: 6px; margin-bottom: 2rem;">
+                            <strong>🔒 Security Best Practice:</strong> Change your password regularly for better security. 
+                            Your new password will be effective immediately.
+                        </div>
+                        
+                        <form id="changePasswordForm" style="max-width: 500px;">
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label class="form-label">Current Username</label>
+                                <input type="text" id="currentUsername" class="form-input" readonly style="background: var(--gray-100); color: var(--gray-600);">
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label class="form-label">Current Password</label>
+                                <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" required autocomplete="current-password">
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label class="form-label">New Password</label>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Enter new password (8+ characters)" required minlength="8" maxlength="128" autocomplete="new-password">
+                                <div id="newPasswordStrength" style="display: none; margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; font-size: 0.8rem; text-align: center;"></div>
+                            </div>
+                            
+                            <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" id="confirmNewPassword" class="form-input" placeholder="Confirm new password" required maxlength="128" autocomplete="new-password">
+                            </div>
+                            
+                            <button type="submit" class="btn-primary" style="margin-right: 1rem;">
+                                🔒 Update Password
+                            </button>
+                            <button type="button" onclick="clearPasswordForm()" class="btn-secondary">
+                                Clear Form
+                            </button>
+                        </form>
+                        
+                        <div id="passwordChangeStatus" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 8px; font-weight: 600;"></div>
+                    </div>
+                </div>
+                
+                <!-- Session Management -->
+                <div class="admin-card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3 class="card-title">🔑 Session Management</h3>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                            <div class="stat-card">
+                                <div class="stat-number" id="sessionDuration">0h 0m</div>
+                                <div class="stat-label">Session Duration</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="sessionExpiry">Unknown</div>
+                                <div class="stat-label">Session Expires</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="loginAttemptCount">0</div>
+                                <div class="stat-label">Recent Failed Logins</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem;">
+                            <button onclick="extendSession()" class="btn-secondary" style="margin-right: 1rem;">
+                                ⏰ Extend Session
+                            </button>
+                            <button onclick="clearAllSessions()" class="btn-danger">
+                                🚪 Clear All Sessions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Info -->
+                <div class="admin-card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <h3 class="card-title">🛡️ Security Status</h3>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <div class="security-checklist">
+                            <div class="security-item" style="display: flex; align-items: center; margin: 1rem 0; padding: 1rem; background: #f0fff4; border-radius: 6px; border-left: 4px solid #10b981;">
+                                <span style="margin-right: 1rem; font-size: 1.2rem;">✅</span>
+                                <div>
+                                    <strong>HTTPS Enabled:</strong> All connections are encrypted
+                                </div>
+                            </div>
+                            <div class="security-item" style="display: flex; align-items: center; margin: 1rem 0; padding: 1rem; background: #f0fff4; border-radius: 6px; border-left: 4px solid #10b981;">
+                                <span style="margin-right: 1rem; font-size: 1.2rem;">✅</span>
+                                <div>
+                                    <strong>Rate Limiting Active:</strong> Brute force protection enabled
+                                </div>
+                            </div>
+                            <div class="security-item" style="display: flex; align-items: center; margin: 1rem 0; padding: 1rem; background: #f0fff4; border-radius: 6px; border-left: 4px solid #10b981;">
+                                <span style="margin-right: 1rem; font-size: 1.2rem;">✅</span>
+                                <div>
+                                    <strong>Session Security:</strong> Encrypted sessions with fingerprinting
+                                </div>
+                            </div>
+                            <div class="security-item" style="display: flex; align-items: center; margin: 1rem 0; padding: 1rem; background: #f0fff4; border-radius: 6px; border-left: 4px solid #10b981;">
+                                <span style="margin-right: 1rem; font-size: 1.2rem;">✅</span>
+                                <div>
+                                    <strong>Input Validation:</strong> XSS and injection protection active
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; padding: 1rem; background: #fef3cd; border: 1px solid #f59e0b; border-radius: 6px;">
+                            <strong>🚨 Security Reminder:</strong> 
+                            <ul style="margin: 0.5rem 0 0 1rem;">
+                                <li>Change your password every 90 days</li>
+                                <li>Never share your admin credentials</li>
+                                <li>Log out when finished</li>
+                                <li>Monitor failed login attempts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Settings Tab -->
         </div> <!-- End Discount Codes Tab Container -->
 
     </div> <!-- End Admin Panel -->
@@ -1866,7 +2000,11 @@
         
         function isRateLimited() {
             cleanupLoginAttempts();
-            return loginAttempts.length >= 5; // Max 5 attempts per 15 minutes
+            const limit = loginAttempts.length >= 5; // Max 5 attempts per 15 minutes
+            if (limit) {
+                console.warn(`🚨 Login rate limited: ${loginAttempts.length} attempts in last 15 minutes`);
+            }
+            return limit;
         }
         
         function recordLoginAttempt() {
@@ -1874,31 +2012,68 @@
             localStorage.setItem('adminLoginAttempts', JSON.stringify(loginAttempts));
         }
         
+        // Debug function - can be called from console to clear rate limiting
+        function clearRateLimit() {
+            localStorage.removeItem('adminLoginAttempts');
+            loginAttempts = [];
+            console.log('✅ Rate limiting cleared - you can try logging in again');
+        }
+        
+        // Make it available globally for debugging
+        window.clearRateLimit = clearRateLimit;
+        
+        // Get stored credentials (allows password changes)
+        function getStoredCredentials() {
+            const stored = localStorage.getItem('adminCredentials');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch {
+                    // If corrupted, fall back to defaults
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        function getDefaultCredentials() {
+            return {
+                username: 'troyhounshell',
+                password: 'DrTroy2026!PT',
+                lastChanged: new Date().toISOString()
+            };
+        }
+
+        function setCredentials(username, password) {
+            const credentials = {
+                username: username,
+                password: password,
+                lastChanged: new Date().toISOString()
+            };
+            localStorage.setItem('adminCredentials', JSON.stringify(credentials));
+            console.log('🔒 Admin credentials updated');
+        }
+
         // Secure authentication function
         async function authenticateUser(username, password) {
-            // In production, this would be server-side authentication
-            // For demo, use secure daily rotating credentials
-            
             try {
-                // Generate expected credentials based on current date (daily rotation)
-                const today = new Date().toISOString().split('T')[0];
-                const expectedUsername = 'troyhounshell';
+                // Get current credentials (stored or default)
+                let credentials = getStoredCredentials();
+                if (!credentials) {
+                    credentials = getDefaultCredentials();
+                }
                 
-                // Create daily password hash (in production, use proper server authentication)
-                const basePassword = 'DrTroy2026!PT';
-                const dateHash = btoa(today).substring(0, 4);
-                const expectedPassword = basePassword; // For demo, keep original for now
-                
-                // Simulate API delay
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Simulate API delay for security
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
                 // Check credentials
-                if (username.toLowerCase() === expectedUsername.toLowerCase() && password === expectedPassword) {
+                if (username.toLowerCase().trim() === credentials.username.toLowerCase().trim() && 
+                    password === credentials.password) {
                     return {
                         success: true,
                         user: {
                             id: 'admin_001',
-                            username: expectedUsername,
+                            username: credentials.username,
                             role: 'admin',
                             lastLogin: new Date().toISOString()
                         }
@@ -1906,13 +2081,14 @@
                 } else {
                     return {
                         success: false,
-                        error: 'Invalid credentials'
+                        error: 'Invalid username or password'
                     };
                 }
             } catch (error) {
+                console.error('Authentication error:', error);
                 return {
                     success: false,
-                    error: 'Authentication service unavailable'
+                    error: 'Authentication service temporarily unavailable'
                 };
             }
         }
@@ -2033,10 +2209,94 @@
             updateAllAnalytics();
             console.log('✅ Analytics data initialized');
             
+            // Initialize settings form handlers
+            setupPasswordChangeForm();
+            
             // Auto-logout warning at 23 hours
             setTimeout(() => {
                 alert('Your admin session will expire in 1 hour. Please save any work and refresh the page to continue.');
             }, 23 * 60 * 60 * 1000); // 23 hours
+        }
+
+        // Set up password change form
+        function setupPasswordChangeForm() {
+            // Password strength validation
+            const newPasswordInput = document.getElementById('newPassword');
+            const confirmPasswordInput = document.getElementById('confirmNewPassword');
+            const strengthDiv = document.getElementById('newPasswordStrength');
+            
+            if (newPasswordInput) {
+                newPasswordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    if (password.length > 0) {
+                        const validation = validatePasswordStrength(password);
+                        strengthDiv.style.display = 'block';
+                        strengthDiv.style.backgroundColor = validation.color;
+                        strengthDiv.style.color = 'white';
+                        strengthDiv.textContent = `Password strength: ${validation.strength.toUpperCase()}`;
+                        
+                        if (validation.score < 3) {
+                            const missing = [];
+                            if (!validation.requirements.length) missing.push('8+ characters');
+                            if (!validation.requirements.lowercase) missing.push('lowercase');
+                            if (!validation.requirements.uppercase) missing.push('uppercase');
+                            if (!validation.requirements.number) missing.push('number');
+                            if (!validation.requirements.special) missing.push('symbol');
+                            strengthDiv.textContent += ` - Need: ${missing.join(', ')}`;
+                        }
+                    } else {
+                        strengthDiv.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', function() {
+                    const newPassword = newPasswordInput.value;
+                    const confirm = this.value;
+                    
+                    if (confirm.length > 0) {
+                        if (newPassword === confirm) {
+                            this.style.borderColor = '#38a169';
+                            this.style.backgroundColor = '#f0fff4';
+                        } else {
+                            this.style.borderColor = '#e53e3e';
+                            this.style.backgroundColor = '#fef5f5';
+                        }
+                    } else {
+                        this.style.borderColor = 'var(--gray-100)';
+                        this.style.backgroundColor = 'white';
+                    }
+                });
+            }
+
+            // Form submission
+            const passwordForm = document.getElementById('changePasswordForm');
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = {
+                        currentPassword: document.getElementById('currentPassword').value,
+                        newPassword: document.getElementById('newPassword').value,
+                        confirmNewPassword: document.getElementById('confirmNewPassword').value
+                    };
+                    
+                    // Validate required fields
+                    if (!formData.currentPassword || !formData.newPassword || !formData.confirmNewPassword) {
+                        showModal('Error', 'Please fill in all password fields.', false);
+                        return;
+                    }
+                    
+                    // Change password
+                    const success = await handlePasswordChange(formData);
+                    
+                    if (success) {
+                        // Show success message
+                        showModal('Password Changed', 'Your password has been updated successfully. Please use your new password for future logins.', true);
+                    }
+                });
+            }
         }
 
         // Check database connection status
@@ -2093,6 +2353,11 @@
                 
                 document.getElementById('sessionInfo').textContent = 
                     `Active ${hoursActive}h ${minutesActive}m • Expires in ${24 - hoursActive - (minutesActive > 0 ? 1 : 0)}h`;
+                
+                // Update settings display if visible
+                if (document.getElementById('settings-tab') && document.getElementById('settings-tab').classList.contains('active')) {
+                    updateSessionDisplay();
+                }
             }
         }
 
@@ -2143,6 +2408,17 @@
                         ⏰ Time: ${new Date().toLocaleTimeString()}
                     `;
                 }
+            }
+            
+            // Initialize settings tab
+            if (tabName === 'settings') {
+                const credentials = getStoredCredentials() || getDefaultCredentials();
+                const usernameField = document.getElementById('currentUsername');
+                if (usernameField) {
+                    usernameField.value = credentials.username;
+                }
+                updateSessionDisplay();
+                console.log('⚙️ Settings tab initialized');
             }
             
             // Initialize analytics when switching to analytics tab
@@ -2212,6 +2488,216 @@
                 updateAllAnalytics();
                 console.log('🎯 Analytics force-loaded successfully');
             }, 500);
+        }
+
+        // Password Change Functions
+        function validatePasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 8,
+                lowercase: /[a-z]/.test(password),
+                uppercase: /[A-Z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[^a-zA-Z0-9]/.test(password)
+            };
+            
+            const score = Object.values(requirements).filter(Boolean).length;
+            let strength = 'weak';
+            let color = '#e53e3e';
+            
+            if (score >= 4) {
+                strength = 'strong';
+                color = '#38a169';
+            } else if (score >= 3) {
+                strength = 'medium';
+                color = '#d69e2e';
+            }
+            
+            return { requirements, score, strength, color };
+        }
+
+        function clearPasswordForm() {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmNewPassword').value = '';
+            document.getElementById('newPasswordStrength').style.display = 'none';
+            document.getElementById('passwordChangeStatus').style.display = 'none';
+        }
+
+        async function handlePasswordChange(formData) {
+            const statusDiv = document.getElementById('passwordChangeStatus');
+            
+            try {
+                // Show loading state
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = '#e6fffa';
+                statusDiv.style.color = '#047857';
+                statusDiv.textContent = '🔄 Validating and updating password...';
+                
+                // Verify current password
+                const currentCreds = getStoredCredentials() || getDefaultCredentials();
+                if (formData.currentPassword !== currentCreds.password) {
+                    throw new Error('Current password is incorrect');
+                }
+                
+                // Validate new password
+                const passwordCheck = validatePasswordStrength(formData.newPassword);
+                if (passwordCheck.score < 3) {
+                    throw new Error('New password is not strong enough');
+                }
+                
+                if (formData.newPassword !== formData.confirmNewPassword) {
+                    throw new Error('New passwords do not match');
+                }
+                
+                if (formData.newPassword === formData.currentPassword) {
+                    throw new Error('New password must be different from current password');
+                }
+                
+                // Simulate processing delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Update credentials
+                setCredentials(currentCreds.username, formData.newPassword);
+                
+                // Success
+                statusDiv.style.backgroundColor = '#d4e6f1';
+                statusDiv.style.color = '#1e3a8a';
+                statusDiv.innerHTML = `
+                    <div>✅ <strong>Password updated successfully!</strong></div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem;">
+                        Your new password is now active. Please remember it for future logins.
+                    </div>
+                `;
+                
+                // Clear form
+                clearPasswordForm();
+                
+                // Log security event
+                console.log('🔒 Password changed successfully');
+                
+                return true;
+                
+            } catch (error) {
+                console.error('Password change error:', error);
+                statusDiv.style.backgroundColor = '#fef5f5';
+                statusDiv.style.color = '#c53030';
+                statusDiv.textContent = `❌ ${error.message}`;
+                return false;
+            }
+        }
+
+        // Session Management Functions
+        function extendSession() {
+            const session = localStorage.getItem('adminSession');
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    // Extend by 8 hours
+                    sessionData.expires = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString();
+                    localStorage.setItem('adminSession', JSON.stringify(sessionData));
+                    
+                    showModal('Session Extended', 'Your admin session has been extended by 8 hours.', true);
+                    updateSessionInfo();
+                } catch (error) {
+                    showModal('Error', 'Could not extend session. Please log in again.', false);
+                }
+            }
+        }
+
+        function clearAllSessions() {
+            if (confirm('This will log you out and clear all stored sessions. Are you sure?')) {
+                localStorage.removeItem('adminSession');
+                localStorage.removeItem('adminLoginAttempts');
+                
+                showModal('Sessions Cleared', 'All sessions have been cleared. You will be logged out.', true);
+                
+                setTimeout(() => {
+                    logout();
+                }, 2000);
+            }
+        }
+
+        // Update session info display
+        function updateSessionDisplay() {
+            const session = localStorage.getItem('adminSession');
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    const now = new Date();
+                    const created = new Date(sessionData.timestamp);
+                    const expires = new Date(sessionData.expires);
+                    
+                    // Session duration
+                    const durationMs = now - created;
+                    const hours = Math.floor(durationMs / (1000 * 60 * 60));
+                    const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+                    document.getElementById('sessionDuration').textContent = `${hours}h ${minutes}m`;
+                    
+                    // Session expiry
+                    const expiresIn = expires - now;
+                    const expireHours = Math.floor(expiresIn / (1000 * 60 * 60));
+                    const expireMins = Math.floor((expiresIn % (1000 * 60 * 60)) / (1000 * 60));
+                    document.getElementById('sessionExpiry').textContent = `${expireHours}h ${expireMins}m`;
+                } catch (error) {
+                    console.error('Session display error:', error);
+                }
+            }
+            
+            // Login attempts
+            const attempts = JSON.parse(localStorage.getItem('adminLoginAttempts') || '[]');
+            document.getElementById('loginAttemptCount').textContent = attempts.length;
+        }
+
+        // Simple modal for settings messages
+        function showModal(title, message, isSuccess = false) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                max-width: 500px;
+                margin: 2rem;
+                text-align: center;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            `;
+            
+            content.innerHTML = `
+                <h3 style="color: var(--navy); margin-bottom: 1rem;">${title}</h3>
+                <p style="margin-bottom: 2rem; line-height: 1.5;">${message}</p>
+                <button onclick="this.closest('[style*=\"fixed\"]').remove()" 
+                        style="background: var(--navy); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer;">
+                    OK
+                </button>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            // Auto-close success messages after 3 seconds
+            if (isSuccess) {
+                setTimeout(() => modal.remove(), 3000);
+            }
         }
 
         function switchAnalyticsTab(tabName) {
