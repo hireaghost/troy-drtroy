@@ -462,7 +462,7 @@
             <!-- Employee Code Form -->
             <div id="employeeForm" class="tab-content active">
                 <div class="code-type-info">
-                    <strong>Employee Codes:</strong> One-time use, 100% discount codes for your staff members.
+                    <strong>Employee Codes:</strong> One-time use discount codes for your staff members and employees.
                 </div>
                 
                 <form id="createEmployeeForm">
@@ -483,9 +483,33 @@
                         </div>
                     </div>
                     
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Discount Type</label>
+                            <select id="empDiscountType" class="form-input" required onchange="updateEmpDiscountFields()">
+                                <option value="free">100% Free</option>
+                                <option value="percentage">Percentage Off</option>
+                                <option value="fixed">Fixed Amount Off</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" id="empDiscountValueLabel">Discount Value</label>
+                            <input type="number" id="empDiscountValue" class="form-input" placeholder="100" min="0" value="100" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Employee Type</label>
+                            <select id="empType" class="form-input">
+                                <option value="staff">Staff Member</option>
+                                <option value="contractor">Contractor</option>
+                                <option value="partner">Partner</option>
+                                <option value="referral">Referral Source</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
                         <label class="form-label">Notes (Optional)</label>
-                        <input type="text" id="empNotes" class="form-input" placeholder="Department, position, etc.">
+                        <input type="text" id="empNotes" class="form-input" placeholder="Department, position, special instructions, etc.">
                     </div>
                     
                     <button type="submit" class="btn-primary">Generate Employee Code</button>
@@ -817,6 +841,37 @@
             }
         }
 
+        // Update employee discount fields
+        function updateEmpDiscountFields() {
+            const discountType = document.getElementById('empDiscountType').value;
+            const discountValue = document.getElementById('empDiscountValue');
+            const label = document.getElementById('empDiscountValueLabel');
+            
+            switch(discountType) {
+                case 'percentage':
+                    label.textContent = 'Percentage (%)';
+                    discountValue.placeholder = '50';
+                    discountValue.max = '100';
+                    discountValue.value = '';
+                    discountValue.disabled = false;
+                    break;
+                case 'fixed':
+                    label.textContent = 'Dollar Amount ($)';
+                    discountValue.placeholder = '25';
+                    discountValue.max = '1000';
+                    discountValue.value = '';
+                    discountValue.disabled = false;
+                    break;
+                case 'free':
+                    label.textContent = 'Discount Value';
+                    discountValue.value = '100';
+                    discountValue.disabled = true;
+                    break;
+                default:
+                    discountValue.disabled = true;
+            }
+        }
+
         function generateRandomCode() {
             // Generate format: TTPPPP-NNNN (TT = package type, PPPP = random letters, NNNN = random numbers)
             const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -852,7 +907,7 @@
             // Calculate total savings from used codes
             const totalSavings = allCodes.filter(code => code.status === 'used').reduce((sum, code) => {
                 if (code.type === 'employee') {
-                    return sum + code.originalPrice;
+                    return sum + (code.estimatedSavingsPerUse || code.originalPrice);
                 } else {
                     // For marketing codes, estimate savings based on usage
                     return sum + (code.totalUsed * (code.estimatedSavingsPerUse || 10));
@@ -862,7 +917,7 @@
             document.getElementById('totalCodes').textContent = totalCodes;
             document.getElementById('activeCodes').textContent = activeCodes;
             document.getElementById('usedCodes').textContent = usedCodes;
-            document.getElementById('totalSavings').textContent = '$' + totalSavings;
+            document.getElementById('totalSavings').textContent = '$' + Math.round(totalSavings);
         }
 
         function renderCodesTable() {
@@ -882,10 +937,15 @@
                 const appliesTo = code.appliesTo === 'all' ? 'All Packages' : code.packageDisplay || code.appliesTo;
                 const expires = code.expiryDate ? new Date(code.expiryDate).toLocaleDateString() : 'Never';
                 
+                // Format type column to show more detail for employee codes
+                const typeDisplay = code.type === 'employee' 
+                    ? `Employee<br><small style="color: var(--gray-600);">${code.employeeName || 'Unknown'}</small>`
+                    : `Marketing<br><small style="color: var(--gray-600);">${code.campaignName || 'General'}</small>`;
+                
                 return `
                     <tr>
                         <td><span class="code-display">${code.code}</span></td>
-                        <td>${code.type === 'employee' ? 'Employee' : 'Marketing'}</td>
+                        <td>${typeDisplay}</td>
                         <td>${discountDisplay}</td>
                         <td>${usesDisplay}</td>
                         <td>${appliesTo}</td>
@@ -903,10 +963,6 @@
         }
 
         function formatDiscountDisplay(code) {
-            if (code.type === 'employee') {
-                return 'FREE';
-            }
-            
             switch(code.discountType) {
                 case 'percentage':
                     return `${code.discountValue}% off`;
@@ -958,10 +1014,19 @@
             
             const employeeName = document.getElementById('employeeName').value.trim();
             const packageType = document.getElementById('empPackageType').value;
+            const discountType = document.getElementById('empDiscountType').value;
+            const discountValue = parseInt(document.getElementById('empDiscountValue').value) || 0;
+            const empType = document.getElementById('empType').value;
             const notes = document.getElementById('empNotes').value.trim();
 
             if (!employeeName || !packageType) {
                 alert('Please fill in all required fields');
+                return;
+            }
+
+            // Validate discount value
+            if (discountType !== 'free' && (!discountValue || discountValue <= 0)) {
+                alert('Please enter a valid discount value');
                 return;
             }
 
@@ -972,20 +1037,30 @@
                 'COTA': { price: 89, display: 'OT Assistants ($89)' }
             };
 
+            const originalPrice = packagePrices[packageType].price;
+            const finalDiscountValue = discountType === 'free' ? 100 : discountValue;
+
             const newCode = {
                 code: packageType + generateRandomCode(),
                 type: 'employee',
                 employeeName: employeeName,
+                empType: empType,
                 packageType: packageType,
                 packageDisplay: packagePrices[packageType].display,
                 appliesTo: packageType,
-                originalPrice: packagePrices[packageType].price,
+                originalPrice: originalPrice,
+                discountType: discountType,
+                discountValue: finalDiscountValue,
                 notes: notes,
                 created: new Date().toISOString(),
                 status: 'active',
                 usedOn: null,
-                discountType: 'free',
-                discountValue: 100
+                // Calculate estimated savings for stats
+                estimatedSavingsPerUse: discountType === 'percentage' 
+                    ? Math.round((originalPrice * finalDiscountValue) / 100)
+                    : discountType === 'fixed' 
+                        ? Math.min(finalDiscountValue, originalPrice)
+                        : originalPrice
             };
 
             employeeCodes.unshift(newCode); // Add to beginning of array
@@ -997,6 +1072,7 @@
 
             // Clear form
             document.getElementById('createEmployeeForm').reset();
+            updateEmpDiscountFields(); // Reset form states
         });
 
         // Marketing Form submission
@@ -1083,10 +1159,11 @@
 
         // All admin functions (moved here to ensure they're available after login)
         
-        // Create some sample marketing codes for demo
+        // Create some sample codes for demo
         function createSampleCodes() {
+            // Create sample marketing codes
             if (marketingCodes && marketingCodes.length === 0) {
-                const sampleCodes = [
+                const sampleMarketingCodes = [
                     {
                         code: 'SPRING25',
                         type: 'marketing',
@@ -1118,8 +1195,34 @@
                     }
                 ];
                 
-                marketingCodes = sampleCodes;
+                marketingCodes = sampleMarketingCodes;
                 localStorage.setItem('marketingCodes', JSON.stringify(marketingCodes));
+            }
+
+            // Create sample employee codes if none exist
+            if (employeeCodes && employeeCodes.length === 0) {
+                const sampleEmployeeCodes = [
+                    {
+                        code: 'PTDEMO-5023',
+                        type: 'employee',
+                        employeeName: 'Sarah Johnson',
+                        empType: 'staff',
+                        packageType: 'PT',
+                        packageDisplay: 'Physical Therapists ($109)',
+                        appliesTo: 'PT',
+                        originalPrice: 109,
+                        discountType: 'percentage',
+                        discountValue: 50,
+                        notes: 'Clinical supervisor - 50% staff discount',
+                        created: new Date().toISOString(),
+                        status: 'active',
+                        usedOn: null,
+                        estimatedSavingsPerUse: 55
+                    }
+                ];
+                
+                employeeCodes = sampleEmployeeCodes;
+                localStorage.setItem('employeeCodes', JSON.stringify(employeeCodes));
             }
         }
     </script>

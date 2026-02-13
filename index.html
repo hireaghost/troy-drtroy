@@ -1290,9 +1290,35 @@
                 };
                 
                 if (packageTypes[packageName] === employeeCode.packageType) {
-                    // Valid employee code - 100% discount
-                    resultDiv.innerHTML = '<div class="discount-success">✓ Employee code applied - FREE access!</div>';
-                    updatePriceDisplay(originalPrice, originalPrice, 'Employee Discount');
+                    // Calculate employee discount amount
+                    let discountAmount = 0;
+                    let discountLabel = 'Employee Discount';
+                    
+                    switch(employeeCode.discountType) {
+                        case 'percentage':
+                            discountAmount = Math.round((originalPrice * employeeCode.discountValue) / 100);
+                            discountLabel = `Employee Discount (${employeeCode.discountValue}% off)`;
+                            break;
+                        case 'fixed':
+                            discountAmount = Math.min(employeeCode.discountValue, originalPrice);
+                            discountLabel = `Employee Discount ($${employeeCode.discountValue} off)`;
+                            break;
+                        case 'free':
+                        default:
+                            discountAmount = originalPrice;
+                            discountLabel = 'Employee Discount (FREE)';
+                            break;
+                    }
+                    
+                    // Show success message
+                    if (discountAmount >= originalPrice) {
+                        resultDiv.innerHTML = '<div class="discount-success">✓ Employee code applied - FREE access!</div>';
+                    } else {
+                        resultDiv.innerHTML = `<div class="discount-success">✓ Employee discount applied!</div>`;
+                    }
+                    
+                    updatePriceDisplay(originalPrice, discountAmount, discountLabel);
+                    
                     // Mark code as used (in real app, this would be server-side)
                     employeeCode.status = 'used';
                     employeeCode.usedOn = new Date().toISOString();
