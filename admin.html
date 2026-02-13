@@ -807,10 +807,153 @@
                         <button id="employeeTab" class="tab-button active" onclick="switchTab('employee')">Employee Code</button>
                         <button id="marketingTab" class="tab-button" onclick="switchTab('marketing')">Marketing Code</button>
                     </div>
+                
+                <!-- Employee Code Form -->
+                <div id="employeeForm" class="tab-content active">
+                    <div class="code-type-info">
+                        <strong>Employee Codes:</strong> One-time use discount codes for your staff members and employees.
+                    </div>
+                    
+                    <form id="createEmployeeForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Employee Name</label>
+                                <input type="text" id="employeeName" class="form-input" placeholder="John Smith" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Package Type</label>
+                                <select id="empPackageType" class="form-input" required>
+                                    <option value="">Select package</option>
+                                    <option value="PT">Physical Therapists ($109)</option>
+                                    <option value="PTA">PT Assistants ($89)</option>
+                                    <option value="OT">Occupational Therapists ($109)</option>
+                                    <option value="COTA">OT Assistants ($89)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Discount Type</label>
+                                <select id="empDiscountType" class="form-input" required onchange="updateEmpDiscountFields()">
+                                    <option value="free">100% Free</option>
+                                    <option value="percentage">Percentage Off</option>
+                                    <option value="fixed">Fixed Amount Off</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" id="empDiscountValueLabel">Discount Value</label>
+                                <input type="number" id="empDiscountValue" class="form-input" placeholder="100" min="0" value="100" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Employee Type</label>
+                                <select id="empType" class="form-input">
+                                    <option value="staff">Staff Member</option>
+                                    <option value="contractor">Contractor</option>
+                                    <option value="partner">Partner</option>
+                                    <option value="referral">Referral Source</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Notes (Optional)</label>
+                            <input type="text" id="empNotes" class="form-input" placeholder="Department, position, special instructions, etc.">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Generate Employee Code</button>
+                    </form>
                 </div>
+
+                <!-- Marketing Code Form -->
+                <div id="marketingForm" class="tab-content">
+                    <div class="code-type-info">
+                        <strong>Marketing Codes:</strong> Flexible discount codes for promotions, campaigns, and customer acquisition.<br>
+                        <small>Examples: SPRING25 (25% off), SAVE20 ($20 off), FREEPT (100% free for PTs), WELCOME (50 uses max)</small>
+                    </div>
+                    
+                    <form id="createMarketingForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Code Name</label>
+                                <input type="text" id="codeName" class="form-input" placeholder="SPRING25" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Discount Type</label>
+                                <select id="discountType" class="form-input" required onchange="updateDiscountFields()">
+                                    <option value="">Select type</option>
+                                    <option value="percentage">Percentage Off</option>
+                                    <option value="fixed">Fixed Amount Off</option>
+                                    <option value="free">100% Free</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" id="discountValueLabel">Discount Value</label>
+                                <input type="number" id="discountValue" class="form-input" placeholder="25" min="0" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Usage Limit</label>
+                                <select id="usageType" class="form-input" required onchange="updateUsageFields()">
+                                    <option value="limited">Limited Uses</option>
+                                    <option value="unlimited">Unlimited Uses</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Max Uses</label>
+                                <input type="number" id="maxUses" class="form-input" placeholder="100" min="1" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Applies To</label>
+                                <select id="appliesTo" class="form-input" required>
+                                    <option value="all">All Packages</option>
+                                    <option value="PT">Physical Therapists Only</option>
+                                    <option value="PTA">PT Assistants Only</option>
+                                    <option value="OT">Occupational Therapists Only</option>
+                                    <option value="COTA">OT Assistants Only</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Expires On (Optional)</label>
+                                <input type="date" id="expiryDate" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Campaign Name</label>
+                                <input type="text" id="campaignName" class="form-input" placeholder="Spring 2026 Promo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Min Purchase (Optional)</label>
+                                <input type="number" id="minPurchase" class="form-input" placeholder="50" min="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Description/Notes</label>
+                            <input type="text" id="marketingNotes" class="form-input" placeholder="20% off for social media campaign">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Create Marketing Code</button>
+                    </form>
+                </div>
+            </div>
+        </div> <!-- End Discount Codes Tab -->
 
         <!-- Analytics Tab Content -->
         <div id="analytics-tab" class="main-tab-content">
+            <!-- Debug Info -->
+            <div style="background: #fef3cd; border: 1px solid #f59e0b; padding: 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem;">
+                <strong>🔧 Debug Info:</strong>
+                <div id="debugInfo">Analytics tab loaded. If you see this, the tab is working.</div>
+                <button onclick="forceShowAnalytics()" style="margin-top: 0.5rem; background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                    🚀 Force Load Analytics Now
+                </button>
+            </div>
+            
             <div class="admin-card">
                 <div class="card-header">
                     <h2 class="card-title">Business Analytics</h2>
@@ -1475,27 +1618,67 @@
                 </div>
             </div>
         </div> <!-- End Analytics Tab -->
+        </div> <!-- End Discount Codes Tab Container -->
 
-            <!-- Employee Code Form -->
-            <div id="employeeForm" class="tab-content active">
-                <div class="code-type-info">
-                    <strong>Employee Codes:</strong> One-time use discount codes for your staff members and employees.
+    </div> <!-- End Admin Panel -->
+
+    <!-- Modal for code creation -->
+    <div class="modal-overlay" id="codeModal">
+        <div class="modal-content">
+            <div class="modal-header">Code Created Successfully!</div>
+            <div id="modalBody">
+                <p style="margin-bottom: 1rem;">Employee discount code generated:</p>
+                <div style="background: var(--gray-100); padding: 1rem; border-radius: 6px; text-align: center; margin: 1rem 0;">
+                    <div id="generatedCode" style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold; color: var(--navy);"></div>
                 </div>
-                
-                <form id="createEmployeeForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Employee Name</label>
-                            <input type="text" id="employeeName" class="form-input" placeholder="John Smith" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Package Type</label>
-                            <select id="empPackageType" class="form-input" required>
-                                <option value="">Select package</option>
-                                <option value="PT">Physical Therapists ($109)</option>
-                                <option value="PTA">PT Assistants ($89)</option>
-                                <option value="OT">Occupational Therapists ($109)</option>
-                                <option value="COTA">OT Assistants ($89)</option>
+                <p style="color: var(--gray-600); font-size: 0.9rem; text-align: center;">
+                    This code can only be used once and will give 100% discount on the selected package.
+                </p>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="copyCodeToClipboard()">Copy Code</button>
+                <button class="btn-primary" onclick="closeModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Secure Admin Authentication
+        // NOTE: In production, credentials are verified server-side only
+        // This demo version uses secure session-based authentication
+
+        // Check if already logged in
+        function checkAuthStatus() {
+            const adminSession = localStorage.getItem('adminSession');
+            if (adminSession) {
+                try {
+                    const session = JSON.parse(adminSession);
+                    const now = new Date().getTime();
+                    const expiresTime = new Date(session.expires).getTime();
+                    
+                    // Check if session is still valid and fingerprint matches
+                    const currentFingerprint = btoa(navigator.userAgent.substring(0, 50));
+                    
+                    if (now < expiresTime && session.fingerprint === currentFingerprint) {
+                        // Session is still valid
+                        console.log('🔒 Valid admin session found');
+                        showAdminPanel();
+                        return true;
+                    } else {
+                        // Session expired or fingerprint mismatch
+                        console.log('🚨 Admin session expired or invalid');
+                        localStorage.removeItem('adminSession');
+                    }
+                } catch (error) {
+                    console.error('Session validation error:', error);
+                    localStorage.removeItem('adminSession');
+                }
+            }
+            return false;
+        }
+
+        // Rate limiting for login attempts
+        let loginAttempts = JSON.parse(localStorage.getItem('adminLoginAttempts') || '[]');
                             </select>
                         </div>
                     </div>
@@ -1933,13 +2116,34 @@
 
         // Main Tab Switching
         function switchMainTab(tabName) {
+            console.log(`🔄 Switching to tab: ${tabName}`);
+            
             // Update main tab buttons
             document.querySelectorAll('.main-nav-tab').forEach(tab => tab.classList.remove('active'));
             document.querySelector(`[onclick="switchMainTab('${tabName}')"]`).classList.add('active');
             
             // Update main tab content
             document.querySelectorAll('.main-tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName + '-tab').classList.add('active');
+            const targetTab = document.getElementById(tabName + '-tab');
+            if (targetTab) {
+                targetTab.classList.add('active');
+                console.log(`✅ Successfully activated tab: ${tabName}-tab`);
+            } else {
+                console.error(`❌ Could not find tab element: ${tabName}-tab`);
+            }
+            
+            // Update debug info if analytics tab
+            if (tabName === 'analytics') {
+                const debugEl = document.getElementById('debugInfo');
+                if (debugEl) {
+                    debugEl.innerHTML = `
+                        ✅ Analytics tab is ACTIVE<br>
+                        📊 Tab switching function called<br>
+                        🔧 Target element: ${tabName}-tab<br>
+                        ⏰ Time: ${new Date().toLocaleTimeString()}
+                    `;
+                }
+            }
             
             // Initialize analytics when switching to analytics tab
             if (tabName === 'analytics') {
@@ -1971,6 +2175,43 @@
             }
             
             console.log(`📊 Switched to ${tabName === 'analytics' ? 'Analytics' : 'Discount Codes'} tab`);
+        }
+
+        // Force analytics to show (for debugging)
+        function forceShowAnalytics() {
+            console.log('🚀 FORCE LOADING ANALYTICS...');
+            
+            // Make sure analytics tab is visible
+            const analyticsTab = document.getElementById('analytics-tab');
+            if (analyticsTab) {
+                analyticsTab.style.display = 'block';
+                analyticsTab.classList.add('active');
+                console.log('✅ Analytics tab forced visible');
+            }
+            
+            // Make sure analytics section is visible
+            const analyticsSection = document.getElementById('analyticsSection');
+            if (analyticsSection) {
+                analyticsSection.style.display = 'block';
+                console.log('✅ Analytics section forced visible');
+            }
+            
+            // Update debug info
+            const debugEl = document.getElementById('debugInfo');
+            if (debugEl) {
+                debugEl.innerHTML = `
+                    🚀 FORCE LOADING ACTIVATED<br>
+                    📊 Analytics should be visible now<br>
+                    ⏰ Time: ${new Date().toLocaleTimeString()}<br>
+                    🔧 Check below for metrics...
+                `;
+            }
+            
+            // Force load analytics
+            setTimeout(() => {
+                updateAllAnalytics();
+                console.log('🎯 Analytics force-loaded successfully');
+            }, 500);
         }
 
         function switchAnalyticsTab(tabName) {
