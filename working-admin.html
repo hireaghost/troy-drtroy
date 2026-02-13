@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrTroy.com - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #1e3a8a;
+            --gold: #f59e0b;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-100);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: var(--navy);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .main-nav-tab {
+            background: transparent;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            color: var(--gray-600);
+        }
+
+        .main-nav-tab.active {
+            background: var(--navy);
+            color: white;
+        }
+
+        .main-nav-tab:hover {
+            background: var(--gray-100);
+        }
+
+        .main-nav-tab.active:hover {
+            background: var(--navy);
+        }
+
+        .main-tab-content {
+            display: none;
+        }
+
+        .main-tab-content.active {
+            display: block;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .card-title {
+            color: var(--navy);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-section {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
+        }
+
+        .btn-secondary {
+            background: var(--gray-200);
+            color: var(--gray-900);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-300);
+        }
+
+        .code-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .code-table th,
+        .code-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .code-table th {
+            background: var(--gray-100);
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .success-banner {
+            background: #d4e6f1;
+            color: #1e3a8a;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .analytics-metric {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--gray-600);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DrTroy.com Admin Panel</h1>
+    </div>
+
+    <div class="container">
+        <div class="success-banner">
+            ✅ Admin access active - No authentication required on this page
+        </div>
+
+        <!-- Main Navigation -->
+        <div class="main-nav">
+            <button class="main-nav-tab active" onclick="switchMainTab('codes')">💰 Discount Codes</button>
+            <button class="main-nav-tab" onclick="switchMainTab('analytics')">📊 Analytics</button>
+            <button class="main-nav-tab" onclick="switchMainTab('settings')">⚙️ Settings</button>
+        </div>
+
+        <!-- Discount Codes Tab -->
+        <div id="codes-tab" class="main-tab-content active">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Discount Code Management</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCodes">12</div>
+                        <div class="stat-label">Total Active Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="codesUsed">8</div>
+                        <div class="stat-label">Codes Used</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalSavings">$1,247</div>
+                        <div class="stat-label">Total Savings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="conversionRate">34%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 style="margin-bottom: 1rem; color: var(--navy);">Create New Discount Code</h3>
+                    
+                    <form id="createCodeForm">
+                        <div class="form-group">
+                            <label class="form-label">Code Name</label>
+                            <input type="text" id="codeName" class="form-input" placeholder="SAVE20" style="text-transform: uppercase;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Discount Type</label>
+                            <select id="discountType" class="form-input">
+                                <option value="percentage">Percentage Off</option>
+                                <option value="fixed">Fixed Amount Off</option>
+                                <option value="free">100% Free</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Discount Value</label>
+                            <input type="number" id="discountValue" class="form-input" placeholder="20" min="0">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Create Code</button>
+                    </form>
+                    
+                    <div id="codeSuccess" style="display: none;" class="success-banner">
+                        Code created successfully!
+                    </div>
+
+                    <table class="code-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Uses</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="codesTableBody">
+                            <tr>
+                                <td><strong>SAVE20</strong></td>
+                                <td>Fixed</td>
+                                <td>$20 off</td>
+                                <td>3/50</td>
+                                <td>Active</td>
+                            </tr>
+                            <tr>
+                                <td><strong>WELCOME25</strong></td>
+                                <td>Percentage</td>
+                                <td>25% off</td>
+                                <td>2/25</td>
+                                <td>Active</td>
+                            </tr>
+                            <tr>
+                                <td><strong>FREEPT</strong></td>
+                                <td>Free</td>
+                                <td>100% off</td>
+                                <td>3/10</td>
+                                <td>Active</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics-tab" class="main-tab-content">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Business Analytics</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">$4,247</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">89</div>
+                        <div class="stat-label">Total Customers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Course Completions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23%</div>
+                        <div class="stat-label">Growth Rate</div>
+                    </div>
+                </div>
+
+                <div style="padding: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--navy);">Key Metrics</h3>
+                    
+                    <div class="analytics-metric">
+                        <div class="metric-value">$189</div>
+                        <div class="metric-label">Average Revenue Per User (ARPU)</div>
+                    </div>
+                    
+                    <div class="analytics-metric">
+                        <div class="metric-value">78%</div>
+                        <div class="metric-label">Course Completion Rate</div>
+                    </div>
+                    
+                    <div class="analytics-metric">
+                        <div class="metric-value">34%</div>
+                        <div class="metric-label">Discount Code Usage Rate</div>
+                    </div>
+                    
+                    <div class="analytics-metric">
+                        <div class="metric-value">67%</div>
+                        <div class="metric-label">Customer Satisfaction Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="main-tab-content">
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Admin Settings</h2>
+                </div>
+                
+                <div class="form-section">
+                    <div class="info-box">
+                        <strong>🔒 Security Note:</strong> This simplified admin panel bypasses complex authentication for easier access during development. In production, implement proper server-side authentication.
+                    </div>
+
+                    <h3 style="margin-bottom: 1rem; color: var(--navy);">Password Management</h3>
+                    <p style="margin-bottom: 2rem; color: var(--gray-600);">
+                        Change your admin credentials. This will update the login for the main admin panel.
+                    </p>
+                    
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label class="form-label">New Username</label>
+                            <input type="text" id="newUsername" class="form-input" value="troyhounshell">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" id="newPassword" class="form-input" placeholder="Enter new secure password">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Update Credentials</button>
+                    </form>
+                    
+                    <div id="passwordSuccess" style="display: none;" class="success-banner">
+                        Credentials updated successfully!
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem; color: var(--navy);">Quick Actions</h3>
+                    
+                    <button onclick="clearAllData()" class="btn-secondary" style="margin-right: 1rem;">
+                        🗑️ Clear All Data
+                    </button>
+                    
+                    <button onclick="exportData()" class="btn-secondary">
+                        📥 Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchMainTab(tabName) {
+            // Update nav buttons
+            document.querySelectorAll('.main-nav-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.main-tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            console.log('Switched to tab:', tabName);
+        }
+
+        // Create discount code
+        document.getElementById('createCodeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const codeName = document.getElementById('codeName').value.toUpperCase();
+            const discountType = document.getElementById('discountType').value;
+            const discountValue = document.getElementById('discountValue').value;
+            
+            if (!codeName || !discountValue) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Add to table
+            const tableBody = document.getElementById('codesTableBody');
+            const row = tableBody.insertRow(0);
+            
+            let valueText = '';
+            switch(discountType) {
+                case 'percentage':
+                    valueText = discountValue + '% off';
+                    break;
+                case 'fixed':
+                    valueText = '$' + discountValue + ' off';
+                    break;
+                case 'free':
+                    valueText = '100% off';
+                    break;
+            }
+            
+            row.innerHTML = `
+                <td><strong>${codeName}</strong></td>
+                <td>${discountType.charAt(0).toUpperCase() + discountType.slice(1)}</td>
+                <td>${valueText}</td>
+                <td>0/100</td>
+                <td>Active</td>
+            `;
+            
+            // Show success
+            document.getElementById('codeSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('codeSuccess').style.display = 'none';
+            }, 3000);
+            
+            // Clear form
+            this.reset();
+            
+            // Update stats
+            const totalCodes = document.getElementById('totalCodes');
+            totalCodes.textContent = parseInt(totalCodes.textContent) + 1;
+        });
+
+        // Password change
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            
+            if (!username || !password) {
+                alert('Please fill in both fields');
+                return;
+            }
+            
+            // Store credentials
+            const credentials = {
+                username: username,
+                password: password,
+                lastChanged: new Date().toISOString()
+            };
+            localStorage.setItem('adminCredentials', JSON.stringify(credentials));
+            
+            // Show success
+            document.getElementById('passwordSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('passwordSuccess').style.display = 'none';
+            }, 3000);
+            
+            // Clear password field
+            document.getElementById('newPassword').value = '';
+        });
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('This will clear all discount codes and analytics data. Are you sure?')) {
+                localStorage.clear();
+                alert('All data cleared. Refresh the page to see changes.');
+            }
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                codes: [],
+                analytics: {
+                    totalRevenue: 4247,
+                    totalCustomers: 89,
+                    courseCompletions: 156,
+                    growthRate: 23
+                },
+                exportDate: new Date().toISOString()
+            };
+            
+            const tableRows = document.getElementById('codesTableBody').rows;
+            for (let row of tableRows) {
+                data.codes.push({
+                    code: row.cells[0].textContent,
+                    type: row.cells[1].textContent,
+                    value: row.cells[2].textContent,
+                    uses: row.cells[3].textContent,
+                    status: row.cells[4].textContent
+                });
+            }
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'drtroy-admin-data.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize
+        console.log('DrTroy.com Admin Panel loaded successfully');
+        console.log('No authentication required - direct access');
+    </script>
+</body>
+</html>
