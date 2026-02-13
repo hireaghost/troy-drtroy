@@ -433,7 +433,7 @@
             background: white;
             padding: 3rem 2rem;
             text-align: center;
-            scroll-margin-top: 120px; /* Account for sticky header and show founder photo */
+            scroll-margin-top: 200px; /* Account for sticky header and show founder photo properly */
         }
 
         .about-container {
@@ -583,6 +583,55 @@
             background: #fee2e2;
             border: 1px solid #f87171;
             color: #991b1b;
+        }
+
+        .captcha-container {
+            background: var(--gray-100);
+            border: 2px dashed var(--gray-300);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .captcha-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .captcha-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 1.1rem;
+            text-align: center;
+            font-weight: 600;
+            margin: 0 0.5rem;
+        }
+
+        .captcha-input:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+        }
+
+        .captcha-refresh {
+            background: var(--gray-600);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: background 0.2s;
+        }
+
+        .captcha-refresh:hover {
+            background: #374151;
         }
 
         /* Footer */
@@ -1130,6 +1179,17 @@
                 <div class="form-group">
                     <label class="form-label" for="contactMessage">Message</label>
                     <textarea id="contactMessage" class="form-textarea" placeholder="Tell us how we can help you..." required></textarea>
+                </div>
+                
+                <div class="captcha-container">
+                    <div class="captcha-question">
+                        🛡️ Security Check: What is <span id="captchaNum1">5</span> + <span id="captchaNum2">3</span>?
+                        <button type="button" class="captcha-refresh" onclick="refreshCaptcha()">↻</button>
+                    </div>
+                    <input type="number" id="captchaAnswer" class="captcha-input" placeholder="?" required min="0" max="20">
+                    <p style="font-size: 0.85rem; color: var(--gray-600); margin-top: 0.5rem;">
+                        This helps us prevent spam messages
+                    </p>
                 </div>
                 
                 <button type="submit" class="contact-submit">Send Message</button>
@@ -2063,6 +2123,24 @@
             }
         });
 
+        // Captcha variables
+        let captchaAnswer = 0;
+
+        // Generate new captcha question
+        function generateCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('captchaNum1').textContent = num1;
+            document.getElementById('captchaNum2').textContent = num2;
+            captchaAnswer = num1 + num2;
+            document.getElementById('captchaAnswer').value = '';
+        }
+
+        // Refresh captcha
+        function refreshCaptcha() {
+            generateCaptcha();
+        }
+
         // Contact Form Handler
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -2074,9 +2152,18 @@
                 message: document.getElementById('contactMessage').value
             };
             
+            const userCaptchaAnswer = parseInt(document.getElementById('captchaAnswer').value);
+            
             // Basic validation
             if (!formData.name || !formData.email || !formData.subject || !formData.message) {
                 showContactMessage('Please fill in all required fields.', true);
+                return;
+            }
+            
+            // Captcha validation
+            if (!userCaptchaAnswer || userCaptchaAnswer !== captchaAnswer) {
+                showContactMessage('Please solve the security question correctly.', true);
+                document.getElementById('captchaAnswer').focus();
                 return;
             }
             
@@ -2103,12 +2190,14 @@
                 // Show success message
                 showContactMessage('Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.', false);
                 
-                // Clear form
+                // Clear form and regenerate captcha
                 this.reset();
+                generateCaptcha();
                 
             } catch (error) {
                 console.error('Contact form error:', error);
                 showContactMessage('Sorry, there was an error sending your message. Please try again later.', true);
+                generateCaptcha(); // Reset captcha on error
             } finally {
                 // Re-enable submit button
                 submitBtn.disabled = false;
@@ -2136,6 +2225,11 @@
                 errorEl.style.display = 'none';
             }, 7000);
         }
+
+        // Initialize captcha when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCaptcha();
+        });
     </script>
 
     <!-- Duplicate footer removed -->
