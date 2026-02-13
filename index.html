@@ -214,7 +214,6 @@
             padding: 4rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
-            scroll-margin-top: 150px; /* Account for sticky header */
         }
 
         .section-header {
@@ -226,6 +225,11 @@
             color: var(--navy);
             font-size: 2.25rem;
             margin-bottom: 1rem;
+        }
+
+        /* Specific scroll positioning for packages heading */
+        #packages {
+            scroll-margin-top: 120px;
         }
 
         .section-header p {
@@ -972,9 +976,9 @@
         </div>
     </section>
 
-    <section class="packages" id="packages">
+    <section class="packages">
         <div class="section-header">
-            <h2>Pick Your Package</h2>
+            <h2 id="packages">Pick Your Package</h2>
             <h3 style="color: var(--gold); font-size: 1.5rem; margin-bottom: 1rem; font-weight: 600;">Back to the Basics</h3>
             <p>One price. All the hours you need. No surprises.</p>
         </div>
