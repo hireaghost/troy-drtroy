@@ -74,6 +74,50 @@
             color: var(--navy);
         }
 
+        /* Main Navigation Tabs */
+        .main-nav {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .main-nav-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .main-nav-tab:hover {
+            color: var(--navy);
+            background: var(--gray-50);
+        }
+
+        .main-nav-tab.active {
+            color: white;
+            background: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+        }
+
+        .main-tab-content {
+            display: none;
+        }
+
+        .main-tab-content.active {
+            display: block;
+        }
+
         .btn-primary {
             background: var(--navy);
             color: white;
@@ -680,41 +724,81 @@
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalCodes">0</div>
-                <div class="stat-label">Total Codes Created</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="activeCodes">0</div>
-                <div class="stat-label">Active Codes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="usedCodes">0</div>
-                <div class="stat-label">Used Codes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalSavings">$0</div>
-                <div class="stat-label">Total Employee Savings</div>
-            </div>
+        <!-- Main Navigation Tabs -->
+        <div class="main-nav">
+            <button class="main-nav-tab active" onclick="switchMainTab('discount-codes')">
+                💰 Discount Codes
+            </button>
+            <button class="main-nav-tab" onclick="switchMainTab('analytics')">
+                📊 Analytics
+            </button>
         </div>
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h2 class="card-title">Create Discount Code</h2>
-                <div style="display: flex; gap: 1rem;">
-                    <button id="employeeTab" class="tab-button active" onclick="switchTab('employee')">Employee Code</button>
-                    <button id="marketingTab" class="tab-button" onclick="switchTab('marketing')">Marketing Code</button>
+        <!-- Discount Codes Tab Content -->
+        <div id="discount-codes-tab" class="main-tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCodes">0</div>
+                    <div class="stat-label">Total Codes Created</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeCodes">0</div>
+                    <div class="stat-label">Active Codes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="usedCodes">0</div>
+                    <div class="stat-label">Used Codes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSavings">$0</div>
+                    <div class="stat-label">Total Employee Savings</div>
                 </div>
             </div>
-            
+
+            <!-- All Discount Codes Table -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">All Discount Codes</h2>
+                </div>
+                
+                <table class="codes-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Type</th>
+                            <th>Discount</th>
+                            <th>Uses</th>
+                            <th>Applies To</th>
+                            <th>Expires</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="codesTableBody">
+                        <!-- Codes will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Create Discount Code Section -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2 class="card-title">Create Discount Code</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button id="employeeTab" class="tab-button active" onclick="switchTab('employee')">Employee Code</button>
+                        <button id="marketingTab" class="tab-button" onclick="switchTab('marketing')">Marketing Code</button>
+                    </div>
+                </div>
+
+        <!-- Analytics Tab Content -->
+        <div id="analytics-tab" class="main-tab-content">
             <div class="admin-card">
                 <div class="card-header">
                     <h2 class="card-title">Business Analytics</h2>
                     <button id="analyticsToggle" class="btn-secondary" onclick="toggleAnalytics()">Show Analytics</button>
                 </div>
                 
-                <div id="analyticsSection" style="display: none;">
+                <div id="analyticsSection" style="display: block;">
                     <!-- Analytics Tabs -->
                     <div class="analytics-tabs">
                         <button class="analytics-tab active" onclick="switchAnalyticsTab('essential')">Essential Metrics</button>
@@ -1371,7 +1455,8 @@
                     </div>
                 </div>
             </div>
-            
+        </div> <!-- End Analytics Tab -->
+
             <!-- Employee Code Form -->
             <div id="employeeForm" class="tab-content active">
                 <div class="code-type-info">
@@ -1506,30 +1591,8 @@
                 </form>
             </div>
         </div>
+        </div> <!-- End Discount Codes Tab -->
 
-        <div class="admin-card">
-            <div class="card-header">
-                <h2 class="card-title">All Discount Codes</h2>
-            </div>
-            
-            <table class="codes-table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Type</th>
-                        <th>Discount</th>
-                        <th>Uses</th>
-                        <th>Applies To</th>
-                        <th>Expires</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="codesTableBody">
-                    <!-- Codes will be populated here -->
-                </tbody>
-            </table>
-        </div>
     </div>
 
     </div> <!-- End Admin Panel -->
@@ -1738,6 +1801,30 @@
                 section.style.display = 'none';
                 button.textContent = 'Show Analytics';
             }
+        }
+
+        // Main Tab Switching
+        function switchMainTab(tabName) {
+            // Update main tab buttons
+            document.querySelectorAll('.main-nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[onclick="switchMainTab('${tabName}')"]`).classList.add('active');
+            
+            // Update main tab content
+            document.querySelectorAll('.main-tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Show analytics by default when switching to analytics tab
+            if (tabName === 'analytics') {
+                const analyticsSection = document.getElementById('analyticsSection');
+                const analyticsButton = document.getElementById('analyticsToggle');
+                if (analyticsSection.style.display === 'none') {
+                    analyticsSection.style.display = 'block';
+                    analyticsButton.textContent = 'Hide Analytics';
+                    updateAllAnalytics();
+                }
+            }
+            
+            console.log(`📊 Switched to ${tabName === 'analytics' ? 'Analytics' : 'Discount Codes'} tab`);
         }
 
         function switchAnalyticsTab(tabName) {
