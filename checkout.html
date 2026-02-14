@@ -464,12 +464,64 @@
                         <div class="info-value" id="customerEmail">john@example.com</div>
                     </div>
                     <div class="info-item">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value" id="customerPhone">Not provided</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Address</div>
+                        <div class="info-value" id="customerAddress">Not provided</div>
+                    </div>
+                    <div class="info-item">
                         <div class="info-label">Discipline</div>
                         <div class="info-value" id="customerDiscipline">Physical Therapist</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Package Selected</div>
                         <div class="info-value" id="selectedPackageName">PT Package</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Information -->
+            <div class="billing-section">
+                <h3>Billing Information</h3>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" required placeholder="(555) 123-4567">
+                </div>
+
+                <div class="form-group">
+                    <label for="address1">Address Line 1 *</label>
+                    <input type="text" id="address1" name="address1" class="form-input" required placeholder="123 Main Street">
+                </div>
+
+                <div class="form-group">
+                    <label for="address2">Address Line 2</label>
+                    <input type="text" id="address2" name="address2" class="form-input" placeholder="Apartment, suite, etc. (optional)">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" class="form-input" required placeholder="Dallas">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State *</label>
+                        <select id="state" name="state" class="form-input" required>
+                            <option value="">Select</option>
+                            <option value="TX" selected>Texas</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">ZIP *</label>
+                        <input type="text" id="zip" name="zip" class="form-input" required placeholder="75201" maxlength="10">
                     </div>
                 </div>
             </div>
@@ -613,8 +665,53 @@
             
             document.getElementById('customerDiscipline').textContent = disciplineMap[customerData.discipline] || customerData.discipline;
 
+            // Pre-fill billing fields from localStorage if returning customer
+            const savedPhone = localStorage.getItem('customerPhone');
+            const savedAddress1 = localStorage.getItem('customerAddress1');
+            const savedAddress2 = localStorage.getItem('customerAddress2');
+            const savedCity = localStorage.getItem('customerCity');
+            const savedState = localStorage.getItem('customerState');
+            const savedZip = localStorage.getItem('customerZip');
+            const savedFullAddress = localStorage.getItem('customerFullAddress');
+
+            if (savedPhone) {
+                document.getElementById('phone').value = savedPhone;
+                document.getElementById('customerPhone').textContent = savedPhone;
+            }
+            if (savedAddress1) document.getElementById('address1').value = savedAddress1;
+            if (savedAddress2) document.getElementById('address2').value = savedAddress2;
+            if (savedCity) document.getElementById('city').value = savedCity;
+            if (savedState) document.getElementById('state').value = savedState;
+            if (savedZip) document.getElementById('zip').value = savedZip;
+            if (savedFullAddress) document.getElementById('customerAddress').textContent = savedFullAddress;
+
+            // Live-update the account info display as user types
+            document.getElementById('phone').addEventListener('input', function() {
+                document.getElementById('customerPhone').textContent = this.value || 'Not provided';
+            });
+            document.getElementById('address1').addEventListener('input', updateAddressDisplay);
+            document.getElementById('city').addEventListener('input', updateAddressDisplay);
+            document.getElementById('state').addEventListener('change', updateAddressDisplay);
+            document.getElementById('zip').addEventListener('input', updateAddressDisplay);
+
             // Update package information
             updatePackageDisplay(customerData.package);
+        }
+
+        function updateAddressDisplay() {
+            const addr1 = document.getElementById('address1').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zip = document.getElementById('zip').value;
+            if (addr1 || city) {
+                let display = addr1;
+                if (city) display += ', ' + city;
+                if (state) display += ', ' + state;
+                if (zip) display += ' ' + zip;
+                document.getElementById('customerAddress').textContent = display;
+            } else {
+                document.getElementById('customerAddress').textContent = 'Not provided';
+            }
         }
 
         function updatePackageDisplay(packageType) {
@@ -698,7 +795,29 @@
 
         async function processPayment(token) {
             try {
-                // In a real implementation, send token to your backend
+                // Save customer billing info to localStorage for account/database
+                const billingData = {
+                    phone: document.getElementById('phone').value,
+                    address1: document.getElementById('address1').value,
+                    address2: document.getElementById('address2').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zip: document.getElementById('zip').value
+                };
+                localStorage.setItem('customerPhone', billingData.phone);
+                localStorage.setItem('customerAddress1', billingData.address1);
+                localStorage.setItem('customerAddress2', billingData.address2);
+                localStorage.setItem('customerCity', billingData.city);
+                localStorage.setItem('customerState', billingData.state);
+                localStorage.setItem('customerZip', billingData.zip);
+                
+                // Build full address string
+                let fullAddress = billingData.address1;
+                if (billingData.address2) fullAddress += ', ' + billingData.address2;
+                fullAddress += ', ' + billingData.city + ', ' + billingData.state + ' ' + billingData.zip;
+                localStorage.setItem('customerFullAddress', fullAddress);
+
+                // In a real implementation, send token + billing data to your backend
                 // For demo purposes, simulate success after delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
