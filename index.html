@@ -1363,9 +1363,12 @@
             if (existingAccount) {
                 const account = JSON.parse(existingAccount);
                 if (account.email === email && account.password === password) {
-                    // Successful login
+                    // Successful login — save to localStorage and go to account
+                    localStorage.setItem('customerName', account.firstName + ' ' + (account.lastName || ''));
+                    localStorage.setItem('customerEmail', account.email);
+                    if (account.discipline) localStorage.setItem('customerDiscipline', account.discipline);
                     closeLoginModal();
-                    showUserDashboard(account);
+                    window.location.href = 'account.html';
                     return;
                 }
             }

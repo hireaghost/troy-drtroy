@@ -821,8 +821,12 @@
                 // For demo purposes, simulate success after delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Simulate successful payment
-                window.location.href = 'success.html?order=' + Math.random().toString(36).substr(2, 9);
+                // Mark purchase complete and store package
+                localStorage.setItem('purchaseComplete', 'true');
+                localStorage.setItem('purchaseDate', new Date().toISOString());
+                
+                // Redirect to account dashboard
+                window.location.href = 'account.html';
                 
             } catch (error) {
                 // Handle payment error

@@ -373,10 +373,7 @@
             createConfetti();
             
             // Set up course access button (would link to actual course platform)
-            document.getElementById('accessCoursesBtn').addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('In the full implementation, this would redirect to the course platform with your login credentials.');
-            });
+            document.getElementById('accessCoursesBtn').href = 'account.html';
         });
     </script>
 </body>
