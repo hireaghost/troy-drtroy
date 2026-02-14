@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 700">
+  <rect width="500" height="700" fill="white"/>
+  
+  <!-- Title -->
+  <text x="250" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Cervical Spine Anatomy (Lateral View)</text>
+  
+  <!-- Skull base (Occipital bone) -->
+  <path d="M 200 80 Q 250 60 300 80 Q 310 100 305 120 L 280 125 Q 250 130 220 125 L 195 120 Q 190 100 200 80" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 205 85 Q 250 70 295 85 Q 300 100 298 115" fill="none" stroke="#8b7355" stroke-width="1"/>
+  
+  <!-- Foramen magnum area -->
+  <ellipse cx="250" cy="115" rx="25" ry="12" fill="#fef2f2" stroke="#6b5b47" stroke-width="1.5"/>
+  
+  <!-- C1 - Atlas (ring structure) -->
+  <!-- Anterior arch -->
+  <path d="M 235 135 Q 250 130 265 135 Q 268 145 265 155 Q 250 160 235 155 Q 232 145 235 135" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <!-- Posterior arch -->
+  <path d="M 235 155 Q 220 160 215 175 Q 220 190 235 195 Q 250 200 265 195 Q 280 190 285 175 Q 280 160 265 155" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <!-- Lateral masses -->
+  <ellipse cx="235" cy="165" rx="12" ry="15" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <ellipse cx="265" cy="165" rx="12" ry="15" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <!-- Transverse foramen -->
+  <circle cx="225" cy="165" r="4" fill="#fef2f2" stroke="#8b7355" stroke-width="1"/>
+  <circle cx="275" cy="165" r="4" fill="#fef2f2" stroke="#8b7355" stroke-width="1"/>
+  <text x="290" y="140" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C1</text>
+  <text x="290" y="155" font-family="Arial, sans-serif" font-size="10" fill="#666">Atlas</text>
+  
+  <!-- C2 - Axis with dens -->
+  <!-- Vertebral body -->
+  <rect x="230" y="205" width="40" height="35" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <!-- Dens/Odontoid process -->
+  <rect x="242" y="175" width="16" height="35" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <ellipse cx="250" cy="175" rx="10" ry="6" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <!-- Spinous process -->
+  <path d="M 250 240 L 250 265 Q 250 275 245 280 Q 240 275 240 265 L 240 240" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <!-- Transverse process -->
+  <rect x="205" y="215" width="20" height="12" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="215" width="20" height="12" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="225" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C2</text>
+  <text x="310" y="240" font-family="Arial, sans-serif" font-size="10" fill="#666">Axis</text>
+  
+  <!-- C3 -->
+  <rect x="230" y="285" width="40" height="30" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 250 315 L 250 335 Q 250 342 245 345 Q 240 342 240 335 L 240 315" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <rect x="205" y="292" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="292" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="305" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C3</text>
+  
+  <!-- C4 -->
+  <rect x="230" y="355" width="40" height="30" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 250 385 L 250 405 Q 250 412 245 415 Q 240 412 240 405 L 240 385" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <rect x="205" y="362" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="362" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="375" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C4</text>
+  
+  <!-- C5 -->
+  <rect x="230" y="425" width="40" height="30" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 250 455 L 250 475 Q 250 482 245 485 Q 240 482 240 475 L 240 455" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <rect x="205" y="432" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="432" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="445" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C5</text>
+  
+  <!-- C6 -->
+  <rect x="230" y="495" width="40" height="30" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 250 525 L 250 545 Q 250 552 245 555 Q 240 552 240 545 L 240 525" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <rect x="205" y="502" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="502" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="515" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C6</text>
+  
+  <!-- C7 - Vertebra Prominens (longer spinous process) -->
+  <rect x="230" y="565" width="40" height="30" rx="5" fill="#f5f0e8" stroke="#6b5b47" stroke-width="2"/>
+  <path d="M 250 595 L 250 630 Q 250 640 245 645 Q 240 640 240 630 L 240 595" 
+        fill="#f5f0e8" stroke="#6b5b47" stroke-width="3"/>
+  <rect x="205" y="572" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <rect x="275" y="572" width="20" height="10" rx="3" fill="#f5f0e8" stroke="#6b5b47" stroke-width="1.5"/>
+  <text x="310" y="585" font-family="Arial, sans-serif" font-size="14" fill="#1a365d" font-weight="bold">C7</text>
+  <text x="310" y="600" font-family="Arial, sans-serif" font-size="10" fill="#666">Vertebra</text>
+  <text x="310" y="612" font-family="Arial, sans-serif" font-size="10" fill="#666">Prominens</text>
+  
+  <!-- Intervertebral discs -->
+  <rect x="235" y="195" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  <rect x="235" y="275" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  <rect x="235" y="345" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  <rect x="235" y="415" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  <rect x="235" y="485" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  <rect x="235" y="555" width="30" height="10" rx="2" fill="#ffcccb" stroke="#d4a5a5" stroke-width="1"/>
+  
+  <!-- Spinal cord representation -->
+  <rect x="240" y="130" width="20" height="500" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1" opacity="0.4"/>
+  
+  <!-- Spinal nerves exiting -->
+  <path d="M 270 165 Q 290 170 310 180" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 222 Q 290 230 310 240" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 300 Q 290 310 310 320" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 370 Q 290 380 310 390" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 440 Q 290 450 310 460" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 510 Q 290 520 310 530" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <path d="M 270 580 Q 290 590 310 600" stroke="#ffd700" stroke-width="3" fill="none"/>
+  <text x="320" y="185" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C1</text>
+  <text x="320" y="245" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C2</text>
+  <text x="320" y="325" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C3</text>
+  <text x="320" y="395" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C4</text>
+  <text x="320" y="465" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C5</text>
+  <text x="320" y="535" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C6</text>
+  <text x="320" y="605" font-family="Arial, sans-serif" font-size="9" fill="#b8860b">C7</text>
+  
+  <!-- Legend box -->
+  <rect x="50" y="650" width="400" height="40" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="250" y="675" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">
+    Spinal cord (pink) | Spinal nerves (yellow) | Intervertebral discs (red tint)
+  </text>
+</svg>
