@@ -9,7 +9,7 @@
   <rect width="600" height="400" fill="white"/>
   
   <!-- Title -->
-  <text x="300" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Spurling's Test</text>
+  <text x="300" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Spurling's Test Illustration</text>
   
   <!-- Skull in test position -->
   <ellipse cx="150" cy="80" rx="40" ry="35" fill="#e8dcc8" stroke="#8b7355" stroke-width="2" transform="rotate(20 150 80)"/>
