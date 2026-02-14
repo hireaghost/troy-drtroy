@@ -1,55 +1,75 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
   <rect width="500" height="400" fill="white"/>
   
-  <text x="250" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Spurling's Test</text>
+  <!-- Title -->
+  <text x="250" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a365d">Spurling's Test</text>
+  <text x="250" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Cervical Foraminal Compression</text>
   
-  <!-- Head (rotated and extended) -->
-  <g transform="rotate(25 200 120)">
-    <ellipse cx="200" cy="120" rx="35" ry="40" fill="#e8dcc8" stroke="#8b7355" stroke-width="2"/>
-    <!-- Face features -->
-    <circle cx="215" cy="115" r="4" fill="#333"/>
-    <path d="M 210 135 Q 220 140 230 135" fill="none" stroke="#333" stroke-width="2"/>
-  </g>
+  <!-- Skeletal neck - rotated and extended -->
+  <!-- C4 -->
+  <rect x="165" y="65" width="45" height="22" rx="3" fill="#e8dcc8" stroke="#8b7355" stroke-width="2" transform="rotate(-15 187 76)"/>
+  <text x="140" y="78" font-family="Arial, sans-serif" font-size="11" fill="#333">C4</text>
   
-  <!-- Neck (extended) -->
-  <path d="M 175 155 Q 165 175 180 190" fill="none" stroke="#e8dcc8" stroke-width="18" stroke-linecap="round"/>
+  <!-- C5 -->
+  <rect x="170" y="90" width="45" height="22" rx="3" fill="#e8dcc8" stroke="#8b7355" stroke-width="2" transform="rotate(-10 192 101)"/>
+  <text x="142" y="103" font-family="Arial, sans-serif" font-size="11" fill="#333">C5</text>
   
-  <!-- Shoulders/torso hint -->
-  <rect x="150" y="190" width="80" height="40" rx="10" fill="#4a5568" stroke="#2d3748" stroke-width="2"/>
+  <!-- C6 -->
+  <rect x="175" y="115" width="45" height="22" rx="3" fill="#e8dcc8" stroke="#8b7355" stroke-width="2" transform="rotate(-5 197 126)"/>
+  <text x="145" y="128" font-family="Arial, sans-serif" font-size="11" fill="#333">C6</text>
   
-  <!-- Therapist hands on head -->
-  <ellipse cx="235" cy="105" rx="20" ry="12" fill="#e8dcc8" stroke="#8b7355" stroke-width="2"/>
-  <rect x="228" y="112" width="14" height="25" fill="#e8dcc8" stroke="#8b7355" stroke-width="2"/>
+  <!-- C7 -->
+  <rect x="180" y="140" width="45" height="22" rx="3" fill="#e8dcc8" stroke="#8b7355" stroke-width="2"/>
+  <text x="150" y="155" font-family="Arial, sans-serif" font-size="11" fill="#333">C7</text>
+  
+  <!-- Spinous processes -->
+  <rect x="188" y="87" width="8" height="8" fill="#e8dcc8" stroke="#8b7355" stroke-width="1" transform="rotate(-15 192 91)"/>
+  <rect x="190" y="112" width="8" height="8" fill="#e8dcc8" stroke="#8b7355" stroke-width="1" transform="rotate(-10 194 116)"/>
+  <rect x="192" y="137" width="8" height="8" fill="#e8dcc8" stroke="#8b7355" stroke-width="1" transform="rotate(-5 196 141)"/>
+  <rect x="195" y="162" width="10" height="12" fill="#e8dcc8" stroke="#8b7355" stroke-width="1"/>
+  
+  <!-- Intervertebral foramen (narrowed) -->
+  <ellipse cx="235" y="102" rx="12" ry="8" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="260" y="95" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" font-weight="bold">Foramen</text>
+  <text x="260" y="110" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" font-weight="bold">Narrows</text>
+  <line x1="247" y1="102" x2="258" y2="102" stroke="#dc2626" stroke-width="1"/>
+  
+  <!-- Nerve root compressed -->
+  <path d="M 235 108 Q 250 130 260 150" fill="none" stroke="#ffd700" stroke-width="4"/>
+  <circle cx="235" cy="108" r="5" fill="#dc2626"/>
+  <text x="270" y="145" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" font-weight="bold">Nerve Root</text>
+  <text x="270" y="160" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" font-weight="bold">Compressed</text>
   
   <!-- Downward force arrow -->
-  <path d="M 235 140 L 235 175" stroke="#dc2626" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
-  <text x="255" y="165" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" font-weight="bold">DOWNWARD</text>
-  <text x="255" y="182" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" font-weight="bold">PRESSURE</text>
+  <path d="M 210 55 L 210 25" stroke="#dc2626" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="225" y="50" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" font-weight="bold">DOWNWARD</text>
+  <text x="225" y="68" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" font-weight="bold">FORCE</text>
   
-  <!-- Position labels -->
-  <text x="50" y="100" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#1a365d">Position:</text>
-  <text x="50" y="125" font-family="Arial, sans-serif" font-size="12" fill="#333">• Neck extended</text>
-  <text x="50" y="148" font-family="Arial, sans-serif" font-size="12" fill="#333">• Rotated toward</text>
-  <text x="62" y="168" font-family="Arial, sans-serif" font-size="12" fill="#333">symptomatic side</text>
-  <text x="50" y="191" font-family="Arial, sans-serif" font-size="12" fill="#333">• Laterally flexed</text>
-  <text x="62" y="211" font-family="Arial, sans-serif" font-size="12" fill="#333">toward same side</text>
+  <!-- Position box -->
+  <rect x="30" y="220" width="200" height="110" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="130" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0369a1">Test Position</text>
   
-  <!-- Test info box -->
-  <rect x="320" y="80" width="165" height="140" rx="8" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1"/>
-  <text x="402" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#0369a1">Test Interpretation</text>
+  <text x="45" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">• Neck extended</text>
+  <text x="45" y="292" font-family="Arial, sans-serif" font-size="12" fill="#333">• Side-bent toward</text>
+  <text x="57" y="312" font-family="Arial, sans-serif" font-size="12" fill="#333">symptomatic side</text>
   
-  <text x="332" y="130" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Positive Test:</text>
-  <text x="332" y="152" font-family="Arial, sans-serif" font-size="11" fill="#333">Reproduction of arm</text>
-  <text x="332" y="170" font-family="Arial, sans-serif" font-size="11" fill="#333">pain, numbness, or</text>
-  <text x="332" y="188" font-family="Arial, sans-serif" font-size="11" fill="#333">tingling (radicular</text>
-  <text x="332" y="206" font-family="Arial, sans-serif" font-size="11" fill="#333">symptoms)</text>
+  <!-- Interpretation box -->
+  <rect x="250" y="220" width="230" height="110" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
+  <text x="365" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#166534">Positive Test</text>
   
-  <!-- Diagnostic accuracy -->
-  <rect x="320" y="235" width="165" height="90" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1"/>
-  <text x="402" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#166534">Diagnostic Accuracy</text>
+  <text x="265" y="270" font-family="Arial, sans-serif" font-size="12" fill="#333">Reproduction of radicular</text>
+  <text x="265" y="290" font-family="Arial, sans-serif" font-size="12" fill="#333">symptoms (pain, numbness,</text>
+  <text x="265" y="310" font-family="Arial, sans-serif" font-size="12" fill="#333">or tingling) in arm</text>
   
-  <text x="332" y="285" font-family="Arial, sans-serif" font-size="11" fill="#333">Sensitivity: 30-50%</text>
-  <text x="332" y="305" font-family="Arial, sans-serif" font-size="11" fill="#333">Specificity: 90-100%</text>
+  <!-- Accuracy box -->
+  <rect x="30" y="345" width="220" height="45" rx="8" fill="#fff8dc" stroke="#daa520" stroke-width="1"/>
+  <text x="140" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#854d0e">Accuracy</text>
+  <text x="140" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#333">Sensitivity 30-50% | Specificity 90-100%</text>
+  
+  <!-- Caution box -->
+  <rect x="265" y="345" width="215" height="45" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
+  <text x="372" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#991b1b">Caution</text>
+  <text x="372" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Avoid with instability or fracture</text>
   
   <!-- Marker -->
   <defs>
@@ -57,8 +77,4 @@
       <polygon points="0 0, 12 4, 0 8" fill="#dc2626"/>
     </marker>
   </defs>
-  
-  <!-- Caution -->
-  <rect x="50" y="280" width="400" height="50" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1"/>
-  <text x="250" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#991b1b">CAUTION: Contraindicated with cervical instability, myelopathy, or fracture</text>
 </svg>
