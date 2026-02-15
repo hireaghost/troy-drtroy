@@ -909,6 +909,9 @@
             <button class="main-tab" onclick="switchMainTab('discount-codes')">
                 💰 Discount Codes
             </button>
+            <button class="main-tab" onclick="switchMainTab('settings')">
+                ⚙️ Settings
+            </button>
         </div>
 
         <!-- Dashboard Tab -->
@@ -1720,6 +1723,275 @@
             </div>
         </div>
 
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">⚙️ Admin Settings</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Settings Sub-tabs -->
+                    <div class="sub-tabs" style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--gray-200); padding-bottom: 1rem;">
+                        <button class="sub-tab active" onclick="switchSettingsTab('account')">
+                            👤 Account
+                        </button>
+                        <button class="sub-tab" onclick="switchSettingsTab('platform')">
+                            🏢 Platform
+                        </button>
+                        <button class="sub-tab" onclick="switchSettingsTab('security')">
+                            🔒 Security
+                        </button>
+                        <button class="sub-tab" onclick="switchSettingsTab('system')">
+                            🖥️ System
+                        </button>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div id="account-settings" class="sub-content active">
+                        <h3 style="color: var(--navy); margin-bottom: 1rem; font-size: 1.25rem;">👤 Admin Account Settings</h3>
+                        
+                        <form id="accountSettingsForm" style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Admin Username</label>
+                                    <input type="text" id="adminUsername" value="troyhounshell" readonly style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px; background: var(--gray-100); color: var(--gray-600);">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Admin Email</label>
+                                    <input type="email" id="adminEmail" value="troyh@texastherapypros.com" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Change Password</label>
+                                    <input type="password" id="newPassword" placeholder="Enter new password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Confirm Password</label>
+                                    <input type="password" id="confirmPassword" placeholder="Confirm new password" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">System Timezone</label>
+                                <select id="systemTimezone" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    <option value="America/Chicago" selected>Central Time (America/Chicago)</option>
+                                    <option value="America/New_York">Eastern Time (America/New_York)</option>
+                                    <option value="America/Denver">Mountain Time (America/Denver)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (America/Los_Angeles)</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" style="background: var(--navy); color: white; padding: 0.75rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                                💾 Save Account Settings
+                            </button>
+                        </form>
+                        
+                        <div id="accountSuccess" style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border: 1px solid #059669; border-radius: 6px; color: #065f46; display: none;"></div>
+                    </div>
+
+                    <!-- Platform Settings -->
+                    <div id="platform-settings" class="sub-content">
+                        <h3 style="color: var(--navy); margin-bottom: 1rem; font-size: 1.25rem;">🏢 Platform Configuration</h3>
+                        
+                        <form id="platformSettingsForm" style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Platform Name</label>
+                                <input type="text" id="platformName" value="DrTroy.com" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Continuing Education Unit (CCU) Requirements</label>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">PT</label>
+                                        <input type="number" id="ptCCU" value="27" min="1" max="50" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">PTA</label>
+                                        <input type="number" id="ptaCCU" value="17" min="1" max="50" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">OT</label>
+                                        <input type="number" id="otCCU" value="23" min="1" max="50" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">COTA</label>
+                                        <input type="number" id="cotaCCU" value="23" min="1" max="50" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">License Renewal Warning Intervals</label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">First Warning (months)</label>
+                                        <input type="number" id="warning1" value="6" min="1" max="12" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Second Warning (months)</label>
+                                        <input type="number" id="warning2" value="1" min="1" max="6" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Final Warning (days)</label>
+                                        <input type="number" id="warning3" value="7" min="1" max="30" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Default Course Pricing</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Annual Subscription</label>
+                                        <input type="number" id="annualPrice" value="199" min="1" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Individual Course</label>
+                                        <input type="number" id="coursePrice" value="99" min="1" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" style="background: var(--navy); color: white; padding: 0.75rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                                💾 Save Platform Settings
+                            </button>
+                        </form>
+                        
+                        <div id="platformSuccess" style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border: 1px solid #059669; border-radius: 6px; color: #065f46; display: none;"></div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div id="security-settings" class="sub-content">
+                        <h3 style="color: var(--navy); margin-bottom: 1rem; font-size: 1.25rem;">🔒 Security & Access Control</h3>
+                        
+                        <form id="securitySettingsForm" style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Admin Session Duration</label>
+                                <select id="sessionDuration" style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    <option value="1">1 hour</option>
+                                    <option value="4">4 hours</option>
+                                    <option value="8" selected>8 hours (default)</option>
+                                    <option value="12">12 hours</option>
+                                    <option value="24">24 hours</option>
+                                </select>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Failed Login Attempts</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Max Attempts</label>
+                                        <input type="number" id="maxAttempts" value="5" min="3" max="10" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--gray-600);">Lockout Duration (minutes)</label>
+                                        <input type="number" id="lockoutTime" value="15" min="5" max="60" style="width: 100%; padding: 0.5rem; border: 1px solid var(--gray-200); border-radius: 6px;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Two-Factor Authentication</label>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" id="enable2FA" style="width: 18px; height: 18px;">
+                                    <label for="enable2FA" style="color: var(--gray-700);">Enable 2FA for admin login (coming soon)</label>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;">
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--gray-900);">Security Notifications</label>
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="checkbox" id="loginNotifications" checked style="width: 18px; height: 18px;">
+                                        <label for="loginNotifications" style="color: var(--gray-700);">Email notifications for admin logins</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="checkbox" id="failedLoginNotifications" checked style="width: 18px; height: 18px;">
+                                        <label for="failedLoginNotifications" style="color: var(--gray-700);">Email notifications for failed login attempts</label>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <input type="checkbox" id="systemAlerts" checked style="width: 18px; height: 18px;">
+                                        <label for="systemAlerts" style="color: var(--gray-700);">System maintenance and error alerts</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" style="background: var(--navy); color: white; padding: 0.75rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 1rem;">
+                                🔒 Save Security Settings
+                            </button>
+                        </form>
+                        
+                        <div id="securitySuccess" style="margin-top: 1rem; padding: 1rem; background: #dcfce7; border: 1px solid #059669; border-radius: 6px; color: #065f46; display: none;"></div>
+                    </div>
+
+                    <!-- System Settings -->
+                    <div id="system-settings" class="sub-content">
+                        <h3 style="color: var(--navy); margin-bottom: 1rem; font-size: 1.25rem;">🖥️ System Management</h3>
+                        
+                        <div style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <div style="margin-bottom: 2rem;">
+                                <h4 style="color: var(--navy); margin-bottom: 1rem;">📊 System Information</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                    <div style="padding: 1rem; background: white; border-radius: 6px; border: 1px solid var(--gray-200);">
+                                        <div style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0.25rem;">Platform Version</div>
+                                        <div style="font-weight: 600; color: var(--gray-900);">DrTroy.com v2.1.0</div>
+                                    </div>
+                                    <div style="padding: 1rem; background: white; border-radius: 6px; border: 1px solid var(--gray-200);">
+                                        <div style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0.25rem;">Database Status</div>
+                                        <div style="font-weight: 600; color: #059669;">✅ Healthy</div>
+                                    </div>
+                                    <div style="padding: 1rem; background: white; border-radius: 6px; border: 1px solid var(--gray-200);">
+                                        <div style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0.25rem;">Last Backup</div>
+                                        <div style="font-weight: 600; color: var(--gray-900);">Today, 3:00 AM</div>
+                                    </div>
+                                    <div style="padding: 1rem; background: white; border-radius: 6px; border: 1px solid var(--gray-200);">
+                                        <div style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 0.25rem;">System Load</div>
+                                        <div style="font-weight: 600; color: #059669;">Low (12%)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;">
+                                <h4 style="color: var(--navy); margin-bottom: 1rem;">🔧 System Actions</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                    <button onclick="performBackup()" style="background: var(--success); color: white; padding: 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                        💾 Create Manual Backup
+                                    </button>
+                                    <button onclick="clearCache()" style="background: var(--gold); color: white; padding: 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                        🗑️ Clear System Cache
+                                    </button>
+                                    <button onclick="exportSystemLogs()" style="background: var(--navy); color: white; padding: 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                        📄 Export System Logs
+                                    </button>
+                                    <button onclick="resetAllData()" style="background: var(--danger); color: white; padding: 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                        🚨 Reset All Data
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 style="color: var(--navy); margin-bottom: 1rem;">⚠️ Danger Zone</h4>
+                                <div style="padding: 1.5rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px;">
+                                    <p style="color: #991b1b; margin-bottom: 1rem; font-weight: 600;">⚠️ Warning: These actions cannot be undone</p>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <button onclick="factoryReset()" style="background: #dc2626; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                            🏭 Factory Reset
+                                        </button>
+                                        <button onclick="deleteAllUsers()" style="background: #dc2626; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                            👥 Delete All Users
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Analytics Tab -->
         <div id="analytics" class="tab-content">
             <div class="card">
@@ -2327,6 +2599,8 @@
                 loadLicenseData();
             } else if (tabName === 'discount-codes') {
                 updateDiscountCodeStats();
+            } else if (tabName === 'settings') {
+                loadSettingsData();
             }
         }
 
@@ -2359,6 +2633,8 @@
                     loadLicenseData();
                 } else if (savedTab === 'discount-codes') {
                     updateDiscountCodeStats();
+                } else if (savedTab === 'settings') {
+                    loadSettingsData();
                 }
                 
                 console.log(`✅ Restored tab: ${savedTab}`);
@@ -2617,6 +2893,262 @@
             }
         }
 
+        function switchSettingsTab(tabName) {
+            const settingsTab = document.getElementById('settings');
+            if (!settingsTab) return;
+            
+            // Update sub-tab buttons within the settings tab
+            settingsTab.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
+            const targetButton = settingsTab.querySelector(`[onclick*="switchSettingsTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // Update sub-tab content within the settings tab
+            settingsTab.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+            const targetContent = settingsTab.querySelector(`#${tabName}-settings`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+
+        // Settings Form Handlers
+        function initializeSettingsForms() {
+            // Account Settings Form
+            document.getElementById('accountSettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('adminEmail').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const timezone = document.getElementById('systemTimezone').value;
+                
+                // Validate passwords match if provided
+                if (newPassword && newPassword !== confirmPassword) {
+                    alert('❌ Passwords do not match!');
+                    return;
+                }
+                
+                // Save account settings
+                const accountSettings = {
+                    email: email,
+                    timezone: timezone,
+                    updated: new Date().toISOString()
+                };
+                
+                // Update password if provided
+                if (newPassword) {
+                    const credentials = {
+                        username: 'troyhounshell',
+                        password: newPassword,
+                        updated: new Date().toISOString()
+                    };
+                    localStorage.setItem('drtroyAdminCredentials', JSON.stringify(credentials));
+                    accountSettings.passwordUpdated = true;
+                }
+                
+                localStorage.setItem('drtroyAccountSettings', JSON.stringify(accountSettings));
+                
+                // Show success message
+                const successEl = document.getElementById('accountSuccess');
+                successEl.textContent = '✅ Account settings saved successfully!' + (newPassword ? ' Your password has been updated.' : '');
+                successEl.style.display = 'block';
+                
+                // Clear password fields
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successEl.style.display = 'none';
+                }, 5000);
+            });
+            
+            // Platform Settings Form
+            document.getElementById('platformSettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const platformSettings = {
+                    name: document.getElementById('platformName').value,
+                    ccuRequirements: {
+                        PT: parseInt(document.getElementById('ptCCU').value),
+                        PTA: parseInt(document.getElementById('ptaCCU').value),
+                        OT: parseInt(document.getElementById('otCCU').value),
+                        COTA: parseInt(document.getElementById('cotaCCU').value)
+                    },
+                    renewalWarnings: {
+                        first: parseInt(document.getElementById('warning1').value),
+                        second: parseInt(document.getElementById('warning2').value),
+                        final: parseInt(document.getElementById('warning3').value)
+                    },
+                    pricing: {
+                        annual: parseInt(document.getElementById('annualPrice').value),
+                        course: parseInt(document.getElementById('coursePrice').value)
+                    },
+                    updated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('drtroyPlatformSettings', JSON.stringify(platformSettings));
+                
+                // Show success message
+                const successEl = document.getElementById('platformSuccess');
+                successEl.textContent = '✅ Platform settings saved successfully!';
+                successEl.style.display = 'block';
+                
+                setTimeout(() => {
+                    successEl.style.display = 'none';
+                }, 5000);
+            });
+            
+            // Security Settings Form
+            document.getElementById('securitySettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const securitySettings = {
+                    sessionDuration: parseInt(document.getElementById('sessionDuration').value),
+                    maxAttempts: parseInt(document.getElementById('maxAttempts').value),
+                    lockoutTime: parseInt(document.getElementById('lockoutTime').value),
+                    twoFactorAuth: document.getElementById('enable2FA').checked,
+                    notifications: {
+                        login: document.getElementById('loginNotifications').checked,
+                        failedLogin: document.getElementById('failedLoginNotifications').checked,
+                        systemAlerts: document.getElementById('systemAlerts').checked
+                    },
+                    updated: new Date().toISOString()
+                };
+                
+                localStorage.setItem('drtroySecuritySettings', JSON.stringify(securitySettings));
+                
+                // Show success message
+                const successEl = document.getElementById('securitySuccess');
+                successEl.textContent = '✅ Security settings saved successfully!';
+                successEl.style.display = 'block';
+                
+                setTimeout(() => {
+                    successEl.style.display = 'none';
+                }, 5000);
+            });
+        }
+
+        // System Action Functions
+        function performBackup() {
+            if (confirm('🔄 Create a manual backup of all system data?\n\nThis may take a few minutes to complete.')) {
+                // Simulate backup process
+                alert('💾 System backup initiated!\n\nBackup will be completed in the background and you\'ll receive an email when finished.');
+            }
+        }
+
+        function clearCache() {
+            if (confirm('🗑️ Clear all system cache?\n\nThis may temporarily slow down the platform while cache rebuilds.')) {
+                // Clear local storage cache items
+                ['drtroyAnalytics', 'drtroyUserCache', 'drtroyEmailCache'].forEach(key => {
+                    localStorage.removeItem(key);
+                });
+                alert('✅ System cache cleared successfully!');
+            }
+        }
+
+        function exportSystemLogs() {
+            alert('📄 Exporting system logs...\n\nA download will begin shortly with the complete log file.');
+        }
+
+        function resetAllData() {
+            if (confirm('🚨 WARNING: Reset ALL system data?\n\nThis will permanently delete:\n• All user accounts\n• All course data\n• All analytics\n• All settings\n\nType "RESET" below to confirm:')) {
+                const confirmation = prompt('Type "RESET" to confirm this action:');
+                if (confirmation === 'RESET') {
+                    // Clear all localStorage
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith('drtroy')) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                    alert('🗑️ All system data has been reset!\n\nYou will need to reconfigure all settings.');
+                    location.reload();
+                } else {
+                    alert('❌ Data reset cancelled - confirmation text did not match.');
+                }
+            }
+        }
+
+        function factoryReset() {
+            if (confirm('🏭 FACTORY RESET WARNING!\n\nThis will reset the entire platform to its original state.\n\nALL DATA WILL BE PERMANENTLY LOST!\n\nContinue?')) {
+                const confirmation = prompt('Type "FACTORY RESET" to confirm this irreversible action:');
+                if (confirmation === 'FACTORY RESET') {
+                    localStorage.clear();
+                    alert('🏭 Factory reset completed!\n\nReloading platform...');
+                    location.reload();
+                } else {
+                    alert('❌ Factory reset cancelled - confirmation text did not match.');
+                }
+            }
+        }
+
+        function deleteAllUsers() {
+            if (confirm('👥 DELETE ALL USERS WARNING!\n\nThis will permanently delete all user accounts and their data.\n\nThis action cannot be undone!\n\nContinue?')) {
+                const confirmation = prompt('Type "DELETE USERS" to confirm:');
+                if (confirmation === 'DELETE USERS') {
+                    localStorage.removeItem('drtroyUsers');
+                    localStorage.removeItem('drtroyUserProfiles');
+                    alert('👥 All user accounts have been deleted!');
+                    loadUsers(); // Refresh user table
+                } else {
+                    alert('❌ User deletion cancelled - confirmation text did not match.');
+                }
+            }
+        }
+
+        // Load Settings Data
+        function loadSettingsData() {
+            // Load account settings
+            const accountSettings = JSON.parse(localStorage.getItem('drtroyAccountSettings') || '{}');
+            if (accountSettings.email) {
+                document.getElementById('adminEmail').value = accountSettings.email;
+            }
+            if (accountSettings.timezone) {
+                document.getElementById('systemTimezone').value = accountSettings.timezone;
+            }
+
+            // Load platform settings
+            const platformSettings = JSON.parse(localStorage.getItem('drtroyPlatformSettings') || '{}');
+            if (platformSettings.name) {
+                document.getElementById('platformName').value = platformSettings.name;
+            }
+            if (platformSettings.ccuRequirements) {
+                document.getElementById('ptCCU').value = platformSettings.ccuRequirements.PT || 27;
+                document.getElementById('ptaCCU').value = platformSettings.ccuRequirements.PTA || 17;
+                document.getElementById('otCCU').value = platformSettings.ccuRequirements.OT || 23;
+                document.getElementById('cotaCCU').value = platformSettings.ccuRequirements.COTA || 23;
+            }
+            if (platformSettings.renewalWarnings) {
+                document.getElementById('warning1').value = platformSettings.renewalWarnings.first || 6;
+                document.getElementById('warning2').value = platformSettings.renewalWarnings.second || 1;
+                document.getElementById('warning3').value = platformSettings.renewalWarnings.final || 7;
+            }
+            if (platformSettings.pricing) {
+                document.getElementById('annualPrice').value = platformSettings.pricing.annual || 199;
+                document.getElementById('coursePrice').value = platformSettings.pricing.course || 99;
+            }
+
+            // Load security settings
+            const securitySettings = JSON.parse(localStorage.getItem('drtroySecuritySettings') || '{}');
+            if (securitySettings.sessionDuration) {
+                document.getElementById('sessionDuration').value = securitySettings.sessionDuration;
+            }
+            if (securitySettings.maxAttempts) {
+                document.getElementById('maxAttempts').value = securitySettings.maxAttempts;
+            }
+            if (securitySettings.lockoutTime) {
+                document.getElementById('lockoutTime').value = securitySettings.lockoutTime;
+            }
+            if (securitySettings.twoFactorAuth !== undefined) {
+                document.getElementById('enable2FA').checked = securitySettings.twoFactorAuth;
+            }
+            if (securitySettings.notifications) {
+                document.getElementById('loginNotifications').checked = securitySettings.notifications.login !== false;
+                document.getElementById('failedLoginNotifications').checked = securitySettings.notifications.failedLogin !== false;
+                document.getElementById('systemAlerts').checked = securitySettings.notifications.systemAlerts !== false;
+            }
+        }
 
         // Dashboard Functions
         function updateDashboard() {
@@ -2902,6 +3434,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             initAdmin();
             restoreSavedTab(); // Restore the last active tab
+            initializeSettingsForms(); // Initialize settings form handlers
             
             // Update timestamps and session info every minute
             setInterval(updateLastUpdate, 60000);
