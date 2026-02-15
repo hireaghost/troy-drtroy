@@ -2210,15 +2210,14 @@ Score: <span id="certificateScore"></span>%
 <button class="btn btn-success" onclick="generateCertificate()">Generate Certificate</button>
 </div>
 
-<div style="text-align: center; margin: 20px 0;">
-<button class="btn btn-success hidden" id="printBtn" onclick="printCertificate()" style="margin: 5px;">🖨️ Print Certificate</button>
-<button class="btn btn-primary hidden" id="downloadBtn" onclick="downloadCertificate()" style="margin: 5px;">💾 Save as PDF</button>
-<button class="btn btn-primary hidden" id="emailBtn" onclick="emailCertificate()" style="margin: 5px;">📧 Email Certificate</button>
+<div id="certificateActions" style="text-align: center; margin: 20px 0;">
+<!-- Certificate action buttons will be inserted here by the certificate manager -->
 </div>
 
 <div id="certificateConfirmation" class="hidden" style="text-align: center; margin: 20px 0; padding: 15px; background: #f0fdf4; border: 1px solid #22c55e; border-radius: 6px;">
 <p style="color: #22c55e; font-weight: bold;">✅ Certificate saved to your account!</p>
 <p>You can reprint this certificate anytime by returning to this course.</p>
+<p><strong>Certificate ID:</strong> <span id="displayCertificateId" style="font-family: 'Courier New', monospace;">[Generated when certificate is created]</span></p>
 </div>
 </div>
 
@@ -2377,6 +2376,8 @@ Score: <span id="certificateScore"></span>%
 
 </div>
 
+<!-- Certificate Management System -->
+<script src="../js/certificate-manager.js"></script>
 <script>
 // Answer key for the knowledge check
 const answerKey = {
@@ -2556,118 +2557,42 @@ function generateCertificate() {
     }
     
     const score = localStorage.getItem('mskCourseScore');
-    const completionDate = new Date().toLocaleDateString();
     
-    // Update certificate with name and date
-    document.getElementById('participantName').textContent = name;
-    document.getElementById('completionDate').textContent = completionDate;
-    document.getElementById('certificateScore').textContent = score;
+    // Use the new certificate management system
+    const certificateData = window.CertificateUtils.generateCourseCertificate(
+        'PT-MSK-001',
+        name,
+        score,
+        function(certData) {
+            // Success callback - update the display elements
+            document.getElementById('participantName').textContent = certData.participantName;
+            document.getElementById('completionDate').textContent = certData.completionDate;
+            document.getElementById('certificateScore').textContent = certData.scoreAchieved;
+            
+            // Show certificate ID
+            document.getElementById('displayCertificateId').textContent = certData.certificateId;
+            
+            // Show certificate action buttons using the new system
+            const actionButtons = window.CertificateUtils.createCertificateButtons(certData);
+            document.getElementById('certificateActions').innerHTML = actionButtons;
+            
+            // Show confirmation
+            document.getElementById('certificateConfirmation').classList.remove('hidden');
+            
+            // Store legacy data for compatibility
+            localStorage.setItem('mskCertificateName', certData.participantName);
+            localStorage.setItem('mskCertificateGenerated', 'true');
+        }
+    );
     
-    // Show download buttons
-    document.getElementById('downloadBtn').classList.remove('hidden');
-    document.getElementById('printBtn').classList.remove('hidden');
-    document.getElementById('emailBtn').classList.remove('hidden');
-    document.getElementById('certificateConfirmation').classList.remove('hidden');
-    
-    // Store certificate info in their "account" (localStorage)
-    const certificateData = {
-        name: name,
-        score: score,
-        completionDate: completionDate,
-        courseTitle: 'Comprehensive Musculoskeletal Evaluation and Treatment',
-        courseCode: 'PT-MSK-001',
-        ceus: '3.0 CCUs',
-        generated: new Date().toISOString()
-    };
-    
-    localStorage.setItem('mskCertificateData', JSON.stringify(certificateData));
-    localStorage.setItem('mskCertificateName', name);
-    localStorage.setItem('mskCertificateGenerated', 'true');
-    
-    // Show success message
-    const successMsg = document.createElement('div');
-    successMsg.innerHTML = `
-        <div style="position: fixed; top: 20px; right: 20px; background: #22c55e; color: white; padding: 15px; border-radius: 6px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-            <strong>✅ Certificate Generated!</strong><br>
-            Saved to your account for ${name}
-        </div>
-    `;
-    document.body.appendChild(successMsg);
-    
-    // Remove success message after 4 seconds
-    setTimeout(() => {
-        successMsg.remove();
-    }, 4000);
-    
-    // Scroll to certificate
-    document.getElementById('certificate').scrollIntoView({ behavior: 'smooth' });
+    if (certificateData) {
+        // Scroll to certificate
+        document.getElementById('certificate').scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
-function printCertificate() {
-    // Hide everything except the certificate for clean printing
-    const originalDisplay = [];
-    const elementsToHide = document.querySelectorAll('body > *:not(#certificate)');
-    
-    elementsToHide.forEach((el, index) => {
-        originalDisplay[index] = el.style.display;
-        el.style.display = 'none';
-    });
-    
-    // Print just the certificate
-    window.print();
-    
-    // Restore original display
-    elementsToHide.forEach((el, index) => {
-        el.style.display = originalDisplay[index];
-    });
-}
-
-function downloadCertificate() {
-    // Create a new window with just the certificate for PDF saving
-    const certificateHTML = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Certificate - ${document.getElementById('participantName').textContent}</title>
-            <style>
-                body { font-family: Georgia, serif; margin: 40px; }
-                .certificate { background: white; border: 3px solid #d69e2e; padding: 40px; text-align: center; border-radius: 8px; }
-                .certificate h2 { color: #1a365d; font-size: 24px; margin-bottom: 20px; }
-                .participant-name { color: #d69e2e; font-size: 20px; font-weight: bold; margin: 20px 0; border-bottom: 1px solid #ccc; display: inline-block; padding-bottom: 5px; }
-            </style>
-        </head>
-        <body>
-            ${document.getElementById('certificate').outerHTML}
-        </body>
-        </html>
-    `;
-    
-    const newWindow = window.open('', '_blank');
-    newWindow.document.write(certificateHTML);
-    newWindow.document.close();
-    newWindow.print();
-}
-
-function emailCertificate() {
-    const name = document.getElementById('participantName').textContent;
-    const date = document.getElementById('completionDate').textContent;
-    const score = document.getElementById('certificateScore').textContent;
-    
-    const subject = encodeURIComponent('MSK Course Completion Certificate');
-    const body = encodeURIComponent(`I have successfully completed the Comprehensive Musculoskeletal Evaluation and Treatment course.
-
-Certificate Details:
-- Participant: ${name}
-- Course: Comprehensive Musculoskeletal Evaluation and Treatment
-- Course Code: PT-MSK-001
-- Completion Date: ${date}
-- Score: ${score}%
-- Continuing Education Units: 3.0 CCUs
-
-Please find my certificate attached or accessible at: ${window.location.href}`);
-    
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-}
+// Certificate functions now handled by the Certificate Manager system
+// Legacy functions removed - see js/certificate-manager.js for new implementation
 
 function submitFeedback() {
     const form = document.getElementById('feedbackForm');
@@ -2806,30 +2731,59 @@ function showWelcomeBackMessage() {
 }
 
 function restoreSavedCertificate() {
-    const certificateData = JSON.parse(localStorage.getItem('mskCertificateData'));
+    // Check for new certificate system data first
+    const savedCertificate = window.DrTroyCertificates.getCertificateByCode('PT-MSK-001');
     
-    if (certificateData && localStorage.getItem('mskCertificateGenerated') === 'true') {
-        // Restore certificate data
-        document.getElementById('participantName').textContent = certificateData.name;
-        document.getElementById('completionDate').textContent = certificateData.completionDate;
-        document.getElementById('certificateScore').textContent = certificateData.score;
-        document.getElementById('nameInput').value = certificateData.name;
+    if (savedCertificate) {
+        // Restore using new certificate system
+        document.getElementById('participantName').textContent = savedCertificate.participantName;
+        document.getElementById('completionDate').textContent = savedCertificate.completionDate;
+        document.getElementById('certificateScore').textContent = savedCertificate.scoreAchieved;
+        document.getElementById('nameInput').value = savedCertificate.participantName;
+        document.getElementById('displayCertificateId').textContent = savedCertificate.certificateId;
         
-        // Show certificate buttons
-        document.getElementById('downloadBtn').classList.remove('hidden');
-        document.getElementById('printBtn').classList.remove('hidden');
-        document.getElementById('emailBtn').classList.remove('hidden');
+        // Show certificate action buttons
+        const actionButtons = window.CertificateUtils.createCertificateButtons(savedCertificate);
+        document.getElementById('certificateActions').innerHTML = actionButtons;
         document.getElementById('certificateConfirmation').classList.remove('hidden');
         
         // Add regenerate option
         const regenerateHTML = `
             <div style="text-align: center; margin: 10px 0; padding: 10px; background: #fffbeb; border-radius: 6px;">
-                <p style="margin: 5px 0; color: #92400e;"><strong>Certificate Previously Generated:</strong> ${new Date(certificateData.generated).toLocaleDateString()}</p>
+                <p style="margin: 5px 0; color: #92400e;"><strong>Certificate Previously Generated:</strong> ${new Date(savedCertificate.generatedDate).toLocaleDateString()}</p>
                 <button class="btn btn-primary" onclick="regenerateCertificate()" style="font-size: 14px; padding: 8px 16px;">🔄 Update Certificate</button>
             </div>
         `;
         
         document.getElementById('certificateConfirmation').insertAdjacentHTML('afterend', regenerateHTML);
+        return;
+    }
+    
+    // Fallback to legacy certificate data
+    const legacyCertificateData = JSON.parse(localStorage.getItem('mskCertificateData') || '{}');
+    
+    if (legacyCertificateData.name && localStorage.getItem('mskCertificateGenerated') === 'true') {
+        // Migrate legacy data to new system
+        const migratedCert = window.CertificateUtils.generateCourseCertificate(
+            'PT-MSK-001',
+            legacyCertificateData.name,
+            legacyCertificateData.score,
+            function(certData) {
+                // Update display after migration
+                document.getElementById('participantName').textContent = certData.participantName;
+                document.getElementById('completionDate').textContent = certData.completionDate;
+                document.getElementById('certificateScore').textContent = certData.scoreAchieved;
+                document.getElementById('nameInput').value = certData.participantName;
+                document.getElementById('displayCertificateId').textContent = certData.certificateId;
+                
+                const actionButtons = window.CertificateUtils.createCertificateButtons(certData);
+                document.getElementById('certificateActions').innerHTML = actionButtons;
+                document.getElementById('certificateConfirmation').classList.remove('hidden');
+            }
+        );
+        
+        // Clean up legacy data
+        localStorage.removeItem('mskCertificateData');
     }
 }
 
