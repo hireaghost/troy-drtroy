@@ -2436,13 +2436,27 @@
         function switchMainTab(tabName) {
             console.log(`🔄 Switching to tab: ${tabName}`);
             
-            // Update tab buttons
+            // Update tab buttons - find the correct button by onclick attribute
             document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Find and activate the correct tab button
+            const targetButton = document.querySelector(`[onclick*="switchMainTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+                console.log(`✅ Activated button for: ${tabName}`);
+            } else {
+                console.warn(`❌ Could not find button for tab: ${tabName}`);
+            }
             
             // Update tab content
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+            const targetContent = document.getElementById(tabName);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                console.log(`✅ Activated content for: ${tabName}`);
+            } else {
+                console.warn(`❌ Could not find content for tab: ${tabName}`);
+            }
             
             // Save current tab to localStorage
             localStorage.setItem('currentAdminTab', tabName);
@@ -2506,19 +2520,43 @@
         }
 
         function switchSubTab(tabName) {
-            document.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            // Find the parent tab container to scope the search
+            const activeMainTab = document.querySelector('.tab-content.active');
+            if (!activeMainTab) return;
             
-            document.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+            // Update sub-tab buttons within the active main tab
+            activeMainTab.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
+            const targetButton = activeMainTab.querySelector(`[onclick*="switchSubTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // Update sub-tab content within the active main tab
+            activeMainTab.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+            const targetContent = activeMainTab.querySelector(`#${tabName}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
         }
 
         function switchAnalyticsTab(tabName) {
-            document.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            // Find the analytics tab container
+            const analyticsTab = document.getElementById('analytics');
+            if (!analyticsTab) return;
             
-            document.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName + '-analytics').classList.add('active');
+            // Update sub-tab buttons within the analytics tab
+            analyticsTab.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
+            const targetButton = analyticsTab.querySelector(`[onclick*="switchAnalyticsTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // Update sub-tab content within the analytics tab
+            analyticsTab.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+            const targetContent = analyticsTab.querySelector(`#${tabName}-analytics`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
         }
 
         // Form handlers
@@ -2739,19 +2777,41 @@
 
         // Enhanced Tab Switching Functions
         function switchEmailTab(tabName) {
-            document.querySelectorAll('#emails .sub-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            const emailsTab = document.getElementById('emails');
+            if (!emailsTab) return;
             
-            document.querySelectorAll('#emails .sub-content').forEach(content => content.classList.remove('active'));
-            document.getElementById('email-' + tabName).classList.add('active');
+            // Update sub-tab buttons within the emails tab
+            emailsTab.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
+            const targetButton = emailsTab.querySelector(`[onclick*="switchEmailTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // Update sub-tab content within the emails tab
+            emailsTab.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+            const targetContent = emailsTab.querySelector(`#email-${tabName}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
         }
 
         function switchSettingsTab(tabName) {
-            document.querySelectorAll('#settings .sub-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            const settingsTab = document.getElementById('settings');
+            if (!settingsTab) return;
             
-            document.querySelectorAll('#settings .sub-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName + '-settings').classList.add('active');
+            // Update sub-tab buttons within the settings tab
+            settingsTab.querySelectorAll('.sub-tab').forEach(tab => tab.classList.remove('active'));
+            const targetButton = settingsTab.querySelector(`[onclick*="switchSettingsTab('${tabName}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // Update sub-tab content within the settings tab
+            settingsTab.querySelectorAll('.sub-content').forEach(content => content.classList.remove('active'));
+            const targetContent = settingsTab.querySelector(`#${tabName}-settings`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
         }
 
         // Dashboard Functions
