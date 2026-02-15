@@ -479,6 +479,10 @@
                                 <input type="email" id="editEmail" required>
                             </div>
                             <div class="form-group">
+                                <label for="editPhone">Phone Number</label>
+                                <input type="tel" id="editPhone" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
                                 <label for="editDiscipline">Discipline</label>
                                 <select id="editDiscipline" required>
                                     <option value="PT">Physical Therapist (PT)</option>
@@ -638,6 +642,7 @@
             document.getElementById('editFirstName').value = account.firstName || '';
             document.getElementById('editLastName').value = account.lastName || '';
             document.getElementById('editEmail').value = account.email || '';
+            document.getElementById('editPhone').value = account.phone || '';
             document.getElementById('editDiscipline').value = account.discipline || '';
         }
 
@@ -712,6 +717,7 @@
             account.firstName = document.getElementById('editFirstName').value;
             account.lastName = document.getElementById('editLastName').value;
             account.email = document.getElementById('editEmail').value;
+            account.phone = document.getElementById('editPhone').value;
             account.discipline = document.getElementById('editDiscipline').value;
             account.updatedAt = new Date().toISOString();
             
