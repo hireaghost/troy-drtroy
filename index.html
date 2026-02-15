@@ -1418,6 +1418,15 @@
                     localStorage.setItem('customerName', account.firstName + ' ' + (account.lastName || ''));
                     localStorage.setItem('customerEmail', account.email);
                     if (account.discipline) localStorage.setItem('customerDiscipline', account.discipline);
+                    
+                    // CREATE USER SESSION (this was missing!)
+                    localStorage.setItem('userSession', JSON.stringify({
+                        userId: account.id,
+                        email: account.email,
+                        loginTime: Date.now(),
+                        expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+                    }));
+                    
                     closeLoginModal();
                     
                     // Update UI elements
