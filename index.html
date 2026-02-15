@@ -2457,10 +2457,7 @@
                 
                 // Show My Account button
                 myAccountButton.style.display = 'inline-block';
-                myAccountButton.onclick = function(e) {
-                    e.preventDefault();
-                    showMyAccountModal(accountInfo);
-                };
+                myAccountButton.href = 'my-account.html';
                 
                 // Hide account creation section
                 updateUIForLoggedInUser(accountInfo);

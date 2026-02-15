@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | DrTroy</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: https:;
+        connect-src 'self' https://*.supabase.co;
+    ">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --navy-light: #2c5282;
+            --gold: #d69e2e;
+            --gold-light: #ecc94b;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
+            --gray-600: #4a5568;
+            --gray-800: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+
+        /* Header */
+        header {
+            background: #f8f6f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo img {
+            height: 200px;
+            width: auto;
+            max-width: 800px;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: var(--gray-600);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--navy);
+        }
+
+        .login-link {
+            background: var(--gold) !important;
+            color: var(--navy) !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            margin-left: 1rem !important;
+            transition: all 0.2s !important;
+        }
+
+        .login-link:hover {
+            background: var(--gold-light) !important;
+            color: var(--navy) !important;
+        }
+
+        .my-account-link {
+            display: none;
+            background: var(--navy) !important;
+            color: white !important;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            margin-left: 1rem !important;
+            transition: all 0.2s !important;
+        }
+
+        .my-account-link:hover {
+            background: var(--navy-light) !important;
+            color: white !important;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .account-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .account-main {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--gray-600);
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: var(--navy);
+            color: white;
+        }
+
+        .account-section {
+            display: none;
+        }
+
+        .account-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .section-header h2 {
+            color: var(--navy);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--gray-600);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-100);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .btn {
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--gold-light);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-800);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .course-list,
+        .purchase-list {
+            list-style: none;
+        }
+
+        .course-item,
+        .purchase-item {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .course-title,
+        .purchase-title {
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-meta,
+        .purchase-meta {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            background: var(--gray-200);
+            border-radius: 10px;
+            height: 8px;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            background: var(--gold);
+            border-radius: 10px;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .certificate-btn {
+            background: var(--navy);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .certificate-btn:hover {
+            background: var(--navy-light);
+            color: white;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-info {
+            background: #e6f3ff;
+            border: 1px solid #b3d9ff;
+            color: #0066cc;
+        }
+
+        .alert-success {
+            background: #e6f7e6;
+            border: 1px solid #b3e6b3;
+            color: #006600;
+        }
+
+        @media (max-width: 768px) {
+            .account-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="courses/images/drtroy_logo.png" alt="DrTroy Continuing Education">
+            </div>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="courses.html">Courses</a>
+                <a href="#contact">Contact</a>
+                <a href="#" id="loginLink" class="login-link">Log In</a>
+                <a href="my-account.html" id="myAccountLink" class="my-account-link">My Account</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="loginRequired" class="alert alert-info" style="display: none;">
+            <strong>Account Access Required:</strong> Please <a href="index.html">log in or create an account</a> to access your account dashboard.
+        </div>
+
+        <div id="accountContent" style="display: none;">
+            <div class="page-header">
+                <h1>My Account</h1>
+                <p>Manage your continuing education journey</p>
+            </div>
+
+            <div class="account-grid">
+                <div class="account-sidebar">
+                    <div id="welcomeMessage" style="margin-bottom: 2rem;">
+                        <h3 style="color: var(--navy); margin-bottom: 0.5rem;">Welcome back!</h3>
+                        <p style="color: var(--gray-600); font-size: 0.9rem;">Member since <span id="memberSince"></span></p>
+                    </div>
+                    
+                    <ul class="sidebar-nav">
+                        <li><a href="#" data-section="overview" class="active">Account Overview</a></li>
+                        <li><a href="#" data-section="personal">Personal Information</a></li>
+                        <li><a href="#" data-section="courses">My Courses</a></li>
+                        <li><a href="#" data-section="certificates">Certificates</a></li>
+                        <li><a href="#" data-section="purchases">Purchase History</a></li>
+                        <li><a href="#" data-section="settings">Settings</a></li>
+                    </ul>
+                </div>
+
+                <div class="account-main">
+                    <!-- Overview Section -->
+                    <div id="overview" class="account-section active">
+                        <div class="section-header">
+                            <h2>Account Overview</h2>
+                            <p>Your continuing education progress at a glance</p>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalCourses">0</div>
+                                <div class="stat-label">Courses Purchased</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="completedCourses">0</div>
+                                <div class="stat-label">Courses Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="totalCCUs">0</div>
+                                <div class="stat-label">CCUs Earned</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number" id="certificatesEarned">0</div>
+                                <div class="stat-label">Certificates Earned</div>
+                            </div>
+                        </div>
+
+                        <div id="recentActivity">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Recent Activity</h3>
+                            <div class="alert alert-info">
+                                <p>No recent activity. Start a course to see your progress here!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information Section -->
+                    <div id="personal" class="account-section">
+                        <div class="section-header">
+                            <h2>Personal Information</h2>
+                            <p>Update your account details and preferences</p>
+                        </div>
+
+                        <form id="personalInfoForm">
+                            <div class="form-group">
+                                <label for="editFirstName">First Name</label>
+                                <input type="text" id="editFirstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editLastName">Last Name</label>
+                                <input type="text" id="editLastName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editEmail">Email Address</label>
+                                <input type="email" id="editEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editDiscipline">Discipline</label>
+                                <select id="editDiscipline" required>
+                                    <option value="PT">Physical Therapist (PT)</option>
+                                    <option value="PTA">Physical Therapist Assistant (PTA)</option>
+                                    <option value="OT">Occupational Therapist (OT)</option>
+                                    <option value="COTA">Certified Occupational Therapy Assistant (COTA)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" onclick="loadPersonalInfo()">Cancel</button>
+                        </form>
+                    </div>
+
+                    <!-- My Courses Section -->
+                    <div id="courses" class="account-section">
+                        <div class="section-header">
+                            <h2>My Courses</h2>
+                            <p>Track your course progress and continue learning</p>
+                        </div>
+
+                        <ul class="course-list" id="courseList">
+                            <li class="course-item">
+                                <div class="course-title">No courses purchased yet</div>
+                                <div class="course-meta">
+                                    <a href="index.html" class="btn">Browse Courses</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Certificates Section -->
+                    <div id="certificates" class="account-section">
+                        <div class="section-header">
+                            <h2>Certificates</h2>
+                            <p>Download and manage your completion certificates</p>
+                        </div>
+
+                        <div id="certificatesList">
+                            <div class="alert alert-info">
+                                <p><strong>No certificates available yet.</strong> Complete courses to earn certificates that you can download for your records and license renewals.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Purchase History Section -->
+                    <div id="purchases" class="account-section">
+                        <div class="section-header">
+                            <h2>Purchase History</h2>
+                            <p>View your past orders and receipts</p>
+                        </div>
+
+                        <ul class="purchase-list" id="purchaseList">
+                            <li class="purchase-item">
+                                <div class="alert alert-info">
+                                    <p><strong>No purchases yet.</strong> <a href="index.html">Browse our continuing education packages</a> to get started with your professional development.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div id="settings" class="account-section">
+                        <div class="section-header">
+                            <h2>Account Settings</h2>
+                            <p>Manage your account preferences and security</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Password Security</h3>
+                            <form id="passwordChangeForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" id="newPassword" minlength="8" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <input type="password" id="confirmNewPassword" minlength="8" required>
+                                </div>
+                                <button type="submit" class="btn">Update Password</button>
+                            </form>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Notifications</h3>
+                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <input type="checkbox" id="emailNotifications" checked style="margin-right: 0.5rem;">
+                                Email notifications for course updates and new content
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem;">
+                                License renewal reminders
+                            </label>
+                            <button class="btn btn-secondary">Save Preferences</button>
+                        </div>
+
+                        <div style="padding: 1.5rem; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px;">
+                            <h3 style="color: #c53030; margin-bottom: 1rem;">Danger Zone</h3>
+                            <p style="color: #4a5568; margin-bottom: 1rem;">Permanently delete your account and all associated data. This action cannot be undone.</p>
+                            <button class="btn" style="background: #c53030; color: white;" onclick="confirmAccountDeletion()">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check if user is logged in when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            setupSidebarNavigation();
+            loadAccountData();
+        });
+
+        function checkLoginStatus() {
+            const hasAccount = localStorage.getItem('drtroyAccount');
+            const hasSession = localStorage.getItem('userSession');
+            
+            if (hasAccount && hasSession) {
+                document.getElementById('loginRequired').style.display = 'none';
+                document.getElementById('accountContent').style.display = 'block';
+                updateLoginButton();
+                loadAccountData();
+            } else {
+                document.getElementById('loginRequired').style.display = 'block';
+                document.getElementById('accountContent').style.display = 'none';
+                // Redirect to home page after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            }
+        }
+
+        function loadAccountData() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (!accountData) return;
+            
+            const account = JSON.parse(accountData);
+            
+            // Update welcome message
+            document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
+            document.getElementById('memberSince').textContent = new Date(account.createdAt).toLocaleDateString();
+            
+            // Load personal information form
+            loadPersonalInfo();
+        }
+
+        function loadPersonalInfo() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (!accountData) return;
+            
+            const account = JSON.parse(accountData);
+            document.getElementById('editFirstName').value = account.firstName || '';
+            document.getElementById('editLastName').value = account.lastName || '';
+            document.getElementById('editEmail').value = account.email || '';
+            document.getElementById('editDiscipline').value = account.discipline || '';
+        }
+
+        function setupSidebarNavigation() {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Update active nav item
+                    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding section
+                    const sectionId = this.getAttribute('data-section');
+                    document.querySelectorAll('.account-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+        }
+
+        // Update login button state
+        function updateLoginButton() {
+            const loginButton = document.getElementById('loginLink');
+            const myAccountButton = document.getElementById('myAccountLink');
+            const hasAccount = localStorage.getItem('drtroyAccount');
+            const hasSession = localStorage.getItem('userSession');
+            
+            if (hasAccount && hasSession) {
+                loginButton.textContent = 'Log Out';
+                loginButton.onclick = function(e) {
+                    e.preventDefault();
+                    handleLogout();
+                };
+                myAccountButton.style.display = 'inline-block';
+            } else {
+                loginButton.textContent = 'Log In';
+                loginButton.onclick = function(e) {
+                    e.preventDefault();
+                    window.location.href = 'index.html';
+                };
+                myAccountButton.style.display = 'none';
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            // Clear session data only, keep account for future login
+            localStorage.removeItem('userSession');
+            localStorage.removeItem('selectedPackage');
+            localStorage.removeItem('packagePrice');
+            localStorage.removeItem('selectedPackageCode');
+            localStorage.removeItem('customerName');
+            localStorage.removeItem('customerEmail');
+            localStorage.removeItem('customerDiscipline');
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+
+        // Personal Information Form Handler
+        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (!accountData) return;
+            
+            const account = JSON.parse(accountData);
+            
+            // Update account data
+            account.firstName = document.getElementById('editFirstName').value;
+            account.lastName = document.getElementById('editLastName').value;
+            account.email = document.getElementById('editEmail').value;
+            account.discipline = document.getElementById('editDiscipline').value;
+            account.updatedAt = new Date().toISOString();
+            
+            // Save updated account data
+            localStorage.setItem('drtroyAccount', JSON.stringify(account));
+            
+            // Update other localStorage items that depend on this data
+            localStorage.setItem('customerName', `${account.firstName} ${account.lastName}`);
+            localStorage.setItem('customerEmail', account.email);
+            localStorage.setItem('customerDiscipline', account.discipline);
+            
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.textContent = 'Your information has been updated successfully!';
+            
+            const form = document.getElementById('personalInfoForm');
+            form.parentNode.insertBefore(successAlert, form);
+            
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
+            
+            // Update welcome message
+            document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
+        });
+
+        // Password Change Form Handler
+        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (!accountData) return;
+            
+            const account = JSON.parse(accountData);
+            
+            // Verify current password
+            if (account.password !== currentPassword) {
+                alert('Current password is incorrect.');
+                return;
+            }
+            
+            // Verify new passwords match
+            if (newPassword !== confirmNewPassword) {
+                alert('New passwords do not match.');
+                return;
+            }
+            
+            // Update password
+            account.password = newPassword;
+            account.passwordUpdatedAt = new Date().toISOString();
+            
+            // Save updated account data
+            localStorage.setItem('drtroyAccount', JSON.stringify(account));
+            
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.textContent = 'Your password has been updated successfully!';
+            
+            const form = document.getElementById('passwordChangeForm');
+            form.parentNode.insertBefore(successAlert, form);
+            
+            // Clear form
+            form.reset();
+            
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
+        });
+
+        // Account deletion confirmation
+        function confirmAccountDeletion() {
+            const confirmed = confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data, course progress, and certificates.');
+            
+            if (confirmed) {
+                const doubleConfirm = confirm('This is your final warning. Clicking OK will immediately delete your account and all associated data. Are you absolutely sure?');
+                
+                if (doubleConfirm) {
+                    // Clear all account data
+                    localStorage.removeItem('drtroyAccount');
+                    localStorage.removeItem('userSession');
+                    localStorage.removeItem('selectedPackage');
+                    localStorage.removeItem('packagePrice');
+                    localStorage.removeItem('selectedPackageCode');
+                    localStorage.removeItem('customerName');
+                    localStorage.removeItem('customerEmail');
+                    localStorage.removeItem('customerDiscipline');
+                    
+                    alert('Your account has been permanently deleted.');
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
