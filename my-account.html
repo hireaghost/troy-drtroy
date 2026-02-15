@@ -522,6 +522,15 @@
     <main class="container">
         <div id="loginRequired" class="alert alert-info" style="display: none;">
             <strong>Account Access Required:</strong> Please <a href="index.html">log in or create an account</a> to access your account dashboard.
+            
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border: 1px solid #d97706; border-radius: 6px;">
+                <p><strong>🛠️ Emergency Access:</strong> If you're having login issues, use the buttons below:</p>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="createEmergencyAccount()" style="background: #1e3a8a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600;">👤 Create Test Account</button>
+                    <a href="debug-account.html" style="background: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">🔍 Debug Tools</a>
+                    <a href="index.html" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">🏠 Back to Home</a>
+                </div>
+            </div>
         </div>
 
         <div id="accountContent" style="display: none;">
@@ -1079,6 +1088,47 @@
             console.log('My Account page loaded successfully');
         });
 
+        // Emergency account creation function
+        function createEmergencyAccount() {
+            if (confirm('🚨 This will create a test account for Troy Hounshell. Continue?')) {
+                const testAccount = {
+                    id: 'troy_emergency_' + Date.now(),
+                    firstName: 'Troy',
+                    lastName: 'Hounshell',
+                    email: 'troyh@texastherapypros.com',
+                    password: 'DrTroy2026!',
+                    discipline: 'PT',
+                    phone: '806-577-6908',
+                    address: '',
+                    city: '',
+                    state: '',
+                    zip: '',
+                    licenseNumber: '',
+                    licenseState: '',
+                    licenseExpiration: '',
+                    createdAt: new Date().toISOString(),
+                    licenseRenewalReminders: true,
+                    emailNotifications: true
+                };
+                
+                const testSession = {
+                    userId: testAccount.id,
+                    email: testAccount.email,
+                    loginTime: Date.now(),
+                    expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+                };
+                
+                localStorage.setItem('drtroyAccount', JSON.stringify(testAccount));
+                localStorage.setItem('userSession', JSON.stringify(testSession));
+                localStorage.setItem('customerName', 'Troy Hounshell');
+                localStorage.setItem('customerEmail', 'troyh@texastherapypros.com');
+                localStorage.setItem('customerDiscipline', 'PT');
+                
+                alert('✅ Emergency account created!\n\nReloading page to log you in...');
+                location.reload();
+            }
+        }
+
         function setupFieldFormatting() {
             // Auto-uppercase state fields
             document.getElementById('editState').addEventListener('input', function() {
@@ -1098,27 +1148,66 @@
         }
 
         function checkLoginStatus() {
+            console.log('🔍 Checking login status...');
+            
             const hasAccount = localStorage.getItem('drtroyAccount');
             const hasSession = localStorage.getItem('userSession');
             
+            console.log('Account data exists:', !!hasAccount);
+            console.log('Session data exists:', !!hasSession);
+            
             if (hasAccount && hasSession) {
-                document.getElementById('loginRequired').style.display = 'none';
-                document.getElementById('accountContent').style.display = 'block';
-                updateLoginButton();
-                loadAccountData();
-                restoreActiveTab();
+                console.log('✅ User is logged in - showing account content');
+                
+                try {
+                    const account = JSON.parse(hasAccount);
+                    const session = JSON.parse(hasSession);
+                    console.log('Account name:', account.firstName, account.lastName);
+                    console.log('Session valid:', session.expires > Date.now());
+                    
+                    const loginReq = document.getElementById('loginRequired');
+                    const accountContent = document.getElementById('accountContent');
+                    
+                    if (loginReq) loginReq.style.display = 'none';
+                    if (accountContent) accountContent.style.display = 'block';
+                    
+                    updateLoginButton();
+                    loadAccountData();
+                    restoreActiveTab();
+                } catch (error) {
+                    console.error('❌ Error parsing account/session data:', error);
+                    showNotLoggedIn();
+                }
             } else {
-                document.getElementById('loginRequired').style.display = 'block';
-                document.getElementById('accountContent').style.display = 'none';
-                
-                // Clear saved tab when not logged in
-                localStorage.removeItem('currentAccountTab');
-                
-                // Redirect to home page after 3 seconds
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 3000);
+                console.log('❌ User not logged in - showing login required message');
+                showNotLoggedIn();
             }
+        }
+
+        function showNotLoggedIn() {
+            const loginReq = document.getElementById('loginRequired');
+            const accountContent = document.getElementById('accountContent');
+            
+            if (loginReq) loginReq.style.display = 'block';
+            if (accountContent) accountContent.style.display = 'none';
+            
+            // Clear saved tab when not logged in
+            localStorage.removeItem('currentAccountTab');
+            
+            // Add debug link
+            if (loginReq && !loginReq.querySelector('.debug-link')) {
+                const debugLink = document.createElement('div');
+                debugLink.className = 'debug-link';
+                debugLink.style.marginTop = '1rem';
+                debugLink.innerHTML = '<a href="debug-account.html" style="color: #1e3a8a; text-decoration: underline;">🔍 Debug Account Issues</a>';
+                loginReq.appendChild(debugLink);
+            }
+            
+            // Redirect to home page after 5 seconds (increased time)
+            setTimeout(() => {
+                console.log('Redirecting to home page...');
+                window.location.href = 'index.html';
+            }, 5000);
         }
 
         function loadAccountData() {

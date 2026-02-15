@@ -3,124 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debug Account Data</title>
+    <title>Account Debug - DrTroy.com</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            padding: 2rem; 
-            background: #f8f9fa; 
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #f5f5f5;
         }
-        .container { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 2rem; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        .debug-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        pre { 
-            background: #f1f3f4; 
-            padding: 1rem; 
-            border-radius: 4px; 
-            overflow: auto;
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        .success { background: #dcfce7; color: #065f46; }
+        .error { background: #fef2f2; color: #991b1b; }
+        .warning { background: #fef3c7; color: #92400e; }
+        .data-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
             white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 200px;
+            overflow-y: auto;
         }
-        button { 
-            background: #1a365d; 
-            color: white; 
-            border: none; 
-            padding: 0.5rem 1rem; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            margin: 0.5rem; 
+        button {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 0.5rem 0.5rem 0.5rem 0;
         }
-        button:hover { background: #2c5282; }
+        button:hover {
+            background: #1e40af;
+        }
+        .danger {
+            background: #dc2626;
+        }
+        .danger:hover {
+            background: #b91c1c;
+        }
+        h1 {
+            color: #1e3a8a;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Debug Account Data</h1>
-        <p>This page shows what's stored in your browser for debugging login issues.</p>
-        
-        <button onclick="showAccountData()">Show Account Data</button>
-        <button onclick="showSessionData()">Show Session Data</button>
-        <button onclick="testLogin()">Test Login Function</button>
-        <button onclick="clearAll()">Clear All Data</button>
-        
-        <div id="output"></div>
-        
-        <p style="margin-top: 2rem; font-size: 0.9rem; color: #666;">
-            <a href="index.html">← Return to DrTroy.com</a>
-        </p>
+    <h1>🔍 DrTroy.com Account Debug Tool</h1>
+    <p>This tool helps diagnose login and account issues on the platform.</p>
+    
+    <div class="debug-card">
+        <h2>📊 Current Authentication Status</h2>
+        <div id="authStatus"></div>
+        <button onclick="refreshStatus()">🔄 Refresh Status</button>
+        <button onclick="viewData()">👁️ View Account Data</button>
+    </div>
+    
+    <div class="debug-card">
+        <h2>👤 Account Data</h2>
+        <div id="accountData"></div>
+        <button onclick="exportAccountData()">📥 Export Account Data</button>
+    </div>
+    
+    <div class="debug-card">
+        <h2>🔐 Session Data</h2>
+        <div id="sessionData"></div>
+        <button onclick="extendSession()">⏰ Extend Session</button>
+    </div>
+    
+    <div class="debug-card">
+        <h2>🛠️ Quick Fixes</h2>
+        <button onclick="createTestAccount()">👤 Create Test Account</button>
+        <button onclick="fixLoginSession()">🔧 Fix Login Session</button>
+        <button onclick="clearAllData()" class="danger">🗑️ Clear All Data</button>
+    </div>
+    
+    <div class="debug-card">
+        <h2>🚀 Navigation</h2>
+        <button onclick="goToHomePage()">🏠 Go to Home Page</button>
+        <button onclick="goToMyAccount()">👤 Go to My Account</button>
+        <button onclick="goToAdmin()">⚙️ Go to Admin Panel</button>
     </div>
 
     <script>
-        function showAccountData() {
+        function refreshStatus() {
+            const hasAccount = localStorage.getItem('drtroyAccount');
+            const hasSession = localStorage.getItem('userSession');
+            
+            let status = '';
+            
+            if (hasAccount && hasSession) {
+                status += '<div class="status success">✅ LOGGED IN - Account and session found</div>';
+                try {
+                    const account = JSON.parse(hasAccount);
+                    const session = JSON.parse(hasSession);
+                    status += `<p><strong>Name:</strong> ${account.firstName} ${account.lastName}</p>`;
+                    status += `<p><strong>Email:</strong> ${account.email}</p>`;
+                    status += `<p><strong>Discipline:</strong> ${account.discipline}</p>`;
+                    status += `<p><strong>Session Valid:</strong> ${session.expires > Date.now() ? 'Yes' : 'EXPIRED'}</p>`;
+                } catch (e) {
+                    status += '<div class="status error">❌ ERROR - Account/session data is corrupted</div>';
+                }
+            } else if (hasAccount && !hasSession) {
+                status += '<div class="status warning">⚠️ ACCOUNT EXISTS but NO SESSION - Need to log in again</div>';
+                try {
+                    const account = JSON.parse(hasAccount);
+                    status += `<p><strong>Account Email:</strong> ${account.email}</p>`;
+                } catch (e) {
+                    status += '<div class="status error">❌ Account data is corrupted</div>';
+                }
+            } else if (!hasAccount && hasSession) {
+                status += '<div class="status warning">⚠️ SESSION EXISTS but NO ACCOUNT - Data mismatch</div>';
+            } else {
+                status += '<div class="status error">❌ NOT LOGGED IN - No account or session data found</div>';
+            }
+            
+            document.getElementById('authStatus').innerHTML = status;
+        }
+        
+        function viewData() {
             const accountData = localStorage.getItem('drtroyAccount');
-            const output = document.getElementById('output');
+            const sessionData = localStorage.getItem('userSession');
+            
+            let accountDisplay = 'No account data found';
+            let sessionDisplay = 'No session data found';
             
             if (accountData) {
-                const parsed = JSON.parse(accountData);
-                output.innerHTML = `
-                    <h3>Stored Account Data:</h3>
-                    <pre>${JSON.stringify(parsed, null, 2)}</pre>
-                    <p><strong>Password stored:</strong> ${parsed.password ? 'YES' : 'NO'}</p>
-                    <p><strong>Email:</strong> ${parsed.email}</p>
-                `;
-            } else {
-                output.innerHTML = '<h3>No account data found in localStorage</h3>';
+                try {
+                    const account = JSON.parse(accountData);
+                    accountDisplay = JSON.stringify(account, null, 2);
+                } catch (e) {
+                    accountDisplay = 'CORRUPTED: ' + accountData;
+                }
             }
-        }
-        
-        function showSessionData() {
-            const sessionData = localStorage.getItem('userSession');
-            const output = document.getElementById('output');
             
             if (sessionData) {
-                const parsed = JSON.parse(sessionData);
-                output.innerHTML = `
-                    <h3>Stored Session Data:</h3>
-                    <pre>${JSON.stringify(parsed, null, 2)}</pre>
-                `;
-            } else {
-                output.innerHTML = '<h3>No session data found in localStorage</h3>';
+                try {
+                    const session = JSON.parse(sessionData);
+                    sessionDisplay = JSON.stringify(session, null, 2);
+                } catch (e) {
+                    sessionDisplay = 'CORRUPTED: ' + sessionData;
+                }
             }
+            
+            document.getElementById('accountData').innerHTML = '<div class="data-box">' + accountDisplay + '</div>';
+            document.getElementById('sessionData').innerHTML = '<div class="data-box">' + sessionDisplay + '</div>';
         }
         
-        function testLogin() {
-            const email = prompt('Enter email to test:');
-            const password = prompt('Enter password to test:');
+        function createTestAccount() {
+            const testAccount = {
+                id: 'test_' + Date.now(),
+                firstName: 'Troy',
+                lastName: 'Hounshell',
+                email: 'troyh@texastherapypros.com',
+                password: 'DrTroy2026!',
+                discipline: 'PT',
+                phone: '806-577-6908',
+                createdAt: new Date().toISOString(),
+                licenseRenewalReminders: true
+            };
             
-            if (!email || !password) return;
+            const testSession = {
+                userId: testAccount.id,
+                email: testAccount.email,
+                loginTime: Date.now(),
+                expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+            };
             
+            localStorage.setItem('drtroyAccount', JSON.stringify(testAccount));
+            localStorage.setItem('userSession', JSON.stringify(testSession));
+            localStorage.setItem('customerName', 'Troy Hounshell');
+            localStorage.setItem('customerEmail', 'troyh@texastherapypros.com');
+            localStorage.setItem('customerDiscipline', 'PT');
+            
+            alert('✅ Test account created successfully!\n\nEmail: troyh@texastherapypros.com\nPassword: DrTroy2026!');
+            refreshStatus();
+            viewData();
+        }
+        
+        function fixLoginSession() {
             const accountData = localStorage.getItem('drtroyAccount');
-            const output = document.getElementById('output');
             
             if (!accountData) {
-                output.innerHTML = '<h3>No account data to test against</h3>';
+                alert('❌ No account found. Create a test account first.');
                 return;
             }
             
-            const account = JSON.parse(accountData);
-            const emailMatch = account.email === email;
-            const passwordMatch = account.password === password;
-            
-            output.innerHTML = `
-                <h3>Login Test Results:</h3>
-                <p><strong>Email Match:</strong> ${emailMatch ? 'YES' : 'NO'}</p>
-                <p><strong>Password Match:</strong> ${passwordMatch ? 'YES' : 'NO'}</p>
-                <p><strong>Stored Email:</strong> "${account.email}"</p>
-                <p><strong>Test Email:</strong> "${email}"</p>
-                <p><strong>Stored Password:</strong> "${account.password}"</p>
-                <p><strong>Test Password:</strong> "${password}"</p>
-                <p><strong>Would Login Succeed:</strong> ${emailMatch && passwordMatch ? 'YES' : 'NO'}</p>
-            `;
+            try {
+                const account = JSON.parse(accountData);
+                
+                const session = {
+                    userId: account.id || 'user_' + Date.now(),
+                    email: account.email,
+                    loginTime: Date.now(),
+                    expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+                };
+                
+                localStorage.setItem('userSession', JSON.stringify(session));
+                localStorage.setItem('customerName', (account.firstName || 'User') + ' ' + (account.lastName || ''));
+                localStorage.setItem('customerEmail', account.email);
+                if (account.discipline) localStorage.setItem('customerDiscipline', account.discipline);
+                
+                alert('✅ Login session fixed!');
+                refreshStatus();
+                viewData();
+            } catch (e) {
+                alert('❌ Error fixing session: ' + e.message);
+            }
         }
         
-        function clearAll() {
-            localStorage.clear();
-            document.getElementById('output').innerHTML = '<h3>All localStorage data cleared</h3>';
+        function extendSession() {
+            const sessionData = localStorage.getItem('userSession');
+            
+            if (!sessionData) {
+                alert('❌ No session found.');
+                return;
+            }
+            
+            try {
+                const session = JSON.parse(sessionData);
+                session.expires = Date.now() + (7 * 24 * 60 * 60 * 1000);
+                localStorage.setItem('userSession', JSON.stringify(session));
+                
+                alert('✅ Session extended for 7 days!');
+                refreshStatus();
+                viewData();
+            } catch (e) {
+                alert('❌ Error extending session: ' + e.message);
+            }
         }
+        
+        function clearAllData() {
+            if (confirm('⚠️ This will delete ALL account data and log you out. Are you sure?')) {
+                localStorage.removeItem('drtroyAccount');
+                localStorage.removeItem('userSession');
+                localStorage.removeItem('customerName');
+                localStorage.removeItem('customerEmail');
+                localStorage.removeItem('customerDiscipline');
+                localStorage.removeItem('selectedPackage');
+                localStorage.removeItem('packagePrice');
+                localStorage.removeItem('selectedPackageCode');
+                localStorage.removeItem('currentAccountTab');
+                
+                alert('✅ All data cleared!');
+                refreshStatus();
+                viewData();
+            }
+        }
+        
+        function exportAccountData() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            const sessionData = localStorage.getItem('userSession');
+            
+            const exportData = {
+                account: accountData ? JSON.parse(accountData) : null,
+                session: sessionData ? JSON.parse(sessionData) : null,
+                exported: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'drtroy-account-debug-' + Date.now() + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function goToHomePage() {
+            window.open('index.html', '_blank');
+        }
+        
+        function goToMyAccount() {
+            window.open('my-account.html', '_blank');
+        }
+        
+        function goToAdmin() {
+            window.open('secure-admin-access-2026.html', '_blank');
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshStatus();
+            viewData();
+        });
     </script>
 </body>
 </html>
