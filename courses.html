@@ -488,8 +488,8 @@
         
         // Handle logout
         function handleLogout() {
-            // Clear all session data
-            localStorage.removeItem('drtroyAccount');
+            // Clear ONLY session data, keep account for future login
+            // DO NOT REMOVE drtroyAccount - users need this to log back in!
             localStorage.removeItem('userSession');
             localStorage.removeItem('selectedPackage');
             localStorage.removeItem('packagePrice');

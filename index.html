@@ -2144,6 +2144,13 @@
                     expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
                 }));
                 
+                // DEBUG: Verify account was stored
+                const storedAccount = localStorage.getItem('drtroyAccount');
+                console.log('🔍 DEBUG - Account storage verification:');
+                console.log('  - Account saved to localStorage:', storedAccount ? 'YES' : 'NO');
+                console.log('  - Stored account email:', storedAccount ? JSON.parse(storedAccount).email : 'NONE');
+                console.log('  - Stored account password:', storedAccount ? (JSON.parse(storedAccount).password ? 'YES' : 'NO') : 'NONE');
+                
                 // Success state
                 statusDiv.style.backgroundColor = '#d4e6f1';
                 statusDiv.style.color = '#1e3a8a';
@@ -2520,8 +2527,8 @@
         
         // Handle logout
         function handleLogout() {
-            // Clear all session data
-            localStorage.removeItem('drtroyAccount');
+            // Clear ONLY session data, keep account for future login
+            // DO NOT REMOVE drtroyAccount - users need this to log back in!
             localStorage.removeItem('userSession');
             localStorage.removeItem('selectedPackage');
             localStorage.removeItem('packagePrice');
@@ -2529,6 +2536,8 @@
             localStorage.removeItem('customerName');
             localStorage.removeItem('customerEmail');
             localStorage.removeItem('customerDiscipline');
+            
+            console.log('🔍 DEBUG - Logout: Account kept for future login, session cleared');
             
             // Update UI elements
             updateLoginButton();
