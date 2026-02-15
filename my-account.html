@@ -156,6 +156,8 @@
             padding: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             height: fit-content;
+            position: sticky;
+            top: 2rem;
         }
 
         .account-main {
@@ -368,6 +370,118 @@
             color: #006600;
         }
 
+        /* New styles for enhanced features */
+        .profile-photo-section img {
+            border: 3px solid var(--navy);
+        }
+
+        .ccu-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ccu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .notification-group label {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notification-group label:hover {
+            background: var(--gray-100) !important;
+        }
+
+        .privacy-group label {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .privacy-group label:hover {
+            background: var(--gray-100) !important;
+        }
+
+        /* Toggle switch styles */
+        .switch input:checked + .slider {
+            background-color: var(--gold);
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .dark-mode header {
+            background: #2a2a2a;
+        }
+
+        .dark-mode .account-sidebar,
+        .dark-mode .account-main {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        .dark-mode .form-group input,
+        .dark-mode .form-group select,
+        .dark-mode .form-group textarea {
+            background: #3a3a3a;
+            color: #ffffff;
+            border-color: #4a4a4a;
+        }
+
+        .dark-mode .sidebar-nav a {
+            color: #cccccc;
+        }
+
+        .dark-mode .sidebar-nav a:hover,
+        .dark-mode .sidebar-nav a.active {
+            background: var(--gold);
+            color: #1a1a1a;
+        }
+
+        .dark-mode .btn {
+            background: var(--gold);
+            color: #1a1a1a;
+        }
+
+        .dark-mode .btn:hover {
+            background: var(--gold-light);
+        }
+
+        .dark-mode .ccu-card {
+            background: #3a3a3a;
+            border-left-color: var(--gold);
+        }
+
+        /* Print styles for CCU transcript */
+        @media print {
+            .btn, .sidebar-nav, header, .actions {
+                display: none !important;
+            }
+            .account-main {
+                box-shadow: none !important;
+                border: none !important;
+            }
+        }
+
         @media (max-width: 768px) {
             .account-grid {
                 grid-template-columns: 1fr;
@@ -375,6 +489,16 @@
             
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+            
+            .profile-photo-section {
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center;
+            }
+            
+            .ccu-overview {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
@@ -414,12 +538,17 @@
                     </div>
                     
                     <ul class="sidebar-nav">
-                        <li><a href="#" data-section="overview" class="active">Account Overview</a></li>
-                        <li><a href="#" data-section="personal">Personal Information</a></li>
-                        <li><a href="#" data-section="courses">My Courses</a></li>
-                        <li><a href="#" data-section="certificates">Certificates</a></li>
-                        <li><a href="#" data-section="purchases">Purchase History</a></li>
-                        <li><a href="#" data-section="settings">Settings</a></li>
+                        <li><a href="#" data-section="overview" class="active">📋 Account Overview</a></li>
+                        <li><a href="#" data-section="personal">👤 Personal Information</a></li>
+                        <li><a href="#" data-section="profile">🖼️ Profile & Photo</a></li>
+                        <li><a href="#" data-section="ccu-dashboard">📊 CCU Dashboard</a></li>
+                        <li><a href="#" data-section="courses">📚 My Courses</a></li>
+                        <li><a href="#" data-section="certificates">🏆 Certificates</a></li>
+                        <li><a href="#" data-section="purchases">💳 Purchase History</a></li>
+                        <li><a href="#" data-section="notifications">🔔 Notifications</a></li>
+                        <li><a href="#" data-section="security">🔒 Security</a></li>
+                        <li><a href="#" data-section="privacy">🛡️ Privacy & Data</a></li>
+                        <li><a href="#" data-section="settings">⚙️ Settings</a></li>
                     </ul>
                 </div>
 
@@ -584,8 +713,24 @@
                     <!-- Settings Section -->
                     <div id="settings" class="account-section">
                         <div class="section-header">
-                            <h2>Account Settings</h2>
-                            <p>Manage your account preferences and security</p>
+                            <h2>Display & Preferences</h2>
+                            <p>Customize your account experience</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Interface Settings</h3>
+                            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                                <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                    <div>
+                                        <strong>Dark Mode</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Switch to dark theme for reduced eye strain</div>
+                                    </div>
+                                    <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                                        <input type="checkbox" id="darkMode" style="opacity: 0; width: 0; height: 0;">
+                                        <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.4s; border-radius: 34px;"></span>
+                                    </label>
+                                </label>
+                            </div>
                         </div>
 
                         <div style="margin-bottom: 2rem;">
@@ -626,6 +771,286 @@
                             <button class="btn" style="background: #c53030; color: white;" onclick="confirmAccountDeletion()">Delete Account</button>
                         </div>
                     </div>
+
+                    <!-- Profile & Photo Section -->
+                    <div id="profile" class="account-section">
+                        <div class="section-header">
+                            <h2>Profile & Photo</h2>
+                            <p>Manage your profile image and display preferences</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <div class="profile-photo-section" style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                                <div class="current-photo" style="flex-shrink: 0;">
+                                    <div id="profilePhotoDisplay" style="width: 120px; height: 120px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--gray-600); border: 3px solid var(--navy);">
+                                        👤
+                                    </div>
+                                </div>
+                                <div class="photo-controls" style="flex: 1;">
+                                    <h3 style="color: var(--navy); margin-bottom: 1rem;">Profile Photo</h3>
+                                    <input type="file" id="profilePhotoInput" accept="image/*" style="margin-bottom: 1rem;">
+                                    <div style="margin-bottom: 1rem;">
+                                        <button class="btn" onclick="uploadProfilePhoto()">Upload Photo</button>
+                                        <button class="btn btn-secondary" onclick="removeProfilePhoto()">Remove Photo</button>
+                                    </div>
+                                    <p style="font-size: 0.9rem; color: var(--gray-600);">Recommended: Square image, 200x200 pixels or larger, under 5MB</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emergencyContact">Emergency Contact Name</label>
+                                <input type="text" id="emergencyContact" placeholder="Full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="emergencyPhone">Emergency Contact Phone</label>
+                                <input type="tel" id="emergencyPhone" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="preferredCommunication">Preferred Communication Method</label>
+                                <select id="preferredCommunication">
+                                    <option value="email">Email</option>
+                                    <option value="phone">Phone Call</option>
+                                    <option value="text">Text Message</option>
+                                </select>
+                            </div>
+                            <button class="btn" onclick="saveProfileData()">Save Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- CCU Dashboard Section -->
+                    <div id="ccu-dashboard" class="account-section">
+                        <div class="section-header">
+                            <h2>CCU Dashboard</h2>
+                            <p>Track your continuing education progress and license requirements</p>
+                        </div>
+
+                        <div class="ccu-overview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                            <div class="ccu-card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border-left: 4px solid var(--gold);">
+                                <h3 style="color: var(--navy); margin-bottom: 1rem;">Current License Status</h3>
+                                <div id="licenseStatus" style="font-size: 1.1rem; font-weight: 600;">
+                                    <span id="daysUntilRenewal" style="color: var(--gold);">-- days</span> until renewal
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--gray-600); margin-top: 0.5rem;" id="renewalDate">
+                                    Expires: --
+                                </div>
+                            </div>
+                            
+                            <div class="ccu-card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border-left: 4px solid var(--navy);">
+                                <h3 style="color: var(--navy); margin-bottom: 1rem;">CCU Progress</h3>
+                                <div id="ccuProgress" style="font-size: 1.1rem; font-weight: 600;">
+                                    <span id="earnedCCUs">0</span> / <span id="requiredCCUs">--</span> CCUs earned
+                                </div>
+                                <div class="progress-bar" style="background: var(--gray-200); border-radius: 10px; height: 12px; margin: 1rem 0;">
+                                    <div id="ccuProgressFill" class="progress-fill" style="width: 0%;"></div>
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--gray-600);" id="ccuRemaining">
+                                    -- CCUs remaining
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Course Completion History</h3>
+                            <div id="ccuHistory" style="background: white; border-radius: 8px; padding: 1.5rem;">
+                                <p style="color: var(--gray-600); text-align: center; padding: 2rem;">Complete courses to see your CCU history here</p>
+                            </div>
+                        </div>
+
+                        <div class="actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn" onclick="printCCUTranscript()">📄 Print CCU Transcript</button>
+                            <button class="btn btn-secondary" onclick="downloadCCUReport()">⬇️ Download Report</button>
+                            <a href="courses.html" class="btn" style="background: var(--gold); text-decoration: none;">📚 Browse More Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section -->
+                    <div id="notifications" class="account-section">
+                        <div class="section-header">
+                            <h2>Notification Preferences</h2>
+                            <p>Control how and when you receive updates</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Email Notifications</h3>
+                            <div class="notification-group">
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="courseUpdates" checked style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Course Updates</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">New courses, content updates, and educational announcements</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="licenseReminders" checked style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>License Renewal Reminders</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Automatic reminders 6 months, 1 month, and 1 week before expiration</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="promotions" checked style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Promotions & Discounts</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Special offers, bundle deals, and exclusive discounts</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="weeklyDigest" style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Weekly Progress Digest</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Summary of your learning progress and CCU status</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">SMS Notifications</h3>
+                            <div class="form-group">
+                                <label for="smsNotifications" style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                    <input type="checkbox" id="smsNotifications" style="margin-right: 1rem;">
+                                    Enable SMS notifications for urgent updates
+                                </label>
+                                <div id="smsOptions" style="margin-left: 2rem; display: none;">
+                                    <div class="form-group">
+                                        <label for="smsPhone">SMS Phone Number</label>
+                                        <input type="tel" id="smsPhone" placeholder="(555) 123-4567">
+                                    </div>
+                                    <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                        <input type="checkbox" id="urgentRenewals" style="margin-right: 0.5rem;">
+                                        License expiration within 30 days
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                        <input type="checkbox" id="courseDeadlines" style="margin-right: 0.5rem;">
+                                        Course completion deadlines
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn" onclick="saveNotificationPreferences()">Save Preferences</button>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div id="security" class="account-section">
+                        <div class="section-header">
+                            <h2>Security & Login</h2>
+                            <p>Manage your account security and login preferences</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Password Security</h3>
+                            <form id="passwordChangeForm" style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" id="currentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" id="newPassword" minlength="8" required>
+                                    <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 0.5rem;">
+                                        Minimum 8 characters with uppercase, lowercase, and numbers
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmNewPassword">Confirm New Password</label>
+                                    <input type="password" id="confirmNewPassword" minlength="8" required>
+                                </div>
+                                <button type="submit" class="btn">Update Password</button>
+                            </form>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Two-Factor Authentication</h3>
+                            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                    <div>
+                                        <strong>Status: <span id="twoFactorStatus" style="color: #dc2626;">Disabled</span></strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Add extra security to your account</div>
+                                    </div>
+                                    <button class="btn btn-secondary" onclick="toggle2FA()" id="toggle2FABtn">Enable 2FA</button>
+                                </div>
+                                <div id="twoFactorSetup" style="display: none;">
+                                    <p style="color: var(--gray-600); margin-bottom: 1rem;">Two-factor authentication adds an extra layer of security. When enabled, you'll need both your password and a verification code to log in.</p>
+                                    <div class="form-group">
+                                        <label for="authPhone">Authentication Phone Number</label>
+                                        <input type="tel" id="authPhone" placeholder="(555) 123-4567">
+                                    </div>
+                                    <button class="btn" onclick="enable2FA()">Complete Setup</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Recent Login Activity</h3>
+                            <div id="loginActivity" style="background: white; border: 1px solid var(--gray-200); border-radius: 8px;">
+                                <!-- Login activity will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy & Data Section -->
+                    <div id="privacy" class="account-section">
+                        <div class="section-header">
+                            <h2>Privacy & Data Management</h2>
+                            <p>Control your data privacy and account management options</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Data Privacy Settings</h3>
+                            <div class="privacy-group">
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="dataAnalytics" checked style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Usage Analytics</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Help improve our courses by sharing anonymous usage data</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="dataSharing" style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Third-Party Sharing</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Allow sharing anonymized data with educational research partners</div>
+                                    </div>
+                                </label>
+                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
+                                    <input type="checkbox" id="marketingConsent" checked style="margin-right: 1rem;">
+                                    <div>
+                                        <strong>Marketing Communications</strong>
+                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Receive personalized course recommendations and offers</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Data Export & Management</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                                    <h4 style="margin-bottom: 0.5rem;">Export Account Data</h4>
+                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">Download all your account information, course progress, and certificates</p>
+                                    <button class="btn btn-secondary" onclick="exportAccountData()">📥 Export Data</button>
+                                </div>
+                                <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
+                                    <h4 style="margin-bottom: 0.5rem;">Print CCU Transcript</h4>
+                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">Generate a professional transcript for license renewal submissions</p>
+                                    <button class="btn btn-secondary" onclick="printCCUTranscript()">🖨️ Print Transcript</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="padding: 1.5rem; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px;">
+                            <h3 style="color: #c53030; margin-bottom: 1rem;">Account Deletion</h3>
+                            <p style="color: #4a5568; margin-bottom: 1rem;">Permanently delete your account and all associated data. This action cannot be undone and you will lose access to all purchased courses and certificates.</p>
+                            <div style="margin-bottom: 1rem;">
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="confirmDeletion" style="margin-right: 0.5rem;">
+                                    I understand this action is permanent and irreversible
+                                </label>
+                            </div>
+                            <button class="btn" style="background: #c53030; color: white;" onclick="requestAccountDeletion()" disabled id="deleteAccountBtn">Request Account Deletion</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -638,6 +1063,7 @@
             setupSidebarNavigation();
             loadAccountData();
             setupFieldFormatting();
+            initializeDarkMode();
         });
 
         // Clear saved tab when clicking home page links
@@ -969,6 +1395,476 @@
                     window.location.href = 'index.html';
                 }
             }
+        }
+
+        // New Functions for Enhanced Features
+
+        // Profile Photo Management
+        function uploadProfilePhoto() {
+            const fileInput = document.getElementById('profilePhotoInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a photo to upload.');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                alert('File size must be under 5MB.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoDisplay = document.getElementById('profilePhotoDisplay');
+                photoDisplay.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                
+                // Save to account data
+                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+                accountData.profilePhoto = e.target.result;
+                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+                
+                alert('Profile photo updated successfully!');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeProfilePhoto() {
+            if (confirm('Are you sure you want to remove your profile photo?')) {
+                const photoDisplay = document.getElementById('profilePhotoDisplay');
+                photoDisplay.innerHTML = '👤';
+                
+                // Remove from account data
+                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+                delete accountData.profilePhoto;
+                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+                
+                alert('Profile photo removed.');
+            }
+        }
+
+        function saveProfileData() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            accountData.emergencyContact = document.getElementById('emergencyContact').value;
+            accountData.emergencyPhone = document.getElementById('emergencyPhone').value;
+            accountData.preferredCommunication = document.getElementById('preferredCommunication').value;
+            
+            localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+            alert('Profile information saved successfully!');
+        }
+
+        // CCU Dashboard Functions
+        function updateCCUDashboard() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            const discipline = accountData.discipline || 'PT';
+            const expirationDate = accountData.licenseExpiration;
+            
+            // CCU requirements by discipline
+            const ccuRequirements = {
+                'PT': 27,
+                'PTA': 17,
+                'OT': 23,
+                'COTA': 23
+            };
+            
+            const requiredCCUs = ccuRequirements[discipline] || 27;
+            const earnedCCUs = calculateEarnedCCUs(); // Would calculate from completed courses
+            
+            // Update display
+            document.getElementById('requiredCCUs').textContent = requiredCCUs;
+            document.getElementById('earnedCCUs').textContent = earnedCCUs;
+            document.getElementById('ccuRemaining').textContent = `${Math.max(0, requiredCCUs - earnedCCUs)} CCUs remaining`;
+            
+            // Update progress bar
+            const progressPercent = Math.min(100, (earnedCCUs / requiredCCUs) * 100);
+            document.getElementById('ccuProgressFill').style.width = `${progressPercent}%`;
+            
+            // Calculate days until renewal
+            if (expirationDate) {
+                const expDate = new Date(expirationDate);
+                const today = new Date();
+                const daysUntil = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
+                
+                document.getElementById('daysUntilRenewal').textContent = daysUntil;
+                document.getElementById('renewalDate').textContent = `Expires: ${expDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+                
+                // Color-code urgency
+                const daysElement = document.getElementById('daysUntilRenewal');
+                if (daysUntil <= 30) {
+                    daysElement.style.color = '#dc2626'; // Red
+                } else if (daysUntil <= 90) {
+                    daysElement.style.color = '#d69e2e'; // Gold
+                } else {
+                    daysElement.style.color = '#059669'; // Green
+                }
+            }
+        }
+
+        function calculateEarnedCCUs() {
+            // This would calculate CCUs from completed courses
+            // For now, return 0 since no courses are implemented yet
+            return 0;
+        }
+
+        function printCCUTranscript() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            // Create a printable transcript
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>CCU Transcript - ${accountData.firstName} ${accountData.lastName}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 2rem; }
+                        .header { border-bottom: 2px solid #1e3a8a; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+                        .info-table td { padding: 0.5rem; border-bottom: 1px solid #e5e7eb; }
+                        .course-table { width: 100%; border-collapse: collapse; }
+                        .course-table th, .course-table td { padding: 0.8rem; border: 1px solid #d1d5db; text-align: left; }
+                        .course-table th { background: #f3f4f6; }
+                        @media print { body { margin: 0; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Continuing Education Transcript</h1>
+                        <h2>DrTroy.com Professional Development</h2>
+                    </div>
+                    <table class="info-table">
+                        <tr><td><strong>Name:</strong></td><td>${accountData.firstName || 'Not provided'} ${accountData.lastName || 'Not provided'}</td></tr>
+                        <tr><td><strong>License Number:</strong></td><td>${accountData.licenseNumber || 'Not provided'}</td></tr>
+                        <tr><td><strong>License State:</strong></td><td>${accountData.licenseState || 'Not provided'}</td></tr>
+                        <tr><td><strong>Discipline:</strong></td><td>${accountData.discipline || 'Not provided'}</td></tr>
+                        <tr><td><strong>License Expiration:</strong></td><td>${accountData.licenseExpiration ? new Date(accountData.licenseExpiration).toLocaleDateString() : 'Not provided'}</td></tr>
+                        <tr><td><strong>Transcript Generated:</strong></td><td>${new Date().toLocaleDateString()}</td></tr>
+                    </table>
+                    <h3>Course Completion History</h3>
+                    <table class="course-table">
+                        <thead>
+                            <tr>
+                                <th>Course Title</th>
+                                <th>Completion Date</th>
+                                <th>CCUs Earned</th>
+                                <th>Certificate ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="4" style="text-align: center; padding: 2rem; color: #6b7280;">No completed courses on record</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 3rem; font-size: 0.9rem; color: #6b7280;">
+                        <p>This transcript is generated from DrTroy.com and reflects courses completed through our platform.</p>
+                        <p>For verification purposes, contact: troyh@texastherapypros.com</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function downloadCCUReport() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            const reportData = {
+                name: `${accountData.firstName || 'Not provided'} ${accountData.lastName || 'Not provided'}`,
+                licenseNumber: accountData.licenseNumber || 'Not provided',
+                licenseState: accountData.licenseState || 'Not provided',
+                discipline: accountData.discipline || 'Not provided',
+                expirationDate: accountData.licenseExpiration || 'Not provided',
+                generatedDate: new Date().toISOString(),
+                courses: [], // Would be populated with actual course data
+                totalCCUs: calculateEarnedCCUs()
+            };
+            
+            const dataStr = JSON.stringify(reportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `CCU_Report_${accountData.firstName}_${accountData.lastName}_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Notification Functions
+        function saveNotificationPreferences() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            // Email preferences
+            accountData.notifications = {
+                courseUpdates: document.getElementById('courseUpdates').checked,
+                licenseReminders: document.getElementById('licenseReminders').checked,
+                promotions: document.getElementById('promotions').checked,
+                weeklyDigest: document.getElementById('weeklyDigest').checked,
+                smsEnabled: document.getElementById('smsNotifications').checked,
+                smsPhone: document.getElementById('smsPhone').value,
+                urgentRenewals: document.getElementById('urgentRenewals').checked,
+                courseDeadlines: document.getElementById('courseDeadlines').checked
+            };
+            
+            localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+            alert('Notification preferences saved successfully!');
+        }
+
+        // Security Functions
+        function toggle2FA() {
+            const status = document.getElementById('twoFactorStatus');
+            const button = document.getElementById('toggle2FABtn');
+            const setup = document.getElementById('twoFactorSetup');
+            
+            if (status.textContent === 'Disabled') {
+                setup.style.display = 'block';
+                button.textContent = 'Cancel Setup';
+            } else {
+                if (confirm('Are you sure you want to disable two-factor authentication?')) {
+                    status.textContent = 'Disabled';
+                    status.style.color = '#dc2626';
+                    button.textContent = 'Enable 2FA';
+                    setup.style.display = 'none';
+                    
+                    // Remove from account data
+                    const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+                    delete accountData.twoFactorEnabled;
+                    delete accountData.authPhone;
+                    localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+                }
+            }
+        }
+
+        function enable2FA() {
+            const phone = document.getElementById('authPhone').value;
+            if (!phone) {
+                alert('Please enter a phone number for authentication.');
+                return;
+            }
+            
+            if (confirm(`Send verification codes to ${phone}?`)) {
+                const status = document.getElementById('twoFactorStatus');
+                const button = document.getElementById('toggle2FABtn');
+                const setup = document.getElementById('twoFactorSetup');
+                
+                status.textContent = 'Enabled';
+                status.style.color = '#059669';
+                button.textContent = 'Disable 2FA';
+                setup.style.display = 'none';
+                
+                // Save to account data
+                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+                accountData.twoFactorEnabled = true;
+                accountData.authPhone = phone;
+                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+                
+                alert('Two-factor authentication enabled successfully!');
+            }
+        }
+
+        function populateLoginActivity() {
+            const activityContainer = document.getElementById('loginActivity');
+            
+            // Sample login activity (would come from server in real implementation)
+            const activities = [
+                { date: new Date(), device: 'Chrome on macOS', location: 'Lubbock, TX', success: true },
+                { date: new Date(Date.now() - 86400000), device: 'Safari on iPhone', location: 'Lubbock, TX', success: true },
+                { date: new Date(Date.now() - 172800000), device: 'Chrome on Windows', location: 'Austin, TX', success: false }
+            ];
+            
+            const html = activities.map(activity => `
+                <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: 500; ${activity.success ? 'color: var(--navy)' : 'color: #dc2626'};">
+                            ${activity.success ? '✅ Successful login' : '❌ Failed login attempt'}
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--gray-600);">
+                            ${activity.device} • ${activity.location}
+                        </div>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--gray-600);">
+                        ${activity.date.toLocaleDateString()} ${activity.date.toLocaleTimeString()}
+                    </div>
+                </div>
+            `).join('');
+            
+            activityContainer.innerHTML = html || '<div style="padding: 2rem; text-align: center; color: var(--gray-600);">No login activity recorded</div>';
+        }
+
+        // Privacy Functions
+        function exportAccountData() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            const exportData = {
+                ...accountData,
+                exportDate: new Date().toISOString(),
+                dataVersion: '1.0',
+                source: 'DrTroy.com Account Export'
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `DrTroy_Account_Export_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            alert('Account data exported successfully!');
+        }
+
+        function requestAccountDeletion() {
+            if (!document.getElementById('confirmDeletion').checked) {
+                alert('Please confirm that you understand this action is permanent.');
+                return;
+            }
+            
+            if (confirm('This will permanently delete your account and all data. This action cannot be undone. Are you absolutely sure?')) {
+                if (confirm('Last chance: Are you completely sure you want to delete your account? All courses, certificates, and progress will be lost forever.')) {
+                    // Clear all stored data
+                    localStorage.removeItem('drtroyAccount');
+                    localStorage.removeItem('selectedPackageCode');
+                    localStorage.removeItem('customerName');
+                    localStorage.removeItem('customerEmail');
+                    localStorage.removeItem('customerDiscipline');
+                    
+                    alert('Your account deletion request has been processed. You will be redirected to the homepage.');
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+
+        // SMS Options Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const smsCheckbox = document.getElementById('smsNotifications');
+            const smsOptions = document.getElementById('smsOptions');
+            
+            if (smsCheckbox && smsOptions) {
+                smsCheckbox.addEventListener('change', function() {
+                    smsOptions.style.display = this.checked ? 'block' : 'none';
+                });
+            }
+            
+            // Confirmation deletion checkbox
+            const confirmDeletion = document.getElementById('confirmDeletion');
+            const deleteBtn = document.getElementById('deleteAccountBtn');
+            
+            if (confirmDeletion && deleteBtn) {
+                confirmDeletion.addEventListener('change', function() {
+                    deleteBtn.disabled = !this.checked;
+                });
+            }
+        });
+
+        // Dark Mode Functions
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'false');
+            } else {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'true');
+            }
+        }
+
+        function initializeDarkMode() {
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            const darkModeToggle = document.getElementById('darkMode');
+            
+            if (darkModeEnabled) {
+                document.body.classList.add('dark-mode');
+                if (darkModeToggle) darkModeToggle.checked = true;
+            }
+            
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', toggleDarkMode);
+            }
+        }
+
+        // Enhanced load account data to populate new fields
+        function loadAccountData() {
+            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            
+            // Load personal information
+            if (accountData.firstName) document.getElementById('editFirstName').value = accountData.firstName;
+            if (accountData.lastName) document.getElementById('editLastName').value = accountData.lastName;
+            if (accountData.email) document.getElementById('editEmail').value = accountData.email;
+            if (accountData.phone) document.getElementById('editPhone').value = accountData.phone;
+            if (accountData.streetAddress) document.getElementById('editStreetAddress').value = accountData.streetAddress;
+            if (accountData.city) document.getElementById('editCity').value = accountData.city;
+            if (accountData.state) document.getElementById('editState').value = accountData.state;
+            if (accountData.zipCode) document.getElementById('editZipCode').value = accountData.zipCode;
+            if (accountData.licenseNumber) document.getElementById('editLicenseNumber').value = accountData.licenseNumber;
+            if (accountData.licenseState) document.getElementById('editLicenseState').value = accountData.licenseState;
+            if (accountData.licenseExpiration) document.getElementById('editLicenseExpiration').value = accountData.licenseExpiration;
+            if (accountData.discipline) {
+                document.getElementById('editDiscipline').value = accountData.discipline;
+                document.getElementById('disciplineDisplay').textContent = accountData.discipline;
+            }
+            
+            // Load profile data
+            if (accountData.emergencyContact) document.getElementById('emergencyContact').value = accountData.emergencyContact;
+            if (accountData.emergencyPhone) document.getElementById('emergencyPhone').value = accountData.emergencyPhone;
+            if (accountData.preferredCommunication) document.getElementById('preferredCommunication').value = accountData.preferredCommunication;
+            
+            // Load profile photo
+            if (accountData.profilePhoto) {
+                const photoDisplay = document.getElementById('profilePhotoDisplay');
+                photoDisplay.innerHTML = `<img src="${accountData.profilePhoto}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            }
+            
+            // Load notification preferences
+            if (accountData.notifications) {
+                const n = accountData.notifications;
+                if (n.courseUpdates !== undefined) document.getElementById('courseUpdates').checked = n.courseUpdates;
+                if (n.licenseReminders !== undefined) document.getElementById('licenseReminders').checked = n.licenseReminders;
+                if (n.promotions !== undefined) document.getElementById('promotions').checked = n.promotions;
+                if (n.weeklyDigest !== undefined) document.getElementById('weeklyDigest').checked = n.weeklyDigest;
+                if (n.smsEnabled !== undefined) document.getElementById('smsNotifications').checked = n.smsEnabled;
+                if (n.smsPhone) document.getElementById('smsPhone').value = n.smsPhone;
+                if (n.urgentRenewals !== undefined) document.getElementById('urgentRenewals').checked = n.urgentRenewals;
+                if (n.courseDeadlines !== undefined) document.getElementById('courseDeadlines').checked = n.courseDeadlines;
+                
+                // Show SMS options if enabled
+                if (n.smsEnabled) document.getElementById('smsOptions').style.display = 'block';
+            }
+            
+            // Load security settings
+            if (accountData.twoFactorEnabled) {
+                document.getElementById('twoFactorStatus').textContent = 'Enabled';
+                document.getElementById('twoFactorStatus').style.color = '#059669';
+                document.getElementById('toggle2FABtn').textContent = 'Disable 2FA';
+                if (accountData.authPhone) document.getElementById('authPhone').value = accountData.authPhone;
+            }
+            
+            // Load privacy settings
+            if (accountData.privacy) {
+                const p = accountData.privacy;
+                if (p.dataAnalytics !== undefined) document.getElementById('dataAnalytics').checked = p.dataAnalytics;
+                if (p.dataSharing !== undefined) document.getElementById('dataSharing').checked = p.dataSharing;
+                if (p.marketingConsent !== undefined) document.getElementById('marketingConsent').checked = p.marketingConsent;
+            }
+            
+            // Load interface settings
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            if (document.getElementById('darkMode')) {
+                document.getElementById('darkMode').checked = darkModeEnabled;
+            }
+            
+            // Update CCU dashboard
+            updateCCUDashboard();
+            
+            // Populate login activity
+            populateLoginActivity();
+            
+            // Sync license renewal reminder checkbox
+            document.getElementById('renewalReminders').checked = accountData.licenseRenewalReminders !== false;
         }
     </script>
 </body>
