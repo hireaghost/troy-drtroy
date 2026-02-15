@@ -1410,8 +1410,12 @@
                 console.log('  - Input email:', email);
                 console.log('  - Email match:', account.email === email);
                 console.log('  - Stored password exists:', account.password ? 'YES' : 'NO');
+                console.log('  - Stored password length:', account.password ? account.password.length : 0);
                 console.log('  - Input password exists:', password ? 'YES' : 'NO');
+                console.log('  - Input password length:', password ? password.length : 0);
                 console.log('  - Password match:', account.password === password);
+                console.log('  - Stored password first 3 chars:', account.password ? account.password.substring(0,3) + '***' : 'NONE');
+                console.log('  - Input password first 3 chars:', password ? password.substring(0,3) + '***' : 'NONE');
                 
                 if (account.email === email && account.password === password) {
                     // Successful login — save to localStorage and update UI
@@ -1439,8 +1443,12 @@
                 }
             }
             
-            // Login failed
-            showModal('Login Failed', 'Email or password is incorrect. Please try again or create a new account.');
+            // Login failed - show debug info
+            const debugInfo = existingAccount ? 
+                `Debug Info:\n• Account found: YES\n• Stored email: ${JSON.parse(existingAccount).email}\n• Password stored: ${JSON.parse(existingAccount).password ? 'YES' : 'NO'}` :
+                'Debug Info:\n• Account found: NO';
+            
+            showModal('Login Failed', `Email or password is incorrect. Please try again or create a new account.\n\n${debugInfo}`);
         }
         
         function showUserDashboard(account) {
