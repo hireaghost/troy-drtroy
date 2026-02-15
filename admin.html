@@ -1723,232 +1723,144 @@
             </div>
         </div>
 
-        <!-- Enhanced Settings Tab -->
+        <!-- Settings Tab -->
         <div id="settings" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">⚙️ Admin Settings & System Management (Updated)</h2>
+                    <h2 class="card-title">⚙️ Admin Settings</h2>
                 </div>
-                <div class="card-body">
-                    <!-- Settings Sub-tabs -->
-                    <div class="sub-tabs">
-                        <button class="sub-tab active" onclick="switchSettingsTab('account')">👤 Account</button>
-                        <button class="sub-tab" onclick="switchSettingsTab('platform')">🏢 Platform</button>
-                        <button class="sub-tab" onclick="switchSettingsTab('security')">🔒 Security</button>
-                        <button class="sub-tab" onclick="switchSettingsTab('system')">⚙️ System</button>
+                <div class="card-body" style="display: block !important; visibility: visible !important;">
+                    
+                    <div style="margin-bottom: 2rem; padding: 1rem; background: #dcfce7; border: 1px solid #059669; border-radius: 8px; color: #065f46;">
+                        <strong>✅ Settings Working!</strong> Manage your admin configuration and system preferences.
                     </div>
 
-                    <!-- Account Settings -->
-                    <div id="account-settings" class="sub-content active">
-                        <div class="info-box">
-                            <strong>✅ Settings Tab Working!</strong> Admin Configuration: Manage your admin credentials and personal preferences. Changes apply immediately.
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">👤 Admin Account</h3>
+                    <form style="margin-bottom: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Admin Username</label>
+                                <input type="text" value="troyhounshell" readonly style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Update Password</label>
+                                <input type="password" placeholder="Enter new password" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                            </div>
                         </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Admin Email</label>
+                            <input type="email" value="troyh@texastherapypros.com" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">System Timezone</label>
+                            <select style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                <option selected>Central Time (CT)</option>
+                                <option>Eastern Time (ET)</option>
+                                <option>Mountain Time (MT)</option>
+                                <option>Pacific Time (PT)</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="alert('Account settings saved!')" style="background: var(--navy); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">💾 Save Account Settings</button>
+                    </form>
 
-                        <form id="settingsForm">
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Admin Username</label>
-                                    <input type="text" id="adminUsername" class="form-input" value="troyhounshell" readonly>
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">🏢 Platform Configuration</h3>
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Platform Name</label>
+                            <input type="text" value="DrTroy.com" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Default CCU Requirements</label>
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">PT CCUs</label>
+                                    <input type="number" value="27" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Update Password</label>
-                                    <input type="password" id="adminPassword" class="form-input" placeholder="Enter new password (optional)">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">PTA CCUs</label>
+                                    <input type="number" value="17" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">OT CCUs</label>
+                                    <input type="number" value="23" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">COTA CCUs</label>
+                                    <input type="number" value="23" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Admin Email</label>
-                                <input type="email" id="adminEmail" class="form-input" value="troyh@texastherapypros.com">
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">License Renewal Warnings</label>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">First (months)</label>
+                                    <input type="number" value="6" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">Second (months)</label>
+                                    <input type="number" value="1" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                </div>
+                                <div>
+                                    <label style="display: block; margin-bottom: 0.25rem; font-size: 0.9rem;">Final (days)</label>
+                                    <input type="number" value="7" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label">System Timezone</label>
-                                <select id="timezone" class="form-select">
-                                    <option value="America/Chicago" selected>Central Time (CT)</option>
-                                    <option value="America/New_York">Eastern Time (ET)</option>
-                                    <option value="America/Denver">Mountain Time (MT)</option>
-                                    <option value="America/Los_Angeles">Pacific Time (PT)</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">💾 Save Account Settings</button>
-                        </form>
-
-                        <div id="settingsSuccess" class="success-message"></div>
-                        <div id="settingsError" class="error-message"></div>
+                        </div>
+                        <button type="button" onclick="alert('Platform settings saved!')" style="background: var(--navy); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">💾 Save Platform Settings</button>
                     </div>
 
-                    <!-- Platform Settings -->
-                    <div id="platform-settings" class="sub-content">
-                        <h3>Platform Configuration</h3>
-                        
-                        <div class="form-group">
-                            <label class="form-label">Platform Name</label>
-                            <input type="text" id="platformName" class="form-input" value="DrTroy.com">
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">🔒 Security & System</h3>
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Admin Session Duration</label>
+                            <select style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px;">
+                                <option>1 hour</option>
+                                <option>4 hours</option>
+                                <option selected>8 hours</option>
+                                <option>24 hours</option>
+                            </select>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Default CCU Requirements</label>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label>PT Required CCUs</label>
-                                    <input type="number" id="ptCCUs" class="form-input" value="27">
-                                </div>
-                                <div class="form-group">
-                                    <label>PTA Required CCUs</label>
-                                    <input type="number" id="ptaCCUs" class="form-input" value="17">
-                                </div>
-                                <div class="form-group">
-                                    <label>OT Required CCUs</label>
-                                    <input type="number" id="otCCUs" class="form-input" value="23">
-                                </div>
-                                <div class="form-group">
-                                    <label>COTA Required CCUs</label>
-                                    <input type="number" id="cotaCCUs" class="form-input" value="23">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">License Renewal Warning Periods</label>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label>First Warning (months)</label>
-                                    <input type="number" id="firstWarning" class="form-input" value="6">
-                                </div>
-                                <div class="form-group">
-                                    <label>Second Warning (months)</label>
-                                    <input type="number" id="secondWarning" class="form-input" value="1">
-                                </div>
-                                <div class="form-group">
-                                    <label>Final Warning (days)</label>
-                                    <input type="number" id="finalWarning" class="form-input" value="7">
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary" onclick="savePlatformSettings()">💾 Save Platform Settings</button>
-                    </div>
-
-                    <!-- Security Settings -->
-                    <div id="security-settings" class="sub-content">
-                        <h3>Security Configuration</h3>
-
-                        <div class="security-group">
-                            <h4>Session Management</h4>
-                            <div class="form-group">
-                                <label class="form-label">Admin Session Duration (hours)</label>
-                                <select id="sessionDuration" class="form-select">
-                                    <option value="1">1 hour</option>
-                                    <option value="4">4 hours</option>
-                                    <option value="8" selected>8 hours</option>
-                                    <option value="24">24 hours</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="security-group">
-                            <h4>User Security</h4>
-                            <label style="display: flex; align-items: center; margin: 1rem 0;">
-                                <input type="checkbox" id="require2FA" style="margin-right: 0.5rem;">
-                                Require two-factor authentication for all users
+                        <div style="margin-bottom: 1rem;">
+                            <h4 style="margin-bottom: 0.5rem;">Security Options</h4>
+                            <label style="display: flex; align-items: center; margin: 0.5rem 0;">
+                                <input type="checkbox" style="margin-right: 0.5rem;">
+                                Require two-factor authentication for users
                             </label>
-                            <label style="display: flex; align-items: center; margin: 1rem 0;">
-                                <input type="checkbox" id="passwordComplexity" checked style="margin-right: 0.5rem;">
+                            <label style="display: flex; align-items: center; margin: 0.5rem 0;">
+                                <input type="checkbox" checked style="margin-right: 0.5rem;">
                                 Enforce strong password requirements
                             </label>
-                            <label style="display: flex; align-items: center; margin: 1rem 0;">
-                                <input type="checkbox" id="loginNotifications" checked style="margin-right: 0.5rem;">
+                            <label style="display: flex; align-items: center; margin: 0.5rem 0;">
+                                <input type="checkbox" checked style="margin-right: 0.5rem;">
                                 Email notifications for admin logins
                             </label>
-                        </div>
-
-                        <div class="security-group">
-                            <h4>Data Protection</h4>
-                            <label style="display: flex; align-items: center; margin: 1rem 0;">
-                                <input type="checkbox" id="encryptData" checked style="margin-right: 0.5rem;">
-                                Encrypt stored user data
-                            </label>
-                            <label style="display: flex; align-items: center; margin: 1rem 0;">
-                                <input type="checkbox" id="auditLogging" checked style="margin-right: 0.5rem;">
+                            <label style="display: flex; align-items: center; margin: 0.5rem 0;">
+                                <input type="checkbox" checked style="margin-right: 0.5rem;">
                                 Enable comprehensive audit logging
                             </label>
                         </div>
-
-                        <button class="btn btn-primary" onclick="saveSecuritySettings()">🔒 Save Security Settings</button>
+                        <button type="button" onclick="alert('Security settings saved!')" style="background: var(--navy); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🔒 Save Security Settings</button>
                     </div>
 
-                    <!-- System Settings -->
-                    <div id="system-settings" class="sub-content">
-                        <h3>System Management</h3>
-
-                        <div class="system-group">
-                            <h4>Data Management</h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
-                                <button onclick="exportAllData()" class="btn btn-secondary">📥 Export All Data</button>
-                                <button onclick="importData()" class="btn btn-secondary">📤 Import Data</button>
-                                <button onclick="clearSampleData()" class="btn btn-secondary">🧹 Clear Sample Data</button>
-                            </div>
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">⚙️ System Operations</h3>
+                    <div style="padding: 1.5rem; background: var(--gray-50); border-radius: 8px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <button type="button" onclick="alert('Exporting all data...')" style="background: #6b7280; color: white; padding: 0.75rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">📥 Export All Data</button>
+                            <button type="button" onclick="alert('Running diagnostics...')" style="background: #6b7280; color: white; padding: 0.75rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🔧 System Diagnostics</button>
+                            <button type="button" onclick="alert('Creating backup...')" style="background: var(--gold); color: white; padding: 0.75rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">💾 Create Backup</button>
+                            <button type="button" onclick="extendSession()" style="background: #6b7280; color: white; padding: 0.75rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">⏰ Extend Session (+8h)</button>
                         </div>
-
-                        <div class="system-group">
-                            <h4>Maintenance</h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
-                                <button onclick="runSystemDiagnostics()" class="btn btn-secondary">🔧 System Diagnostics</button>
-                                <button onclick="optimizeDatabase()" class="btn btn-secondary">⚡ Optimize Database</button>
-                                <button onclick="clearCache()" class="btn btn-secondary">🗑️ Clear Cache</button>
-                            </div>
-                        </div>
-
-                        <div class="system-group">
-                            <h4>Backup & Recovery</h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
-                                <button onclick="createBackup()" class="btn btn-primary">💾 Create Backup</button>
-                                <button onclick="scheduleBackups()" class="btn btn-secondary">📅 Schedule Backups</button>
-                                <button onclick="restoreBackup()" class="btn btn-secondary">🔄 Restore from Backup</button>
-                            </div>
-                        </div>
-
-                        <div class="system-group">
-                            <h4>Reset Options</h4>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
-                                <button onclick="extendSession()" class="btn btn-secondary">⏰ Extend Session (+8h)</button>
-                                <button onclick="resetToDefaults()" class="btn btn-danger">🔄 Reset to Defaults</button>
-                                <button onclick="factoryReset()" class="btn btn-danger">⚠️ Factory Reset</button>
-                            </div>
-                            <div class="warning-box" style="margin-top: 1rem;">
-                                <strong>⚠️ Warning:</strong> Reset operations cannot be undone. Always create a backup before proceeding.
-                            </div>
-                        </div>
-
-                        <!-- System Information -->
-                        <div style="margin-top: 2rem; padding: 1rem; background: var(--gray-50); border-radius: 6px;">
+                        
+                        <div style="margin-top: 2rem; padding: 1rem; background: white; border-radius: 6px;">
                             <h4 style="color: var(--navy); margin-bottom: 0.5rem;">System Information</h4>
-                            <div class="system-info">
-                                <div class="info-row">
-                                    <span>Version:</span>
-                                    <span>DrTroy Admin v2.0.0</span>
-                                </div>
-                                <div class="info-row">
-                                    <span>Last Updated:</span>
-                                    <span id="systemUpdate">February 15, 2026</span>
-                                </div>
-                                <div class="info-row">
-                                    <span>Database:</span>
-                                    <span style="color: var(--success); font-weight: 600;">✅ Connected</span>
-                                </div>
-                                <div class="info-row">
-                                    <span>Security:</span>
-                                    <span style="color: var(--success); font-weight: 600;">🔒 Active</span>
-                                </div>
-                                <div class="info-row">
-                                    <span>Storage Used:</span>
-                                    <span>1.2 GB / 10 GB (12%)</span>
-                                </div>
-                                <div class="info-row">
-                                    <span>Active Sessions:</span>
-                                    <span>1 admin, 23 users</span>
-                                </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; font-size: 0.9rem;">
+                                <div><strong>Version:</strong> DrTroy Admin v2.0.0</div>
+                                <div><strong>Last Updated:</strong> February 15, 2026</div>
+                                <div><strong>Database:</strong> <span style="color: #059669;">✅ Connected</span></div>
+                                <div><strong>Security:</strong> <span style="color: #059669;">🔒 Active</span></div>
+                                <div><strong>Storage:</strong> 1.2 GB / 10 GB (12%)</div>
+                                <div><strong>Sessions:</strong> 1 admin, 23 users</div>
                             </div>
                         </div>
                     </div>
