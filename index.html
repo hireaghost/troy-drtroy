@@ -1403,12 +1403,18 @@
             if (existingAccount) {
                 const account = JSON.parse(existingAccount);
                 if (account.email === email && account.password === password) {
-                    // Successful login — save to localStorage and go to account
+                    // Successful login — save to localStorage and update UI
                     localStorage.setItem('customerName', account.firstName + ' ' + (account.lastName || ''));
                     localStorage.setItem('customerEmail', account.email);
                     if (account.discipline) localStorage.setItem('customerDiscipline', account.discipline);
                     closeLoginModal();
-                    window.location.href = 'account.html';
+                    
+                    // Update UI elements
+                    updateLoginButton();
+                    updatePackageDisplay();
+                    
+                    // Show welcome message
+                    showModal('Welcome Back!', `Hello ${account.firstName}! You're now logged in and ready to select your continuing education package.`, true);
                     return;
                 }
             }
@@ -1486,10 +1492,7 @@
         }
         
         // Login link handler
-        document.getElementById('loginLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            showLoginModal();
-        });
+        // Login link click handler is now managed by updateLoginButton()
 
         // Check for login parameter on page load
         window.addEventListener('load', function() {
@@ -2201,8 +2204,9 @@
                 // Log security event
                 console.log(`🔒 Account created: ${formData.email.substring(0, 3)}**** (${formData.discipline})`);
                 
-                // Update package display based on user discipline
+                // Update UI elements based on user discipline
                 updatePackageDisplay();
+                updateLoginButton();
                 
                 // Check if user selected a package before creating account
                 const selectedPackage = localStorage.getItem('selectedPackage');
@@ -2255,7 +2259,6 @@
                                     <div style="background: #d4e6f1; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
                                         <strong>Your Benefits:</strong>
                                         <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
-                                            <li>✅ You're now logged in automatically</li>
                                             <li>🎯 $10 discount applied to all packages</li>
                                             <li>💾 Course progress will be saved</li>
                                             <li>🔒 Secure, HIPAA-level encryption</li>
@@ -2457,10 +2460,53 @@
             }, 7000);
         }
 
-        // Initialize captcha and package restrictions when page loads
+        // Update login button based on session status
+        function updateLoginButton() {
+            const loginButton = document.getElementById('loginLink');
+            const hasAccount = localStorage.getItem('drtroyAccount');
+            const hasSession = localStorage.getItem('userSession');
+            
+            if (hasAccount && hasSession) {
+                const accountInfo = JSON.parse(hasAccount);
+                loginButton.textContent = 'Log Out';
+                loginButton.onclick = function(e) {
+                    e.preventDefault();
+                    handleLogout();
+                };
+            } else {
+                loginButton.textContent = 'Log In';
+                loginButton.onclick = function(e) {
+                    e.preventDefault();
+                    showLoginModal();
+                };
+            }
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            // Clear all session data
+            localStorage.removeItem('drtroyAccount');
+            localStorage.removeItem('userSession');
+            localStorage.removeItem('selectedPackage');
+            localStorage.removeItem('packagePrice');
+            localStorage.removeItem('selectedPackageCode');
+            localStorage.removeItem('customerName');
+            localStorage.removeItem('customerEmail');
+            localStorage.removeItem('customerDiscipline');
+            
+            // Update UI
+            updateLoginButton();
+            updatePackageDisplay();
+            
+            // Show logout confirmation
+            showModal('Logged Out', 'You have been successfully logged out. Thank you for visiting DrTroy.com!', false, 
+                '<button class="modal-btn modal-btn-primary" onclick="closeModal()">OK</button>');
+        }
+        // Initialize captcha, package restrictions, and login button when page loads
         document.addEventListener('DOMContentLoaded', function() {
             generateCaptcha();
             updatePackageDisplay();
+            updateLoginButton();
         });
     </script>
 
