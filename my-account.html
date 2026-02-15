@@ -477,9 +477,9 @@
                             <div class="form-group">
                                 <label for="editEmail">Email Address</label>
                                 <input type="email" id="editEmail" required>
-                                <label style="display: flex; align-items: flex-start; margin-top: 0.75rem; font-weight: normal; color: var(--gray-700); font-size: 0.9rem; line-height: 1.4;">
-                                    <input type="checkbox" id="licenseRenewalReminders" checked style="margin-right: 0.5rem; margin-top: 0.1rem; flex-shrink: 0;">
-                                    <span>Send me license renewal reminder emails starting 6 months before my license expires. These will continue until I purchase another course or opt out.</span>
+                                <label style="display: flex; align-items: center; margin-top: 0.75rem; font-weight: normal; color: var(--gray-700); font-size: 0.9rem;">
+                                    <input type="checkbox" id="licenseRenewalReminders" checked style="margin-right: 0.5rem;">
+                                    <span>Send me reminders when I get close to my license expiring.</span>
                                 </label>
                             </div>
                             <div class="form-group">
@@ -613,9 +613,9 @@
                                 <input type="checkbox" id="emailNotifications" checked style="margin-right: 0.5rem;">
                                 Email notifications for course updates and new content
                             </label>
-                            <label style="display: flex; align-items: flex-start; margin-bottom: 1rem; line-height: 1.4;">
-                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem; margin-top: 0.1rem; flex-shrink: 0;">
-                                <span>License renewal reminder emails (starting 6 months before expiration)</span>
+                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem;">
+                                <span>License renewal reminder emails</span>
                             </label>
                             <button class="btn btn-secondary" onclick="saveNotificationPreferences()">Save Preferences</button>
                         </div>
