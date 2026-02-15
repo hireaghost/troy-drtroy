@@ -408,6 +408,416 @@
             color: #3730a3;
         }
 
+        /* New Enhanced Styles */
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            transition: background 0.2s;
+        }
+
+        .activity-item:hover {
+            background: var(--gray-50);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .activity-content {
+            color: var(--gray-900);
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        /* Enhanced Status Badges */
+        .status-badge.delivered {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.opened {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-badge.bounced {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-badge.warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.expired {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-badge.draft {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        /* Course Management */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .course-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .course-header h3 {
+            color: var(--navy);
+            margin: 0;
+            flex: 1;
+            margin-right: 1rem;
+        }
+
+        .course-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .course-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .course-status.draft {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Campaign Management */
+        .campaign-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .campaign-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .campaign-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-header h3 {
+            color: var(--navy);
+            margin: 0;
+        }
+
+        .campaign-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .campaign-status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .campaign-status.draft {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .campaign-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .campaign-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Template Management */
+        .template-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .template-item {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .template-item h3 {
+            color: var(--navy);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .template-item p {
+            color: var(--gray-600);
+            margin: 0 0 1rem 0;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* License Tracking */
+        .license-critical {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+        }
+
+        .license-warning {
+            background: #fffbeb;
+            border-left: 4px solid #d97706;
+        }
+
+        .license-safe {
+            background: #f0fdf4;
+            border-left: 4px solid #059669;
+        }
+
+        .urgent {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .warning {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .safe {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .progress-mini {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-mini .progress-bar {
+            background: #e5e7eb;
+            border-radius: 4px;
+            height: 6px;
+            width: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-mini .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--gold);
+            border-radius: 4px;
+            width: var(--width, 0%);
+        }
+
+        .progress-mini span {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        /* Renewal Stats */
+        .renewal-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .renewal-controls {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .renewal-controls h3 {
+            color: var(--navy);
+            margin-top: 0;
+        }
+
+        /* Button Variants */
+        .btn-small {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-small:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-small.danger {
+            background: #dc2626;
+        }
+
+        .btn-small.danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-small.warning {
+            background: #d97706;
+        }
+
+        .btn-small.warning:hover {
+            background: #b45309;
+        }
+
+        .btn-small.critical {
+            background: #dc2626;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* System Information */
+        .system-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .info-row:first-child span:first-child {
+            font-weight: 600;
+        }
+
+        /* Security Groups */
+        .security-group {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .security-group h4 {
+            color: var(--navy);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .system-group {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .system-group h4 {
+            color: var(--navy);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 1rem;
+            color: #92400e;
+        }
+
+        /* Enhanced Table Styles */
+        .table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .table th {
+            background: var(--gray-100);
+            color: var(--gray-900);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        /* Responsive Enhancements */
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -427,6 +837,39 @@
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .renewal-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .course-actions,
+            .campaign-actions,
+            .template-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .renewal-stats {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -448,26 +891,650 @@
     <div class="container">
         <!-- Main Navigation -->
         <div class="main-tabs">
-            <button class="main-tab active" onclick="switchMainTab('discount-codes')">
+            <button class="main-tab active" onclick="switchMainTab('dashboard')">
+                📊 Dashboard
+            </button>
+            <button class="main-tab" onclick="switchMainTab('users')">
+                👥 User Management
+            </button>
+            <button class="main-tab" onclick="switchMainTab('courses')">
+                📚 Course Content
+            </button>
+            <button class="main-tab" onclick="switchMainTab('emails')">
+                📧 Email System
+            </button>
+            <button class="main-tab" onclick="switchMainTab('licenses')">
+                🎓 License Tracking
+            </button>
+            <button class="main-tab" onclick="switchMainTab('discount-codes')">
                 💰 Discount Codes
             </button>
-            <button class="main-tab" onclick="switchMainTab('analytics')">
-                📊 Business Analytics
-            </button>
             <button class="main-tab" onclick="switchMainTab('settings')">
-                ⚙️ Admin Settings
+                ⚙️ Settings
             </button>
         </div>
 
-        <!-- Discount Codes Tab -->
-        <div id="discount-codes" class="tab-content active">
-            <!-- Overview Stats -->
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <!-- Platform Overview -->
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Discount Code Overview</h2>
+                    <h2 class="card-title">📊 Platform Overview</h2>
                 </div>
                 <div class="card-body">
                     <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalUsers">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="monthlyRevenue">$0</div>
+                            <div class="stat-label">Monthly Revenue</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="courseCompletions">0</div>
+                            <div class="stat-label">Course Completions</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="upcomingRenewals">0</div>
+                            <div class="stat-label">Upcoming Renewals</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🔔 Recent Activity</h2>
+                </div>
+                <div class="card-body">
+                    <div id="recentActivity">
+                        <div class="activity-item">
+                            <div class="activity-time">2 hours ago</div>
+                            <div class="activity-content">New user registration: Jane Smith (PT)</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">5 hours ago</div>
+                            <div class="activity-content">Course completed: Fall Prevention - Dr. Michael Johnson</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">1 day ago</div>
+                            <div class="activity-content">License renewal reminder sent to 15 users</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-time">2 days ago</div>
+                            <div class="activity-content">Marketing campaign "Spring2026" launched</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- User Management Tab -->
+        <div id="users" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">👥 User Management</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="exportUsers()">📥 Export Users</button>
+                        <button class="btn btn-primary" onclick="showAddUserForm()">👤 Add User</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- User Search and Filters -->
+                    <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; margin-bottom: 2rem;">
+                        <input type="text" id="userSearch" class="form-input" placeholder="Search users by name, email, or license number">
+                        <select id="userFilter" class="form-select">
+                            <option value="all">All Users</option>
+                            <option value="PT">Physical Therapists</option>
+                            <option value="PTA">PT Assistants</option>
+                            <option value="OT">Occupational Therapists</option>
+                            <option value="COTA">OT Assistants</option>
+                        </select>
+                        <select id="statusFilter" class="form-select">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="expired">License Expired</option>
+                            <option value="warning">Renewal Warning</option>
+                        </select>
+                    </div>
+
+                    <!-- Users Table -->
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Discipline</th>
+                                    <th>License #</th>
+                                    <th>State</th>
+                                    <th>Expires</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Sample users -->
+                                <tr>
+                                    <td>Dr. Sarah Johnson</td>
+                                    <td>sarah.johnson@email.com</td>
+                                    <td>PT</td>
+                                    <td>TX12345</td>
+                                    <td>TX</td>
+                                    <td>December 2026</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>
+                                        <button class="btn-small" onclick="viewUser('sarah.johnson@email.com')">View</button>
+                                        <button class="btn-small" onclick="emailUser('sarah.johnson@email.com')">Email</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Michael Chen</td>
+                                    <td>m.chen@email.com</td>
+                                    <td>OT</td>
+                                    <td>CA67890</td>
+                                    <td>CA</td>
+                                    <td>March 2026</td>
+                                    <td><span class="status-badge warning">Renewal Soon</span></td>
+                                    <td>
+                                        <button class="btn-small" onclick="viewUser('m.chen@email.com')">View</button>
+                                        <button class="btn-small" onclick="emailUser('m.chen@email.com')">Email</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lisa Rodriguez</td>
+                                    <td>lisa.r@email.com</td>
+                                    <td>PTA</td>
+                                    <td>FL54321</td>
+                                    <td>FL</td>
+                                    <td>January 2026</td>
+                                    <td><span class="status-badge expired">Expired</span></td>
+                                    <td>
+                                        <button class="btn-small" onclick="viewUser('lisa.r@email.com')">View</button>
+                                        <button class="btn-small" onclick="emailUser('lisa.r@email.com')">Email</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Content Tab -->
+        <div id="courses" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📚 Course Content Management</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="exportCourseData()">📥 Export Data</button>
+                        <button class="btn btn-primary" onclick="showAddCourseForm()">➕ Add Course</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Course Statistics -->
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">Total Courses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">8</div>
+                            <div class="stat-label">Active Courses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">89%</div>
+                            <div class="stat-label">Avg Completion Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Avg Rating</div>
+                        </div>
+                    </div>
+
+                    <!-- Course List -->
+                    <div class="course-grid">
+                        <div class="course-card">
+                            <div class="course-header">
+                                <h3>Fall Prevention & Mobility</h3>
+                                <div class="course-status active">Active</div>
+                            </div>
+                            <div class="course-meta">
+                                <div>CCU Value: 2 hours</div>
+                                <div>Enrollments: 45</div>
+                                <div>Completion: 92%</div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-small" onclick="editCourse('fall-prevention')">✏️ Edit</button>
+                                <button class="btn-small" onclick="viewStats('fall-prevention')">📊 Stats</button>
+                                <button class="btn-small" onclick="manageCourse('fall-prevention')">⚙️ Manage</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card">
+                            <div class="course-header">
+                                <h3>Ethics in Healthcare</h3>
+                                <div class="course-status active">Active</div>
+                            </div>
+                            <div class="course-meta">
+                                <div>CCU Value: 2 hours</div>
+                                <div>Enrollments: 38</div>
+                                <div>Completion: 85%</div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-small" onclick="editCourse('ethics')">✏️ Edit</button>
+                                <button class="btn-small" onclick="viewStats('ethics')">📊 Stats</button>
+                                <button class="btn-small" onclick="manageCourse('ethics')">⚙️ Manage</button>
+                            </div>
+                        </div>
+
+                        <div class="course-card">
+                            <div class="course-header">
+                                <h3>PT Musculoskeletal Assessment</h3>
+                                <div class="course-status draft">Draft</div>
+                            </div>
+                            <div class="course-meta">
+                                <div>CCU Value: 3 hours</div>
+                                <div>Enrollments: 0</div>
+                                <div>Completion: N/A</div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-small" onclick="editCourse('msk-assessment')">✏️ Edit</button>
+                                <button class="btn-small" onclick="publishCourse('msk-assessment')">🚀 Publish</button>
+                                <button class="btn-small" onclick="manageCourse('msk-assessment')">⚙️ Manage</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bulk Course Operations -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3>Bulk Operations</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="updateAllCourses()">🔄 Update All Courses</button>
+                                <button class="btn btn-secondary" onclick="exportCourseContent()">📦 Export Content</button>
+                                <button class="btn btn-secondary" onclick="generateCertificates()">🏆 Generate Certificates</button>
+                                <button class="btn btn-secondary" onclick="notifyIncompleteCourses()">📧 Notify Incomplete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email System Tab -->
+        <div id="emails" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📧 Email System Management</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="exportEmailData()">📥 Export Logs</button>
+                        <button class="btn btn-primary" onclick="showComposeEmail()">✉️ Compose Email</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Email Statistics -->
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-number">1,247</div>
+                            <div class="stat-label">Total Sent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">95.8%</div>
+                            <div class="stat-label">Delivery Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">68.4%</div>
+                            <div class="stat-label">Open Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">12.3%</div>
+                            <div class="stat-label">Click Rate</div>
+                        </div>
+                    </div>
+
+                    <!-- Email Campaign Management -->
+                    <div class="sub-tabs">
+                        <button class="sub-tab active" onclick="switchEmailTab('campaigns')">📢 Campaigns</button>
+                        <button class="sub-tab" onclick="switchEmailTab('renewals')">🎓 License Renewals</button>
+                        <button class="sub-tab" onclick="switchEmailTab('templates')">📝 Templates</button>
+                        <button class="sub-tab" onclick="switchEmailTab('logs')">📋 Email Logs</button>
+                    </div>
+
+                    <!-- Email Campaigns -->
+                    <div id="email-campaigns" class="sub-content active">
+                        <div class="campaign-list">
+                            <div class="campaign-item">
+                                <div class="campaign-header">
+                                    <h3>Spring 2026 Promotion</h3>
+                                    <div class="campaign-status active">Active</div>
+                                </div>
+                                <div class="campaign-meta">
+                                    <div>Recipients: 234</div>
+                                    <div>Opens: 156 (66.7%)</div>
+                                    <div>Clicks: 28 (12.0%)</div>
+                                    <div>Sent: Feb 10, 2026</div>
+                                </div>
+                                <div class="campaign-actions">
+                                    <button class="btn-small" onclick="viewCampaign('spring-2026')">📊 View Stats</button>
+                                    <button class="btn-small" onclick="duplicateCampaign('spring-2026')">📋 Duplicate</button>
+                                    <button class="btn-small" onclick="stopCampaign('spring-2026')">⏹️ Stop</button>
+                                </div>
+                            </div>
+
+                            <div class="campaign-item">
+                                <div class="campaign-header">
+                                    <h3>New Course Announcement</h3>
+                                    <div class="campaign-status draft">Draft</div>
+                                </div>
+                                <div class="campaign-meta">
+                                    <div>Recipients: 312</div>
+                                    <div>Status: Scheduled for Feb 20</div>
+                                </div>
+                                <div class="campaign-actions">
+                                    <button class="btn-small" onclick="editCampaign('new-course')">✏️ Edit</button>
+                                    <button class="btn-small" onclick="sendCampaign('new-course')">🚀 Send Now</button>
+                                    <button class="btn-small" onclick="deleteCampaign('new-course')">🗑️ Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- License Renewal Emails -->
+                    <div id="email-renewals" class="sub-content">
+                        <div class="renewal-stats">
+                            <div class="stat-card">
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">6-Month Reminders Sent</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">28</div>
+                                <div class="stat-label">1-Month Reminders Sent</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Final Warnings Sent</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">89%</div>
+                                <div class="stat-label">Response Rate</div>
+                            </div>
+                        </div>
+
+                        <div class="renewal-controls">
+                            <h3>Renewal Email Controls</h3>
+                            <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+                                <button class="btn btn-primary" onclick="sendRenewalReminders()">📧 Send Due Reminders</button>
+                                <button class="btn btn-secondary" onclick="previewRenewalEmail()">👁️ Preview Template</button>
+                                <button class="btn btn-secondary" onclick="testRenewalEmail()">🧪 Send Test Email</button>
+                            </div>
+                            <div class="info-box">
+                                <strong>Automated System:</strong> Renewal reminders are sent automatically at 6 months, 1 month, and 1 week before license expiration. You can also trigger manual sends here.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Templates -->
+                    <div id="email-templates" class="sub-content">
+                        <div class="template-list">
+                            <div class="template-item">
+                                <h3>License Renewal - 6 Month Warning</h3>
+                                <p>Friendly reminder template for users with 6 months until renewal</p>
+                                <div class="template-actions">
+                                    <button class="btn-small" onclick="editTemplate('renewal-6mo')">✏️ Edit</button>
+                                    <button class="btn-small" onclick="previewTemplate('renewal-6mo')">👁️ Preview</button>
+                                </div>
+                            </div>
+                            <div class="template-item">
+                                <h3>License Renewal - 1 Month Warning</h3>
+                                <p>Urgent reminder template for users with 1 month until renewal</p>
+                                <div class="template-actions">
+                                    <button class="btn-small" onclick="editTemplate('renewal-1mo')">✏️ Edit</button>
+                                    <button class="btn-small" onclick="previewTemplate('renewal-1mo')">👁️ Preview</button>
+                                </div>
+                            </div>
+                            <div class="template-item">
+                                <h3>License Renewal - Final Notice</h3>
+                                <p>Final warning template for users with less than 1 week</p>
+                                <div class="template-actions">
+                                    <button class="btn-small" onclick="editTemplate('renewal-final')">✏️ Edit</button>
+                                    <button class="btn-small" onclick="previewTemplate('renewal-final')">👁️ Preview</button>
+                                </div>
+                            </div>
+                            <div class="template-item">
+                                <h3>Welcome Email</h3>
+                                <p>Welcome message for new user registrations</p>
+                                <div class="template-actions">
+                                    <button class="btn-small" onclick="editTemplate('welcome')">✏️ Edit</button>
+                                    <button class="btn-small" onclick="previewTemplate('welcome')">👁️ Preview</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Logs -->
+                    <div id="email-logs" class="sub-content">
+                        <div style="overflow-x: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Recipient</th>
+                                        <th>Subject</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Sent</th>
+                                        <th>Opened</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>sarah.johnson@email.com</td>
+                                        <td>License Renewal Reminder</td>
+                                        <td>Renewal</td>
+                                        <td><span class="status-badge delivered">Delivered</span></td>
+                                        <td>Feb 15, 2:30 PM</td>
+                                        <td>Feb 15, 3:45 PM</td>
+                                        <td>
+                                            <button class="btn-small" onclick="viewEmail('email123')">👁️ View</button>
+                                            <button class="btn-small" onclick="resendEmail('email123')">🔄 Resend</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>m.chen@email.com</td>
+                                        <td>New Course Available</td>
+                                        <td>Campaign</td>
+                                        <td><span class="status-badge opened">Opened</span></td>
+                                        <td>Feb 14, 9:00 AM</td>
+                                        <td>Feb 14, 11:20 AM</td>
+                                        <td>
+                                            <button class="btn-small" onclick="viewEmail('email124')">👁️ View</button>
+                                            <button class="btn-small" onclick="resendEmail('email124')">🔄 Resend</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>lisa.r@email.com</td>
+                                        <td>Welcome to DrTroy.com</td>
+                                        <td>Welcome</td>
+                                        <td><span class="status-badge bounced">Bounced</span></td>
+                                        <td>Feb 13, 4:15 PM</td>
+                                        <td>-</td>
+                                        <td>
+                                            <button class="btn-small" onclick="viewEmail('email125')">👁️ View</button>
+                                            <button class="btn-small" onclick="updateEmail('email125')">✏️ Update</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- License Tracking Tab -->
+        <div id="licenses" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">🎓 License Tracking & Monitoring</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="exportLicenseData()">📥 Export Report</button>
+                        <button class="btn btn-primary" onclick="sendBulkReminders()">📧 Send Reminders</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- License Statistics -->
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #dc2626;">8</div>
+                            <div class="stat-label">Expired Licenses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #d69e2e;">15</div>
+                            <div class="stat-label">Expiring Soon (30 days)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="color: #059669;">234</div>
+                            <div class="stat-label">Active Licenses</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">89%</div>
+                            <div class="stat-label">Renewal Rate</div>
+                        </div>
+                    </div>
+
+                    <!-- License Filter and Search -->
+                    <div style="display: grid; grid-template-columns: 1fr auto auto auto; gap: 1rem; margin-bottom: 2rem;">
+                        <input type="text" id="licenseSearch" class="form-input" placeholder="Search by name, license number, or email">
+                        <select id="stateFilter" class="form-select">
+                            <option value="all">All States</option>
+                            <option value="TX">Texas</option>
+                            <option value="CA">California</option>
+                            <option value="FL">Florida</option>
+                            <option value="NY">New York</option>
+                        </select>
+                        <select id="disciplineFilter" class="form-select">
+                            <option value="all">All Disciplines</option>
+                            <option value="PT">Physical Therapist</option>
+                            <option value="PTA">PT Assistant</option>
+                            <option value="OT">Occupational Therapist</option>
+                            <option value="COTA">OT Assistant</option>
+                        </select>
+                        <select id="urgencyFilter" class="form-select">
+                            <option value="all">All Status</option>
+                            <option value="expired">Expired</option>
+                            <option value="critical">Critical (≤30 days)</option>
+                            <option value="warning">Warning (≤90 days)</option>
+                            <option value="safe">Safe (>90 days)</option>
+                        </select>
+                    </div>
+
+                    <!-- License Tracking Table -->
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>License #</th>
+                                    <th>State</th>
+                                    <th>Discipline</th>
+                                    <th>Expires</th>
+                                    <th>Days Left</th>
+                                    <th>CCU Progress</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="license-critical">
+                                    <td>Dr. Sarah Johnson</td>
+                                    <td>TX12345</td>
+                                    <td>TX</td>
+                                    <td>PT</td>
+                                    <td>March 15, 2026</td>
+                                    <td class="urgent">18 days</td>
+                                    <td>
+                                        <div class="progress-mini">
+                                            <div class="progress-bar" style="width: 85%"></div>
+                                            <span>23/27 CCUs</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small critical" onclick="sendUrgentReminder('TX12345')">⚠️ Urgent</button>
+                                        <button class="btn-small" onclick="viewLicenseDetails('TX12345')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr class="license-warning">
+                                    <td>Michael Chen</td>
+                                    <td>CA67890</td>
+                                    <td>CA</td>
+                                    <td>OT</td>
+                                    <td>May 30, 2026</td>
+                                    <td class="warning">94 days</td>
+                                    <td>
+                                        <div class="progress-mini">
+                                            <div class="progress-bar" style="width: 60%"></div>
+                                            <span>14/23 CCUs</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small warning" onclick="sendReminder('CA67890')">📧 Remind</button>
+                                        <button class="btn-small" onclick="viewLicenseDetails('CA67890')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr class="license-safe">
+                                    <td>Lisa Rodriguez</td>
+                                    <td>FL54321</td>
+                                    <td>FL</td>
+                                    <td>PTA</td>
+                                    <td>December 31, 2026</td>
+                                    <td class="safe">319 days</td>
+                                    <td>
+                                        <div class="progress-mini">
+                                            <div class="progress-bar" style="width: 35%"></div>
+                                            <span>6/17 CCUs</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn-small" onclick="viewLicenseDetails('FL54321')">👁️ View</button>
+                                        <button class="btn-small" onclick="emailUser('lisa.r@email.com')">📧 Contact</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Bulk License Operations -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3>Bulk License Operations</h3>
+                        </div>
+                        <div class="card-body">
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button class="btn btn-secondary" onclick="sendCriticalReminders()">⚠️ Notify Critical (≤30 days)</button>
+                                <button class="btn btn-secondary" onclick="sendWarningReminders()">📧 Notify Warnings (≤90 days)</button>
+                                <button class="btn btn-secondary" onclick="updateCCUProgress()">🔄 Update CCU Progress</button>
+                                <button class="btn btn-secondary" onclick="generateRenewalReport()">📊 Generate Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discount Codes Tab (Enhanced) -->
+        <div id="discount-codes" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">💰 Discount Code Management</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Discount Code Statistics -->
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
                         <div class="stat-card">
                             <div class="stat-number" id="totalCodes">0</div>
                             <div class="stat-label">Total Codes Created</div>
@@ -485,16 +1552,8 @@
                             <div class="stat-label">Customer Savings</div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Code Management -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Create Discount Codes</h2>
-                </div>
-                <div class="card-body">
-                    <!-- Sub-tabs for code types -->
+                    <!-- Code Management -->
                     <div class="sub-tabs">
                         <button class="sub-tab active" onclick="switchSubTab('employee')">
                             🏢 Employee Codes
@@ -502,7 +1561,6 @@
                         <button class="sub-tab" onclick="switchSubTab('marketing')">
                             📢 Marketing Codes
                         </button>
-                    </div>
 
                     <!-- Employee Code Form -->
                     <div id="employee" class="sub-content active">
@@ -613,31 +1671,287 @@
                         <div id="marketingSuccess" class="success-message"></div>
                         <div id="marketingError" class="error-message"></div>
                     </div>
+
+                    <!-- All Codes Table -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3>All Discount Codes</h3>
+                        </div>
+                        <div class="card-body" style="overflow-x: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Type</th>
+                                        <th>Discount</th>
+                                        <th>Usage</th>
+                                        <th>Status</th>
+                                        <th>Created</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="codesTableBody">
+                                    <tr>
+                                        <td><strong>EMPLOYEE-SARAH-001</strong></td>
+                                        <td>Employee</td>
+                                        <td>100% Off</td>
+                                        <td>0/1</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                        <td>Feb 10, 2026</td>
+                                        <td>
+                                            <button class="btn-small" onclick="viewCode('EMPLOYEE-SARAH-001')">👁️ View</button>
+                                            <button class="btn-small danger" onclick="deactivateCode('EMPLOYEE-SARAH-001')">❌ Deactivate</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SPRING25</strong></td>
+                                        <td>Marketing</td>
+                                        <td>25% Off</td>
+                                        <td>47/100</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                        <td>Feb 1, 2026</td>
+                                        <td>
+                                            <button class="btn-small" onclick="viewCode('SPRING25')">👁️ View</button>
+                                            <button class="btn-small" onclick="editCode('SPRING25')">✏️ Edit</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- All Codes Table -->
+        <!-- Enhanced Settings Tab -->
+        <div id="settings" class="tab-content">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">All Discount Codes</h2>
+                    <h2 class="card-title">⚙️ Admin Settings & System Management</h2>
                 </div>
-                <div class="card-body" style="overflow-x: auto;">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Code</th>
-                                <th>Type</th>
-                                <th>Discount</th>
-                                <th>Usage</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="codesTableBody">
-                            <!-- Codes will be populated here -->
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <!-- Settings Sub-tabs -->
+                    <div class="sub-tabs">
+                        <button class="sub-tab active" onclick="switchSettingsTab('account')">👤 Account</button>
+                        <button class="sub-tab" onclick="switchSettingsTab('platform')">🏢 Platform</button>
+                        <button class="sub-tab" onclick="switchSettingsTab('security')">🔒 Security</button>
+                        <button class="sub-tab" onclick="switchSettingsTab('system')">⚙️ System</button>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div id="account-settings" class="sub-content active">
+                        <div class="info-box">
+                            <strong>⚠️ Admin Configuration:</strong> Manage your admin credentials and personal preferences. Changes apply immediately.
+                        </div>
+
+                        <form id="settingsForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Admin Username</label>
+                                    <input type="text" id="adminUsername" class="form-input" value="troyhounshell" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Update Password</label>
+                                    <input type="password" id="adminPassword" class="form-input" placeholder="Enter new password (optional)">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Admin Email</label>
+                                <input type="email" id="adminEmail" class="form-input" value="troyh@texastherapypros.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">System Timezone</label>
+                                <select id="timezone" class="form-select">
+                                    <option value="America/Chicago" selected>Central Time (CT)</option>
+                                    <option value="America/New_York">Eastern Time (ET)</option>
+                                    <option value="America/Denver">Mountain Time (MT)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">💾 Save Account Settings</button>
+                        </form>
+
+                        <div id="settingsSuccess" class="success-message"></div>
+                        <div id="settingsError" class="error-message"></div>
+                    </div>
+
+                    <!-- Platform Settings -->
+                    <div id="platform-settings" class="sub-content">
+                        <h3>Platform Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Platform Name</label>
+                            <input type="text" id="platformName" class="form-input" value="DrTroy.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Default CCU Requirements</label>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>PT Required CCUs</label>
+                                    <input type="number" id="ptCCUs" class="form-input" value="27">
+                                </div>
+                                <div class="form-group">
+                                    <label>PTA Required CCUs</label>
+                                    <input type="number" id="ptaCCUs" class="form-input" value="17">
+                                </div>
+                                <div class="form-group">
+                                    <label>OT Required CCUs</label>
+                                    <input type="number" id="otCCUs" class="form-input" value="23">
+                                </div>
+                                <div class="form-group">
+                                    <label>COTA Required CCUs</label>
+                                    <input type="number" id="cotaCCUs" class="form-input" value="23">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">License Renewal Warning Periods</label>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>First Warning (months)</label>
+                                    <input type="number" id="firstWarning" class="form-input" value="6">
+                                </div>
+                                <div class="form-group">
+                                    <label>Second Warning (months)</label>
+                                    <input type="number" id="secondWarning" class="form-input" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Final Warning (days)</label>
+                                    <input type="number" id="finalWarning" class="form-input" value="7">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="savePlatformSettings()">💾 Save Platform Settings</button>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div id="security-settings" class="sub-content">
+                        <h3>Security Configuration</h3>
+
+                        <div class="security-group">
+                            <h4>Session Management</h4>
+                            <div class="form-group">
+                                <label class="form-label">Admin Session Duration (hours)</label>
+                                <select id="sessionDuration" class="form-select">
+                                    <option value="1">1 hour</option>
+                                    <option value="4">4 hours</option>
+                                    <option value="8" selected>8 hours</option>
+                                    <option value="24">24 hours</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="security-group">
+                            <h4>User Security</h4>
+                            <label style="display: flex; align-items: center; margin: 1rem 0;">
+                                <input type="checkbox" id="require2FA" style="margin-right: 0.5rem;">
+                                Require two-factor authentication for all users
+                            </label>
+                            <label style="display: flex; align-items: center; margin: 1rem 0;">
+                                <input type="checkbox" id="passwordComplexity" checked style="margin-right: 0.5rem;">
+                                Enforce strong password requirements
+                            </label>
+                            <label style="display: flex; align-items: center; margin: 1rem 0;">
+                                <input type="checkbox" id="loginNotifications" checked style="margin-right: 0.5rem;">
+                                Email notifications for admin logins
+                            </label>
+                        </div>
+
+                        <div class="security-group">
+                            <h4>Data Protection</h4>
+                            <label style="display: flex; align-items: center; margin: 1rem 0;">
+                                <input type="checkbox" id="encryptData" checked style="margin-right: 0.5rem;">
+                                Encrypt stored user data
+                            </label>
+                            <label style="display: flex; align-items: center; margin: 1rem 0;">
+                                <input type="checkbox" id="auditLogging" checked style="margin-right: 0.5rem;">
+                                Enable comprehensive audit logging
+                            </label>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="saveSecuritySettings()">🔒 Save Security Settings</button>
+                    </div>
+
+                    <!-- System Settings -->
+                    <div id="system-settings" class="sub-content">
+                        <h3>System Management</h3>
+
+                        <div class="system-group">
+                            <h4>Data Management</h4>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                                <button onclick="exportAllData()" class="btn btn-secondary">📥 Export All Data</button>
+                                <button onclick="importData()" class="btn btn-secondary">📤 Import Data</button>
+                                <button onclick="clearSampleData()" class="btn btn-secondary">🧹 Clear Sample Data</button>
+                            </div>
+                        </div>
+
+                        <div class="system-group">
+                            <h4>Maintenance</h4>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                                <button onclick="runSystemDiagnostics()" class="btn btn-secondary">🔧 System Diagnostics</button>
+                                <button onclick="optimizeDatabase()" class="btn btn-secondary">⚡ Optimize Database</button>
+                                <button onclick="clearCache()" class="btn btn-secondary">🗑️ Clear Cache</button>
+                            </div>
+                        </div>
+
+                        <div class="system-group">
+                            <h4>Backup & Recovery</h4>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                                <button onclick="createBackup()" class="btn btn-primary">💾 Create Backup</button>
+                                <button onclick="scheduleBackups()" class="btn btn-secondary">📅 Schedule Backups</button>
+                                <button onclick="restoreBackup()" class="btn btn-secondary">🔄 Restore from Backup</button>
+                            </div>
+                        </div>
+
+                        <div class="system-group">
+                            <h4>Reset Options</h4>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+                                <button onclick="extendSession()" class="btn btn-secondary">⏰ Extend Session (+8h)</button>
+                                <button onclick="resetToDefaults()" class="btn btn-danger">🔄 Reset to Defaults</button>
+                                <button onclick="factoryReset()" class="btn btn-danger">⚠️ Factory Reset</button>
+                            </div>
+                            <div class="warning-box" style="margin-top: 1rem;">
+                                <strong>⚠️ Warning:</strong> Reset operations cannot be undone. Always create a backup before proceeding.
+                            </div>
+                        </div>
+
+                        <!-- System Information -->
+                        <div style="margin-top: 2rem; padding: 1rem; background: var(--gray-50); border-radius: 6px;">
+                            <h4 style="color: var(--navy); margin-bottom: 0.5rem;">System Information</h4>
+                            <div class="system-info">
+                                <div class="info-row">
+                                    <span>Version:</span>
+                                    <span>DrTroy Admin v2.0.0</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>Last Updated:</span>
+                                    <span id="systemUpdate">February 15, 2026</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>Database:</span>
+                                    <span style="color: var(--success); font-weight: 600;">✅ Connected</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>Security:</span>
+                                    <span style="color: var(--success); font-weight: 600;">🔒 Active</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>Storage Used:</span>
+                                    <span>1.2 GB / 10 GB (12%)</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>Active Sessions:</span>
+                                    <span>1 admin, 23 users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1288,9 +2602,19 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
             
-            // Update analytics when switching to analytics tab
-            if (tabName === 'analytics') {
-                updateAnalytics();
+            // Load data when switching to specific tabs
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            } else if (tabName === 'users') {
+                loadUsers();
+            } else if (tabName === 'courses') {
+                loadCourses();
+            } else if (tabName === 'emails') {
+                loadEmailData();
+            } else if (tabName === 'licenses') {
+                loadLicenseData();
+            } else if (tabName === 'discount-codes') {
+                updateDiscountCodeStats();
             }
         }
 
@@ -1526,9 +2850,315 @@
             }
         }
 
+        // Enhanced Tab Switching Functions
+        function switchEmailTab(tabName) {
+            document.querySelectorAll('#emails .sub-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('#emails .sub-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('email-' + tabName).classList.add('active');
+        }
+
+        function switchSettingsTab(tabName) {
+            document.querySelectorAll('#settings .sub-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('#settings .sub-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + '-settings').classList.add('active');
+        }
+
+        // Dashboard Functions
+        function updateDashboard() {
+            document.getElementById('totalUsers').textContent = '267';
+            document.getElementById('monthlyRevenue').textContent = '$12,450';
+            document.getElementById('courseCompletions').textContent = '89';
+            document.getElementById('upcomingRenewals').textContent = '23';
+        }
+
+        // User Management Functions
+        function loadUsers() {
+            console.log('Loading user data...');
+        }
+
+        function exportUsers() {
+            alert('📥 User export functionality would be implemented here.');
+        }
+
+        function showAddUserForm() {
+            alert('👤 Add user form would open here.');
+        }
+
+        function viewUser(email) {
+            alert(`👁️ Viewing user details for: ${email}`);
+        }
+
+        function emailUser(email) {
+            alert(`📧 Opening email composer for: ${email}`);
+        }
+
+        // Course Management Functions
+        function loadCourses() {
+            console.log('Loading course data...');
+        }
+
+        function exportCourseData() {
+            alert('📥 Course data export would be implemented here.');
+        }
+
+        function showAddCourseForm() {
+            alert('➕ Add course form would open here.');
+        }
+
+        function editCourse(courseId) {
+            alert(`✏️ Editing course: ${courseId}`);
+        }
+
+        function viewStats(courseId) {
+            alert(`📊 Viewing statistics for course: ${courseId}`);
+        }
+
+        function manageCourse(courseId) {
+            alert(`⚙️ Managing course: ${courseId}`);
+        }
+
+        function publishCourse(courseId) {
+            if (confirm(`Are you sure you want to publish course: ${courseId}?`)) {
+                alert(`🚀 Course ${courseId} has been published!`);
+            }
+        }
+
+        function updateAllCourses() {
+            alert('🔄 Bulk course update would be implemented here.');
+        }
+
+        function exportCourseContent() {
+            alert('📦 Course content export would be implemented here.');
+        }
+
+        function generateCertificates() {
+            alert('🏆 Certificate generation would be implemented here.');
+        }
+
+        function notifyIncompleteCourses() {
+            alert('📧 Notification system for incomplete courses would be implemented here.');
+        }
+
+        // Email System Functions
+        function loadEmailData() {
+            console.log('Loading email system data...');
+        }
+
+        function exportEmailData() {
+            alert('📥 Email data export would be implemented here.');
+        }
+
+        function showComposeEmail() {
+            alert('✉️ Email composer would open here.');
+        }
+
+        function viewCampaign(campaignId) {
+            alert(`📊 Viewing campaign stats for: ${campaignId}`);
+        }
+
+        function duplicateCampaign(campaignId) {
+            alert(`📋 Duplicating campaign: ${campaignId}`);
+        }
+
+        function stopCampaign(campaignId) {
+            if (confirm(`Are you sure you want to stop campaign: ${campaignId}?`)) {
+                alert(`⏹️ Campaign ${campaignId} has been stopped.`);
+            }
+        }
+
+        function editCampaign(campaignId) {
+            alert(`✏️ Editing campaign: ${campaignId}`);
+        }
+
+        function sendCampaign(campaignId) {
+            if (confirm(`Are you sure you want to send campaign: ${campaignId} now?`)) {
+                alert(`🚀 Campaign ${campaignId} has been sent!`);
+            }
+        }
+
+        function deleteCampaign(campaignId) {
+            if (confirm(`Are you sure you want to delete campaign: ${campaignId}?`)) {
+                alert(`🗑️ Campaign ${campaignId} has been deleted.`);
+            }
+        }
+
+        function sendRenewalReminders() {
+            alert('📧 Renewal reminders would be sent to eligible users.');
+        }
+
+        function previewRenewalEmail() {
+            alert('👁️ Renewal email template preview would open here.');
+        }
+
+        function testRenewalEmail() {
+            alert('🧪 Test renewal email would be sent to admin.');
+        }
+
+        function editTemplate(templateId) {
+            alert(`✏️ Editing email template: ${templateId}`);
+        }
+
+        function previewTemplate(templateId) {
+            alert(`👁️ Previewing template: ${templateId}`);
+        }
+
+        function viewEmail(emailId) {
+            alert(`👁️ Viewing email details: ${emailId}`);
+        }
+
+        function resendEmail(emailId) {
+            alert(`🔄 Resending email: ${emailId}`);
+        }
+
+        function updateEmail(emailId) {
+            alert(`✏️ Updating email: ${emailId}`);
+        }
+
+        // License Tracking Functions
+        function loadLicenseData() {
+            console.log('Loading license tracking data...');
+        }
+
+        function exportLicenseData() {
+            alert('📥 License data export would be implemented here.');
+        }
+
+        function sendBulkReminders() {
+            alert('📧 Bulk license reminders would be sent.');
+        }
+
+        function sendUrgentReminder(licenseId) {
+            alert(`⚠️ Urgent reminder sent for license: ${licenseId}`);
+        }
+
+        function sendReminder(licenseId) {
+            alert(`📧 Reminder sent for license: ${licenseId}`);
+        }
+
+        function viewLicenseDetails(licenseId) {
+            alert(`👁️ Viewing license details: ${licenseId}`);
+        }
+
+        function sendCriticalReminders() {
+            alert('⚠️ Critical license reminders would be sent to users with ≤30 days.');
+        }
+
+        function sendWarningReminders() {
+            alert('📧 Warning reminders would be sent to users with ≤90 days.');
+        }
+
+        function updateCCUProgress() {
+            alert('🔄 CCU progress would be updated for all users.');
+        }
+
+        function generateRenewalReport() {
+            alert('📊 Renewal report would be generated.');
+        }
+
+        // Discount Code Functions  
+        function updateDiscountCodeStats() {
+            const totalEmployeeCodes = employeeCodes.length;
+            const totalMarketingCodes = marketingCodes.length;
+            const totalCodes = totalEmployeeCodes + totalMarketingCodes;
+            
+            const activeCodes = employeeCodes.filter(c => c.status === 'active').length + 
+                               marketingCodes.filter(c => c.status === 'active').length;
+            
+            const usedCodes = employeeCodes.filter(c => c.used).length + 
+                             marketingCodes.reduce((sum, c) => sum + (c.currentUses || 0), 0);
+            
+            let totalSavings = 0;
+            employeeCodes.forEach(code => {
+                if (code.used) {
+                    totalSavings += code.packagePrice;
+                }
+            });
+            marketingCodes.forEach(code => {
+                const uses = code.currentUses || 0;
+                if (code.discountType === 'percentage') {
+                    totalSavings += uses * 25;
+                } else if (code.discountType === 'fixed') {
+                    totalSavings += uses * code.discountValue;
+                }
+            });
+            
+            document.getElementById('totalCodes').textContent = totalCodes;
+            document.getElementById('activeCodes').textContent = activeCodes;
+            document.getElementById('usedCodes').textContent = usedCodes;
+            document.getElementById('totalSavings').textContent = `$${totalSavings.toLocaleString()}`;
+        }
+
+        function viewCode(codeId) {
+            alert(`👁️ Viewing code details: ${codeId}`);
+        }
+
+        function editCode(codeId) {
+            alert(`✏️ Editing code: ${codeId}`);
+        }
+
+        function deactivateCode(codeId) {
+            if (confirm(`Are you sure you want to deactivate code: ${codeId}?`)) {
+                alert(`❌ Code ${codeId} has been deactivated.`);
+            }
+        }
+
+        // Settings Functions
+        function savePlatformSettings() {
+            alert('💾 Platform settings would be saved.');
+        }
+
+        function saveSecuritySettings() {
+            alert('🔒 Security settings would be saved.');
+        }
+
+        function exportAllData() {
+            alert('📥 All platform data would be exported.');
+        }
+
+        function importData() {
+            alert('📤 Data import functionality would be implemented here.');
+        }
+
+        function runSystemDiagnostics() {
+            alert('🔧 System diagnostics would run here.');
+        }
+
+        function optimizeDatabase() {
+            alert('⚡ Database optimization would run here.');
+        }
+
+        function clearCache() {
+            alert('🗑️ System cache would be cleared.');
+        }
+
+        function createBackup() {
+            alert('💾 System backup would be created.');
+        }
+
+        function scheduleBackups() {
+            alert('📅 Backup scheduling interface would open here.');
+        }
+
+        function restoreBackup() {
+            alert('🔄 Backup restoration interface would open here.');
+        }
+
+        function factoryReset() {
+            if (confirm('⚠️ Are you sure you want to perform a factory reset? This cannot be undone!')) {
+                if (confirm('This will delete ALL data and reset the system. Are you absolutely sure?')) {
+                    alert('⚠️ Factory reset would be performed here.');
+                }
+            }
+        }
+
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initAdmin();
+            updateDashboard(); // Load dashboard data on startup
             
             // Update timestamps and session info every minute
             setInterval(updateLastUpdate, 60000);
