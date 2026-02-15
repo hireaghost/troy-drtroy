@@ -2206,9 +2206,11 @@
                 // Log security event
                 console.log(`🔒 Account created: ${formData.email.substring(0, 3)}**** (${formData.discipline})`);
                 
-                // Update UI elements based on user discipline
-                updatePackageDisplay();
-                updateLoginButton();
+                // Update UI elements immediately after account creation
+                setTimeout(() => {
+                    updatePackageDisplay();
+                    updateLoginButton();
+                }, 100); // Small delay to ensure DOM is ready
                 
                 // Check if user selected a package before creating account
                 const selectedPackage = localStorage.getItem('selectedPackage');
@@ -2248,6 +2250,10 @@
                 } else {
                     // Regular account creation - show packages
                     setTimeout(() => {
+                        // Ensure UI is updated before scrolling
+                        updatePackageDisplay();
+                        updateLoginButton();
+                        
                         document.getElementById('packages').scrollIntoView({ 
                             behavior: 'smooth',
                             block: 'start'
@@ -2255,13 +2261,17 @@
                         
                         // Show welcome message
                         setTimeout(() => {
+                            // Final UI update before modal
+                            updatePackageDisplay();
+                            updateLoginButton();
+                            
                             showModal('Welcome to DrTroy!', `
                                 <div style="text-align: center;">
                                     <h3 style="color: var(--navy); margin-bottom: 1rem;">Account Created Successfully! 🎉</h3>
                                     <div style="background: #d4e6f1; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
                                         <strong>Your Benefits:</strong>
                                         <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
-                                            <li>🎯 $10 discount applied to all packages</li>
+                                            <li>🎯 $10 discount applied</li>
                                             <li>💾 Course progress will be saved</li>
                                             <li>🔒 Secure, HIPAA-level encryption</li>
                                         </ul>
@@ -2533,7 +2543,7 @@
                     <div style="background: #dcfce7; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
                         <p><strong>Your Benefits:</strong></p>
                         <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
-                            <li>🎯 $10 discount on all packages</li>
+                            <li>🎯 $10 discount</li>
                             <li>💾 Course progress tracking</li>
                             <li>📜 Certificate downloads</li>
                             <li>🔒 Secure, HIPAA-level encryption</li>
