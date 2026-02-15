@@ -891,7 +891,7 @@
     <div class="container">
         <!-- Main Navigation -->
         <div class="main-tabs">
-            <button class="main-tab active" onclick="switchMainTab('dashboard')">
+            <button class="main-tab" onclick="switchMainTab('dashboard')">
                 📊 Dashboard
             </button>
             <button class="main-tab" onclick="switchMainTab('users')">
@@ -909,13 +909,13 @@
             <button class="main-tab" onclick="switchMainTab('discount-codes')">
                 💰 Discount Codes
             </button>
-            <button class="main-tab" onclick="switchMainTab('settings')">
-                ⚙️ Settings
+            <button class="main-tab" onclick="switchMainTab('settings'); console.log('Settings clicked!')">
+                ⚙️ Settings (CLICK ME!)
             </button>
         </div>
 
         <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content active">
+        <div id="dashboard" class="tab-content">
             <!-- Platform Overview -->
             <div class="card">
                 <div class="card-header">
@@ -1729,10 +1729,10 @@
                 <div class="card-header">
                     <h2 class="card-title">⚙️ Admin Settings</h2>
                 </div>
-                <div class="card-body" style="display: block !important; visibility: visible !important;">
+                <div class="card-body" style="display: block !important; visibility: visible !important; opacity: 1 !important; height: auto !important; max-height: none !important; overflow: visible !important;">
                     
-                    <div style="margin-bottom: 2rem; padding: 1rem; background: #dcfce7; border: 1px solid #059669; border-radius: 8px; color: #065f46;">
-                        <strong>✅ Settings Working!</strong> Manage your admin configuration and system preferences.
+                    <div style="margin-bottom: 2rem; padding: 1rem; background: #dcfce7 !important; border: 1px solid #059669; border-radius: 8px; color: #065f46 !important; font-size: 16px !important; display: block !important;">
+                        <strong>✅ SETTINGS TAB IS WORKING!</strong> If you can see this green box, the Settings content is displaying properly. Manage your admin configuration and system preferences below.
                     </div>
 
                     <h3 style="color: var(--navy); margin-bottom: 1rem;">👤 Admin Account</h3>
@@ -2434,6 +2434,8 @@
 
         // Tab switching functions
         function switchMainTab(tabName) {
+            console.log(`🔄 Switching to tab: ${tabName}`);
+            
             // Update tab buttons
             document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
@@ -2444,6 +2446,7 @@
             
             // Save current tab to localStorage
             localStorage.setItem('currentAdminTab', tabName);
+            console.log(`💾 Saved tab: ${tabName}`);
             
             // Load data when switching to specific tabs
             if (tabName === 'dashboard') {
@@ -2463,36 +2466,42 @@
 
         // Restore saved tab on page load
         function restoreSavedTab() {
-            const savedTab = localStorage.getItem('currentAdminTab');
-            if (savedTab && document.getElementById(savedTab)) {
-                // Clear all active states
-                document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            const savedTab = localStorage.getItem('currentAdminTab') || 'dashboard';
+            
+            // Always clear all active states first
+            document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Activate the correct tab
+            const tabButton = document.querySelector(`[onclick="switchMainTab('${savedTab}')"]`);
+            const tabContent = document.getElementById(savedTab);
+            
+            if (tabButton && tabContent) {
+                tabButton.classList.add('active');
+                tabContent.classList.add('active');
                 
-                // Activate saved tab
-                const tabButton = document.querySelector(`[onclick="switchMainTab('${savedTab}')"]`);
-                if (tabButton) {
-                    tabButton.classList.add('active');
-                    document.getElementById(savedTab).classList.add('active');
-                    
-                    // Load data for the restored tab
-                    if (savedTab === 'dashboard') {
-                        updateDashboard();
-                    } else if (savedTab === 'users') {
-                        loadUsers();
-                    } else if (savedTab === 'courses') {
-                        loadCourses();
-                    } else if (savedTab === 'emails') {
-                        loadEmailData();
-                    } else if (savedTab === 'licenses') {
-                        loadLicenseData();
-                    } else if (savedTab === 'discount-codes') {
-                        updateDiscountCodeStats();
-                    }
+                // Load data for the active tab
+                if (savedTab === 'dashboard') {
+                    updateDashboard();
+                } else if (savedTab === 'users') {
+                    loadUsers();
+                } else if (savedTab === 'courses') {
+                    loadCourses();
+                } else if (savedTab === 'emails') {
+                    loadEmailData();
+                } else if (savedTab === 'licenses') {
+                    loadLicenseData();
+                } else if (savedTab === 'discount-codes') {
+                    updateDiscountCodeStats();
                 }
+                
+                console.log(`✅ Restored tab: ${savedTab}`);
             } else {
-                // Default to dashboard if no saved tab
+                // Fallback: activate dashboard
+                document.querySelector(`[onclick="switchMainTab('dashboard')"]`).classList.add('active');
+                document.getElementById('dashboard').classList.add('active');
                 updateDashboard();
+                console.log('⚠️ Fallback to dashboard');
             }
         }
 
