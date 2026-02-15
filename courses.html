@@ -206,6 +206,14 @@
             text-align: right;
         }
 
+        @media (max-width: 768px) {
+            .course-item > div {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
         .compliance-banner {
             background: var(--gold-light);
             padding: 1rem 1.5rem;
@@ -298,108 +306,246 @@
     </header>
 
     <section class="page-header">
-        <h1>Course Catalog</h1>
-        <p>Every course included in your package</p>
+        <h1>Unified Course Catalog</h1>
+        <p>Streamlined PT/PTA education with shared fundamentals and role-specific applications</p>
     </section>
 
+    <div style="background: #dcfce7; border-left: 4px solid #22c55e; padding: 1rem 2rem; margin: 2rem auto; max-width: 1000px; border-radius: 6px;">
+        <h3 style="color: #166534; margin-bottom: 0.5rem;">🚀 New: Unified PT/PTA Courses</h3>
+        <p style="color: #166534; margin: 0;">We've combined compatible courses to share foundational knowledge while maintaining profession-specific content. This means better consistency, more comprehensive coverage, and streamlined learning paths for both PTs and PTAs.</p>
+    </div>
+
     <section class="catalog">
-        <div class="profession-section">
-            <div class="profession-header">
-                <h2>Physical Therapists</h2>
-                <span class="total-badge">27 Hours</span>
+        <!-- Unified Courses Section -->
+        <div style="margin-bottom: 3rem; border: 2px solid #22c55e; border-radius: 12px; background: white; overflow: hidden;">
+            <div style="background: #22c55e; color: white; padding: 1.5rem; text-align: center;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤝 Unified PT/PTA Courses</h2>
+                <p style="opacity: 0.9; font-size: 0.95rem; margin: 0;">Shared foundational content with profession-specific applications</p>
             </div>
-            <div class="course-list">
-                <div class="catalog-course-header">
+            <div style="background: white;">
+                <div style="padding: 1rem 1.5rem; background: #22c55e; color: white; display: flex; justify-content: space-between; align-items: center; font-weight: 600; border-bottom: 2px solid #22c55e;">
                     <span>Course Name</span>
                     <span>CCUs</span>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Musculoskeletal Evaluation and Treatment</span>
-                    <span class="course-hours">3</span>
+                
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
+                                Comprehensive Mobility and Fall Prevention
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Evidence-based fall prevention strategies, safe transfer techniques, and mobility interventions. PT focus: assessment and treatment planning. PTA focus: implementation and hands-on techniques.
+                            </div>
+                            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; color: #1e40af;">
+                                <strong>Replaces:</strong> "Fall Prevention in Older Adults" (PT) + "Transfer and Mobility Training" (PTA)
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Fall Prevention in Older Adults</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
+                                Balance, Gait, and Vestibular Management
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Comprehensive approach to balance disorders, gait abnormalities, and vestibular dysfunction. Shared anatomy/pathophysiology with role-appropriate assessment and intervention strategies.
+                            </div>
+                            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; color: #1e40af;">
+                                <strong>Replaces:</strong> "Balance and Vestibular Disorders" (PT) + "Gait Training and Assessment" (PTA)
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Post-Surgical Rehabilitation</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
+                                Post-Surgical and Therapeutic Exercise
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Exercise principles, post-surgical rehabilitation, and progressive strengthening. PT focus: evaluation and protocol development. PTA focus: exercise implementation and progression.
+                            </div>
+                            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; color: #1e40af;">
+                                <strong>Replaces:</strong> "Post-Surgical Rehabilitation" (PT) + "Therapeutic Exercise Techniques" (PTA)
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Chronic Pain Management</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
+                                Geriatric Care Across the Continuum
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Age-related changes, common geriatric conditions, and safety considerations. Addresses both PT evaluation/planning and PTA implementation perspectives in geriatric care.
+                            </div>
+                            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; color: #1e40af;">
+                                <strong>Replaces:</strong> "Geriatric Physical Therapy Considerations" (PT) + related PTA content
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Balance and Vestibular Disorders</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
+                                Professional Documentation and Communication
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Documentation standards, legal requirements, and professional communication. PT focus: evaluation documentation and billing. PTA focus: treatment notes and PT communication.
+                            </div>
+                            <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; color: #1e40af;">
+                                <strong>Replaces:</strong> "Documentation and Billing Best Practices" (PT) + PTA documentation training
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Sports Injury Rehabilitation</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #edf2f7;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                                Neurological Rehabilitation
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">SHARED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Treatment approaches for stroke, SCI, TBI, and progressive neurological conditions. Identical content appropriate for both PT and PTA scope.
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Documentation and Billing Best Practices</span>
-                    <span class="course-hours">3</span>
+
+                <div style="padding: 1rem 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                                Infection Control and Patient Safety
+                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">SHARED</span>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                                Universal precautions, infection prevention, and patient safety protocols. Identical requirements for all healthcare professionals.
+                            </div>
+                        </div>
+                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">1</span>
+                    </div>
                 </div>
-                <div class="course-item">
-                    <span class="course-title">Geriatric Physical Therapy Considerations</span>
-                    <span class="course-hours">3</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Neurological Rehabilitation</span>
-                    <span class="course-hours">2</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Infection Control and Patient Safety</span>
-                    <span class="course-hours">1</span>
-                </div>
-            </div>
-            <div class="compliance-banner">
-                <strong>Note:</strong> 2-hour ethics requirement will be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
             </div>
         </div>
 
+        <!-- PT-Specific Courses -->
         <div class="profession-section">
             <div class="profession-header">
-                <h2>PT Assistants</h2>
-                <span class="total-badge">17 Hours</span>
+                <h2>Physical Therapists Only</h2>
+                <span class="total-badge">9 Hours</span>
             </div>
             <div class="course-list">
                 <div class="catalog-course-header">
                     <span>Course Name</span>
                     <span>CCUs</span>
                 </div>
+                
                 <div class="course-item">
-                    <span class="course-title">Therapeutic Exercise Techniques</span>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                            Comprehensive Musculoskeletal Evaluation
+                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                            Advanced evaluation techniques, differential diagnosis, and treatment planning for musculoskeletal conditions. Requires PT-level assessment and diagnostic skills.
+                        </div>
+                    </div>
                     <span class="course-hours">3</span>
                 </div>
+
                 <div class="course-item">
-                    <span class="course-title">Modalities and Physical Agents</span>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                            Chronic Pain Management
+                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                            Complex pain assessment, biopsychosocial factors, and interdisciplinary pain management approaches. Requires PT evaluation and diagnostic capabilities.
+                        </div>
+                    </div>
                     <span class="course-hours">3</span>
                 </div>
+
                 <div class="course-item">
-                    <span class="course-title">Transfer and Mobility Training</span>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                            Sports Injury Rehabilitation
+                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                            Sport-specific injury assessment, return-to-play decisions, and performance optimization. Emphasizes evaluation and complex decision-making.
+                        </div>
+                    </div>
                     <span class="course-hours">3</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Gait Training and Assessment</span>
-                    <span class="course-hours">3</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Wound Care Basics for PTAs</span>
-                    <span class="course-hours">2</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Neurological Rehabilitation</span>
-                    <span class="course-hours">2</span>
-                </div>
-                <div class="course-item">
-                    <span class="course-title">Infection Control and Patient Safety</span>
-                    <span class="course-hours">1</span>
                 </div>
             </div>
             <div class="compliance-banner">
-                <strong>Note:</strong> 2-hour ethics requirement will be satisfied by the Texas PT Jurisprudence Exam. <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+                <strong>PT Total: 27 CCUs</strong> (18 unified + 9 PT-specific) | Ethics via Jurisprudence Exam | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            </div>
+        </div>
+
+        <!-- PTA-Specific Courses -->
+        <div class="profession-section">
+            <div class="profession-header">
+                <h2>PT Assistants Only</h2>
+                <span class="total-badge">5 Hours</span>
+            </div>
+            <div class="course-list">
+                <div class="catalog-course-header">
+                    <span>Course Name</span>
+                    <span>CCUs</span>
+                </div>
+                
+                <div class="course-item">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                            Modalities and Physical Agents
+                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PTA SCOPE</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                            Hands-on application of therapeutic modalities, physical agents, and equipment operation. Focuses on PTA implementation skills and safety protocols.
+                        </div>
+                    </div>
+                    <span class="course-hours">3</span>
+                </div>
+
+                <div class="course-item">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
+                            Wound Care Basics for PTAs
+                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PTA SCOPE</span>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
+                            Basic wound assessment, dressing changes, and wound care techniques within PTA scope of practice. Emphasizes implementation under PT supervision.
+                        </div>
+                    </div>
+                    <span class="course-hours">2</span>
+                </div>
+            </div>
+            <div class="compliance-banner">
+                <strong>PTA Total: 23 CCUs</strong> (18 unified + 5 PTA-specific) | Ethics via Jurisprudence Exam | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
             </div>
         </div>
 
@@ -505,6 +651,19 @@
             <div class="compliance-banner">
                 <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
             </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div style="margin-top: 2rem; padding: 1.5rem; background: #dcfce7; border: 1px solid #22c55e; border-radius: 8px;">
+            <h3 style="color: #166534; margin-bottom: 1rem;">📊 Standardization Benefits</h3>
+            <ul style="color: #166534; margin-left: 1.5rem; line-height: 1.6;">
+                <li><strong>Content Efficiency:</strong> 5 unified courses replace 10 separate courses</li>
+                <li><strong>Consistent Quality:</strong> Same foundational knowledge for both professions</li>
+                <li><strong>Professional Clarity:</strong> Clear scope distinctions within unified content</li>
+                <li><strong>Maintenance Savings:</strong> Updates applied once, benefit both professions</li>
+                <li><strong>Better Education:</strong> Both professions learn shared evidence base</li>
+                <li><strong>PTA Enhancement:</strong> PTAs gain access to more comprehensive content (17→23 hours)</li>
+            </ul>
         </div>
 
         <a href="index.html" class="back-link">← Back to Packages</a>
