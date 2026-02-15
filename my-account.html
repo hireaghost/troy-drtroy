@@ -1057,23 +1057,26 @@
     </main>
 
     <script>
-        // Check if user is logged in when page loads
+        // Initialize all functionality when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('My Account page loading...');
+            
             checkLoginStatus();
             setupSidebarNavigation();
             loadAccountData();
             setupFieldFormatting();
             initializeDarkMode();
-        });
-
-        // Clear saved tab when clicking home page links
-        document.addEventListener('DOMContentLoaded', function() {
+            initializeSMSToggle();
+            
+            // Clear saved tab when clicking home page links
             const homeLinks = document.querySelectorAll('a[href="index.html"]');
             homeLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     localStorage.removeItem('currentAccountTab');
                 });
             });
+            
+            console.log('My Account page loaded successfully');
         });
 
         function setupFieldFormatting() {
@@ -1125,21 +1128,136 @@
             const account = JSON.parse(accountData);
             
             // Update welcome message
-            document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
-            document.getElementById('memberSince').textContent = new Date(account.createdAt).toLocaleDateString();
+            if (document.querySelector('#welcomeMessage h3')) {
+                document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName || 'User'}!`;
+            }
+            if (document.getElementById('memberSince') && account.createdAt) {
+                document.getElementById('memberSince').textContent = new Date(account.createdAt).toLocaleDateString();
+            }
             
             // Load personal information form
             loadPersonalInfo();
+            
+            // Load additional account data
+            loadExtendedAccountData(account);
+        }
+
+        function loadExtendedAccountData(account) {
+            // Load profile data
+            if (account.emergencyContact && document.getElementById('emergencyContact')) {
+                document.getElementById('emergencyContact').value = account.emergencyContact;
+            }
+            if (account.emergencyPhone && document.getElementById('emergencyPhone')) {
+                document.getElementById('emergencyPhone').value = account.emergencyPhone;
+            }
+            if (account.preferredCommunication && document.getElementById('preferredCommunication')) {
+                document.getElementById('preferredCommunication').value = account.preferredCommunication;
+            }
+            
+            // Load profile photo
+            if (account.profilePhoto && document.getElementById('profilePhotoDisplay')) {
+                const photoDisplay = document.getElementById('profilePhotoDisplay');
+                photoDisplay.innerHTML = `<img src="${account.profilePhoto}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            }
+            
+            // Load notification preferences
+            if (account.notifications) {
+                const n = account.notifications;
+                if (document.getElementById('courseUpdates') && n.courseUpdates !== undefined) {
+                    document.getElementById('courseUpdates').checked = n.courseUpdates;
+                }
+                if (document.getElementById('licenseReminders') && n.licenseReminders !== undefined) {
+                    document.getElementById('licenseReminders').checked = n.licenseReminders;
+                }
+                if (document.getElementById('promotions') && n.promotions !== undefined) {
+                    document.getElementById('promotions').checked = n.promotions;
+                }
+                if (document.getElementById('weeklyDigest') && n.weeklyDigest !== undefined) {
+                    document.getElementById('weeklyDigest').checked = n.weeklyDigest;
+                }
+                if (document.getElementById('smsNotifications') && n.smsEnabled !== undefined) {
+                    document.getElementById('smsNotifications').checked = n.smsEnabled;
+                }
+                if (document.getElementById('smsPhone') && n.smsPhone) {
+                    document.getElementById('smsPhone').value = n.smsPhone;
+                }
+                if (document.getElementById('urgentRenewals') && n.urgentRenewals !== undefined) {
+                    document.getElementById('urgentRenewals').checked = n.urgentRenewals;
+                }
+                if (document.getElementById('courseDeadlines') && n.courseDeadlines !== undefined) {
+                    document.getElementById('courseDeadlines').checked = n.courseDeadlines;
+                }
+                
+                // Show SMS options if enabled
+                if (n.smsEnabled && document.getElementById('smsOptions')) {
+                    document.getElementById('smsOptions').style.display = 'block';
+                }
+            }
+            
+            // Load security settings
+            if (account.twoFactorEnabled) {
+                if (document.getElementById('twoFactorStatus')) {
+                    document.getElementById('twoFactorStatus').textContent = 'Enabled';
+                    document.getElementById('twoFactorStatus').style.color = '#059669';
+                }
+                if (document.getElementById('toggle2FABtn')) {
+                    document.getElementById('toggle2FABtn').textContent = 'Disable 2FA';
+                }
+                if (account.authPhone && document.getElementById('authPhone')) {
+                    document.getElementById('authPhone').value = account.authPhone;
+                }
+            }
+            
+            // Load privacy settings
+            if (account.privacy) {
+                const p = account.privacy;
+                if (document.getElementById('dataAnalytics') && p.dataAnalytics !== undefined) {
+                    document.getElementById('dataAnalytics').checked = p.dataAnalytics;
+                }
+                if (document.getElementById('dataSharing') && p.dataSharing !== undefined) {
+                    document.getElementById('dataSharing').checked = p.dataSharing;
+                }
+                if (document.getElementById('marketingConsent') && p.marketingConsent !== undefined) {
+                    document.getElementById('marketingConsent').checked = p.marketingConsent;
+                }
+            }
+            
+            // Load interface settings
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            if (document.getElementById('darkMode')) {
+                document.getElementById('darkMode').checked = darkModeEnabled;
+            }
+            
+            // Update CCU dashboard
+            updateCCUDashboard();
+            
+            // Populate login activity
+            populateLoginActivity();
+            
+            // Set discipline display
+            if (account.discipline && document.getElementById('disciplineDisplay')) {
+                document.getElementById('disciplineDisplay').textContent = account.discipline;
+            }
         }
 
         function loadPersonalInfo() {
             const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) return;
+            if (!accountData) {
+                console.log('No account data found in localStorage');
+                return;
+            }
             
             const account = JSON.parse(accountData);
-            document.getElementById('editFirstName').value = account.firstName || '';
-            document.getElementById('editLastName').value = account.lastName || '';
-            document.getElementById('editEmail').value = account.email || '';
+            console.log('Loading personal info for:', account.firstName);
+            
+            // Load basic personal info with error checking
+            const firstNameField = document.getElementById('editFirstName');
+            const lastNameField = document.getElementById('editLastName');
+            const emailField = document.getElementById('editEmail');
+            
+            if (firstNameField) firstNameField.value = account.firstName || '';
+            if (lastNameField) lastNameField.value = account.lastName || '';
+            if (emailField) emailField.value = account.email || '';
             
             // Set license renewal reminders (default to true for new accounts)
             const remindersSetting = account.licenseRenewalReminders !== false;
@@ -1243,18 +1361,30 @@
         }
 
         // Personal Information Form Handler
-        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) return;
-            
-            const account = JSON.parse(accountData);
-            
-            // Update account data
-            account.firstName = document.getElementById('editFirstName').value;
-            account.lastName = document.getElementById('editLastName').value;
-            account.email = document.getElementById('editEmail').value;
+        try {
+            const personalInfoForm = document.getElementById('personalInfoForm');
+            if (personalInfoForm) {
+                personalInfoForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('Personal info form submitted');
+                    
+                    const accountData = localStorage.getItem('drtroyAccount');
+                    if (!accountData) {
+                        console.error('No account data found');
+                        alert('Error: No account data found. Please log in again.');
+                        return;
+                    }
+                    
+                    const account = JSON.parse(accountData);
+                    
+                    // Update account data with error checking
+                    const firstNameField = document.getElementById('editFirstName');
+                    const lastNameField = document.getElementById('editLastName');
+                    const emailField = document.getElementById('editEmail');
+                    
+                    if (firstNameField) account.firstName = firstNameField.value;
+                    if (lastNameField) account.lastName = lastNameField.value;
+                    if (emailField) account.email = emailField.value;
             account.licenseRenewalReminders = document.getElementById('licenseRenewalReminders').checked;
             account.phone = document.getElementById('editPhone').value;
             account.address = document.getElementById('editAddress').value;
@@ -1288,12 +1418,25 @@
                 successAlert.remove();
             }, 3000);
             
-            // Update welcome message
-            document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
-        });
+                    // Update welcome message
+                    if (document.querySelector('#welcomeMessage h3')) {
+                        document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
+                    }
+                    
+                    console.log('Personal info updated successfully');
+                });
+            } else {
+                console.error('Personal info form not found');
+            }
+        } catch (error) {
+            console.error('Error setting up personal info form:', error);
+        }
 
         // Password Change Form Handler
-        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
+        try {
+            const passwordChangeForm = document.getElementById('passwordChangeForm');
+            if (passwordChangeForm) {
+                passwordChangeForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const currentPassword = document.getElementById('currentPassword').value;
@@ -1339,7 +1482,13 @@
             setTimeout(() => {
                 successAlert.remove();
             }, 3000);
-        });
+                });
+            } else {
+                console.error('Password change form not found');
+            }
+        } catch (error) {
+            console.error('Error setting up password change form:', error);
+        }
 
         // Save notification preferences
         function saveNotificationPreferences() {
@@ -1737,8 +1886,8 @@
             }
         }
 
-        // SMS Options Toggle
-        document.addEventListener('DOMContentLoaded', function() {
+        // SMS Options Toggle (moved to main DOMContentLoaded above)
+        function initializeSMSToggle() {
             const smsCheckbox = document.getElementById('smsNotifications');
             const smsOptions = document.getElementById('smsOptions');
             
@@ -1747,8 +1896,9 @@
                     smsOptions.style.display = this.checked ? 'block' : 'none';
                 });
             }
+        }
             
-            // Confirmation deletion checkbox
+        // Confirmation deletion checkbox
             const confirmDeletion = document.getElementById('confirmDeletion');
             const deleteBtn = document.getElementById('deleteAccountBtn');
             
@@ -1787,85 +1937,7 @@
             }
         }
 
-        // Enhanced load account data to populate new fields
-        function loadAccountData() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            
-            // Load personal information
-            if (accountData.firstName) document.getElementById('editFirstName').value = accountData.firstName;
-            if (accountData.lastName) document.getElementById('editLastName').value = accountData.lastName;
-            if (accountData.email) document.getElementById('editEmail').value = accountData.email;
-            if (accountData.phone) document.getElementById('editPhone').value = accountData.phone;
-            if (accountData.streetAddress) document.getElementById('editStreetAddress').value = accountData.streetAddress;
-            if (accountData.city) document.getElementById('editCity').value = accountData.city;
-            if (accountData.state) document.getElementById('editState').value = accountData.state;
-            if (accountData.zipCode) document.getElementById('editZipCode').value = accountData.zipCode;
-            if (accountData.licenseNumber) document.getElementById('editLicenseNumber').value = accountData.licenseNumber;
-            if (accountData.licenseState) document.getElementById('editLicenseState').value = accountData.licenseState;
-            if (accountData.licenseExpiration) document.getElementById('editLicenseExpiration').value = accountData.licenseExpiration;
-            if (accountData.discipline) {
-                document.getElementById('editDiscipline').value = accountData.discipline;
-                document.getElementById('disciplineDisplay').textContent = accountData.discipline;
-            }
-            
-            // Load profile data
-            if (accountData.emergencyContact) document.getElementById('emergencyContact').value = accountData.emergencyContact;
-            if (accountData.emergencyPhone) document.getElementById('emergencyPhone').value = accountData.emergencyPhone;
-            if (accountData.preferredCommunication) document.getElementById('preferredCommunication').value = accountData.preferredCommunication;
-            
-            // Load profile photo
-            if (accountData.profilePhoto) {
-                const photoDisplay = document.getElementById('profilePhotoDisplay');
-                photoDisplay.innerHTML = `<img src="${accountData.profilePhoto}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
-            }
-            
-            // Load notification preferences
-            if (accountData.notifications) {
-                const n = accountData.notifications;
-                if (n.courseUpdates !== undefined) document.getElementById('courseUpdates').checked = n.courseUpdates;
-                if (n.licenseReminders !== undefined) document.getElementById('licenseReminders').checked = n.licenseReminders;
-                if (n.promotions !== undefined) document.getElementById('promotions').checked = n.promotions;
-                if (n.weeklyDigest !== undefined) document.getElementById('weeklyDigest').checked = n.weeklyDigest;
-                if (n.smsEnabled !== undefined) document.getElementById('smsNotifications').checked = n.smsEnabled;
-                if (n.smsPhone) document.getElementById('smsPhone').value = n.smsPhone;
-                if (n.urgentRenewals !== undefined) document.getElementById('urgentRenewals').checked = n.urgentRenewals;
-                if (n.courseDeadlines !== undefined) document.getElementById('courseDeadlines').checked = n.courseDeadlines;
-                
-                // Show SMS options if enabled
-                if (n.smsEnabled) document.getElementById('smsOptions').style.display = 'block';
-            }
-            
-            // Load security settings
-            if (accountData.twoFactorEnabled) {
-                document.getElementById('twoFactorStatus').textContent = 'Enabled';
-                document.getElementById('twoFactorStatus').style.color = '#059669';
-                document.getElementById('toggle2FABtn').textContent = 'Disable 2FA';
-                if (accountData.authPhone) document.getElementById('authPhone').value = accountData.authPhone;
-            }
-            
-            // Load privacy settings
-            if (accountData.privacy) {
-                const p = accountData.privacy;
-                if (p.dataAnalytics !== undefined) document.getElementById('dataAnalytics').checked = p.dataAnalytics;
-                if (p.dataSharing !== undefined) document.getElementById('dataSharing').checked = p.dataSharing;
-                if (p.marketingConsent !== undefined) document.getElementById('marketingConsent').checked = p.marketingConsent;
-            }
-            
-            // Load interface settings
-            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-            if (document.getElementById('darkMode')) {
-                document.getElementById('darkMode').checked = darkModeEnabled;
-            }
-            
-            // Update CCU dashboard
-            updateCCUDashboard();
-            
-            // Populate login activity
-            populateLoginActivity();
-            
-            // Sync license renewal reminder checkbox
-            document.getElementById('renewalReminders').checked = accountData.licenseRenewalReminders !== false;
-        }
+        // Enhanced functionality moved to main loadAccountData function above
     </script>
 </body>
 </html>
