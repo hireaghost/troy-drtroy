@@ -2354,9 +2354,12 @@
             }
             
             // Check if account already exists
-            const existingAccounts = JSON.parse(localStorage.getItem('drtroyAccounts') || '[]');
-            if (existingAccounts.find(acc => acc.email === formData.email)) {
-                errors.push('An account with this email already exists');
+            const existingAccount = localStorage.getItem('drtroyAccount');
+            if (existingAccount) {
+                const accountData = JSON.parse(existingAccount);
+                if (accountData.email === formData.email) {
+                    errors.push('An account with this email already exists');
+                }
             }
             
             if (errors.length > 0) {
