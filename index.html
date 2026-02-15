@@ -957,6 +957,7 @@
                 <a href="courses.html">Course Catalog</a>
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
+                <a href="#" id="myAccountLink" class="login-link" style="display: none;">My Account</a>
                 <a href="#" id="loginLink" class="login-link">Log In</a>
             </nav>
         </div>
@@ -2175,6 +2176,7 @@
                     firstName: formData.firstName,
                     lastName: formData.lastName,
                     email: formData.email,
+                    password: formData.password, // Store password for login verification
                     discipline: formData.discipline,
                     createdAt: new Date().toISOString(),
                     isLoggedIn: true,
@@ -2460,26 +2462,91 @@
             }, 7000);
         }
 
-        // Update login button based on session status
+        // Update login button and UI based on session status
         function updateLoginButton() {
             const loginButton = document.getElementById('loginLink');
+            const myAccountButton = document.getElementById('myAccountLink');
             const hasAccount = localStorage.getItem('drtroyAccount');
             const hasSession = localStorage.getItem('userSession');
             
             if (hasAccount && hasSession) {
                 const accountInfo = JSON.parse(hasAccount);
+                
+                // Hide login button, show logout and my account
                 loginButton.textContent = 'Log Out';
                 loginButton.onclick = function(e) {
                     e.preventDefault();
                     handleLogout();
                 };
+                
+                // Show My Account button
+                myAccountButton.style.display = 'inline-block';
+                myAccountButton.onclick = function(e) {
+                    e.preventDefault();
+                    showMyAccountModal(accountInfo);
+                };
+                
+                // Hide account creation section
+                updateUIForLoggedInUser(accountInfo);
             } else {
+                // Show login button, hide my account
                 loginButton.textContent = 'Log In';
                 loginButton.onclick = function(e) {
                     e.preventDefault();
                     showLoginModal();
                 };
+                myAccountButton.style.display = 'none';
+                
+                // Show account creation section
+                updateUIForLoggedOutUser();
             }
+        }
+        
+        // Update UI elements when user is logged in
+        function updateUIForLoggedInUser(accountInfo) {
+            const optinSection = document.querySelector('.optin');
+            if (optinSection) {
+                optinSection.style.display = 'none';
+            }
+        }
+        
+        // Update UI elements when user is logged out
+        function updateUIForLoggedOutUser() {
+            const optinSection = document.querySelector('.optin');
+            if (optinSection) {
+                optinSection.style.display = 'block';
+            }
+        }
+        
+        // Show My Account modal
+        function showMyAccountModal(accountInfo) {
+            const message = `
+                <div style="text-align: center;">
+                    <h3 style="color: var(--navy); margin-bottom: 1rem;">Welcome, ${accountInfo.firstName}!</h3>
+                    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                        <p><strong>Name:</strong> ${accountInfo.firstName} ${accountInfo.lastName || ''}</p>
+                        <p><strong>Email:</strong> ${accountInfo.email}</p>
+                        <p><strong>Discipline:</strong> ${getDisciplineFullName(accountInfo.discipline)}</p>
+                        <p><strong>Account Status:</strong> Active</p>
+                        <p><strong>Member Since:</strong> ${new Date(accountInfo.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <div style="background: #dcfce7; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p><strong>Your Benefits:</strong></p>
+                        <ul style="text-align: left; margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>🎯 $10 discount on all packages</li>
+                            <li>💾 Course progress tracking</li>
+                            <li>📜 Certificate downloads</li>
+                            <li>🔒 Secure, HIPAA-level encryption</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            const buttons = `
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Close</button>
+            `;
+            
+            showModal('My Account', message, true, buttons);
         }
         
         // Handle logout
@@ -2494,12 +2561,12 @@
             localStorage.removeItem('customerEmail');
             localStorage.removeItem('customerDiscipline');
             
-            // Update UI
+            // Update UI elements
             updateLoginButton();
             updatePackageDisplay();
             
             // Show logout confirmation
-            showModal('Logged Out', 'You have been successfully logged out. Thank you for visiting DrTroy.com!', false, 
+            showModal('Logged Out', 'You have been successfully logged out. You can now create a new account or log in with existing credentials.', false, 
                 '<button class="modal-btn modal-btn-primary" onclick="closeModal()">OK</button>');
         }
         // Initialize captcha, package restrictions, and login button when page loads
