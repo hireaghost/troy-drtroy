@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Account Data</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 2rem; 
+            background: #f8f9fa; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        pre { 
+            background: #f1f3f4; 
+            padding: 1rem; 
+            border-radius: 4px; 
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        button { 
+            background: #1a365d; 
+            color: white; 
+            border: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 0.5rem; 
+        }
+        button:hover { background: #2c5282; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Debug Account Data</h1>
+        <p>This page shows what's stored in your browser for debugging login issues.</p>
+        
+        <button onclick="showAccountData()">Show Account Data</button>
+        <button onclick="showSessionData()">Show Session Data</button>
+        <button onclick="testLogin()">Test Login Function</button>
+        <button onclick="clearAll()">Clear All Data</button>
+        
+        <div id="output"></div>
+        
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: #666;">
+            <a href="index.html">← Return to DrTroy.com</a>
+        </p>
+    </div>
+
+    <script>
+        function showAccountData() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            const output = document.getElementById('output');
+            
+            if (accountData) {
+                const parsed = JSON.parse(accountData);
+                output.innerHTML = `
+                    <h3>Stored Account Data:</h3>
+                    <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                    <p><strong>Password stored:</strong> ${parsed.password ? 'YES' : 'NO'}</p>
+                    <p><strong>Email:</strong> ${parsed.email}</p>
+                `;
+            } else {
+                output.innerHTML = '<h3>No account data found in localStorage</h3>';
+            }
+        }
+        
+        function showSessionData() {
+            const sessionData = localStorage.getItem('userSession');
+            const output = document.getElementById('output');
+            
+            if (sessionData) {
+                const parsed = JSON.parse(sessionData);
+                output.innerHTML = `
+                    <h3>Stored Session Data:</h3>
+                    <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                `;
+            } else {
+                output.innerHTML = '<h3>No session data found in localStorage</h3>';
+            }
+        }
+        
+        function testLogin() {
+            const email = prompt('Enter email to test:');
+            const password = prompt('Enter password to test:');
+            
+            if (!email || !password) return;
+            
+            const accountData = localStorage.getItem('drtroyAccount');
+            const output = document.getElementById('output');
+            
+            if (!accountData) {
+                output.innerHTML = '<h3>No account data to test against</h3>';
+                return;
+            }
+            
+            const account = JSON.parse(accountData);
+            const emailMatch = account.email === email;
+            const passwordMatch = account.password === password;
+            
+            output.innerHTML = `
+                <h3>Login Test Results:</h3>
+                <p><strong>Email Match:</strong> ${emailMatch ? 'YES' : 'NO'}</p>
+                <p><strong>Password Match:</strong> ${passwordMatch ? 'YES' : 'NO'}</p>
+                <p><strong>Stored Email:</strong> "${account.email}"</p>
+                <p><strong>Test Email:</strong> "${email}"</p>
+                <p><strong>Stored Password:</strong> "${account.password}"</p>
+                <p><strong>Test Password:</strong> "${password}"</p>
+                <p><strong>Would Login Succeed:</strong> ${emailMatch && passwordMatch ? 'YES' : 'NO'}</p>
+            `;
+        }
+        
+        function clearAll() {
+            localStorage.clear();
+            document.getElementById('output').innerHTML = '<h3>All localStorage data cleared</h3>';
+        }
+    </script>
+</body>
+</html>
