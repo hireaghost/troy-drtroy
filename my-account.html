@@ -477,7 +477,9 @@
                             <div class="form-group">
                                 <label for="editEmail">Email Address</label>
                                 <input type="email" id="editEmail" required>
-                                <label style="display: flex; align-items: center; margin-top: 0.75rem; font-weight: normal; color: var(--gray-700); font-size: 0.9rem;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; font-weight: normal; color: var(--gray-700);">
                                     <input type="checkbox" id="licenseRenewalReminders" checked style="margin-right: 0.5rem;">
                                     <span>Send me reminders when I get close to my license expiring.</span>
                                 </label>
@@ -667,6 +669,7 @@
                 document.getElementById('accountContent').style.display = 'block';
                 updateLoginButton();
                 loadAccountData();
+                restoreActiveTab();
             } else {
                 document.getElementById('loginRequired').style.display = 'block';
                 document.getElementById('accountContent').style.display = 'none';
@@ -734,8 +737,29 @@
                         section.classList.remove('active');
                     });
                     document.getElementById(sectionId).classList.add('active');
+                    
+                    // Save current tab to localStorage
+                    localStorage.setItem('currentAccountTab', sectionId);
                 });
             });
+        }
+
+        function restoreActiveTab() {
+            const savedTab = localStorage.getItem('currentAccountTab');
+            if (savedTab && document.getElementById(savedTab)) {
+                // Remove default active states
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                document.querySelectorAll('.account-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Activate saved tab
+                const tabLink = document.querySelector(`.sidebar-nav a[data-section="${savedTab}"]`);
+                if (tabLink) {
+                    tabLink.classList.add('active');
+                    document.getElementById(savedTab).classList.add('active');
+                }
+            }
         }
 
         // Update login button state
