@@ -3,33 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account | DrTroy</title>
-    
-    <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://js.stripe.com;
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-        font-src 'self' https://fonts.gstatic.com;
-        img-src 'self' data: https:;
-        connect-src 'self' https://*.supabase.co;
-    ">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <title>My Account | DrTroy.com</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --navy: #1a365d;
-            --navy-light: #2c5282;
             --gold: #d69e2e;
-            --gold-light: #f6e05e;
-            --gray-50: #f7fafc;
-            --gray-100: #edf2f7;
-            --gray-600: #4a5568;
-            --gray-800: #2d3748;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #059669;
+            --danger: #dc2626;
         }
 
         * {
@@ -40,13 +30,13 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--gray-800);
             background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
         }
 
         /* Header */
-        header {
+        .header {
             background: #f8f6f0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
@@ -57,7 +47,7 @@
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 2rem 1rem;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -70,11 +60,11 @@
             max-width: 800px;
         }
 
-        nav {
+        .nav {
             margin-top: 1rem;
         }
 
-        nav a {
+        .nav a {
             color: var(--gray-600);
             text-decoration: none;
             margin: 0 1.5rem;
@@ -82,7 +72,7 @@
             transition: color 0.2s;
         }
 
-        nav a:hover {
+        .nav a:hover {
             color: var(--navy);
         }
 
@@ -94,29 +84,6 @@
             font-weight: 600 !important;
             text-decoration: none !important;
             margin-left: 1rem !important;
-            transition: all 0.2s !important;
-        }
-
-        .login-link:hover {
-            background: var(--gold-light) !important;
-            color: var(--navy) !important;
-        }
-
-        .my-account-link {
-            display: none;
-            background: var(--navy) !important;
-            color: white !important;
-            padding: 0.5rem 1rem !important;
-            border-radius: 6px !important;
-            font-weight: 600 !important;
-            text-decoration: none !important;
-            margin-left: 1rem !important;
-            transition: all 0.2s !important;
-        }
-
-        .my-account-link:hover {
-            background: var(--navy-light) !important;
-            color: white !important;
         }
 
         /* Main Content */
@@ -132,931 +99,702 @@
         }
 
         .page-header h1 {
-            font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+
+        /* Login Required */
+        .login-required {
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .login-required h2 {
             color: var(--navy);
             margin-bottom: 1rem;
         }
 
-        .page-header p {
-            font-size: 1.1rem;
+        .login-required p {
             color: var(--gray-600);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
         }
 
-        .account-grid {
+        /* Account Layout */
+        .account-layout {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 250px 1fr;
             gap: 2rem;
-            margin-bottom: 3rem;
+            margin-top: 2rem;
         }
 
-        .account-sidebar {
+        /* Sidebar */
+        .sidebar {
             background: white;
             border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             height: fit-content;
             position: sticky;
-            top: 2rem;
+            top: 120px;
         }
 
-        .account-main {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        .sidebar h3 {
+            color: var(--navy);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
         }
 
-        .sidebar-nav {
+        .sidebar ul {
             list-style: none;
         }
 
-        .sidebar-nav li {
+        .sidebar li {
             margin-bottom: 0.5rem;
         }
 
-        .sidebar-nav a {
+        .sidebar a {
             display: block;
-            padding: 1rem;
-            text-decoration: none;
+            padding: 0.75rem 1rem;
             color: var(--gray-600);
-            border-radius: 8px;
+            text-decoration: none;
+            border-radius: 6px;
             transition: all 0.2s;
-            font-weight: 500;
         }
 
-        .sidebar-nav a:hover,
-        .sidebar-nav a.active {
+        .sidebar a:hover {
+            background: var(--gray-50);
+            color: var(--navy);
+        }
+
+        .sidebar a.active {
             background: var(--navy);
             color: white;
         }
 
-        .account-section {
-            display: none;
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .account-section.active {
+        .content-section {
+            display: none;
+            padding: 2rem;
+        }
+
+        .content-section.active {
             display: block;
         }
 
-        .section-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--gray-100);
-        }
-
-        .section-header h2 {
+        .content-section h2 {
             color: var(--navy);
-            font-size: 1.8rem;
             margin-bottom: 0.5rem;
+            font-size: 1.5rem;
         }
 
-        .section-header p {
+        .content-section p {
             color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--navy);
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
         }
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
+        .form-input, .form-select {
             padding: 0.75rem;
-            border: 2px solid var(--gray-100);
-            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
             font-size: 1rem;
             transition: border-color 0.2s;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-input:focus, .form-select:focus {
             outline: none;
-            border-color: var(--gold);
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
         }
 
+        .form-input[readonly] {
+            background: var(--gray-50);
+            color: var(--gray-600);
+        }
+
+        /* Buttons */
         .btn {
-            background: var(--gold);
-            color: var(--navy);
-            border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border: none;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .btn:hover {
-            background: var(--gold-light);
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e40af;
         }
 
         .btn-secondary {
-            background: var(--gray-100);
+            background: var(--gray-200);
             color: var(--gray-800);
         }
 
         .btn-secondary:hover {
-            background: var(--gray-200);
+            background: var(--gray-300);
         }
 
-        .stats-grid {
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* CCU Dashboard */
+        .ccu-overview {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .stat-card {
+        .ccu-card {
             background: var(--gray-50);
-            padding: 1.5rem;
+            border: 1px solid var(--gray-200);
             border-radius: 8px;
+            padding: 1.5rem;
             text-align: center;
         }
 
-        .stat-number {
+        .ccu-card h4 {
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .ccu-card .value {
             font-size: 2rem;
             font-weight: 700;
             color: var(--navy);
-            margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            color: var(--gray-600);
-            font-size: 0.9rem;
-        }
-
-        .course-list,
-        .purchase-list {
-            list-style: none;
-        }
-
-        .course-item,
-        .purchase-item {
-            background: var(--gray-50);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--gold);
-        }
-
-        .course-title,
-        .purchase-title {
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-        }
-
-        .course-meta,
-        .purchase-meta {
-            color: var(--gray-600);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+        /* Progress Bar */
+        .progress-container {
+            margin: 1.5rem 0;
         }
 
         .progress-bar {
             background: var(--gray-200);
             border-radius: 10px;
-            height: 8px;
-            margin: 0.5rem 0;
+            height: 20px;
+            overflow: hidden;
         }
 
         .progress-fill {
-            background: var(--gold);
-            border-radius: 10px;
             height: 100%;
+            background: var(--success);
             transition: width 0.3s;
         }
 
-        .certificate-btn {
-            background: var(--navy);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            text-decoration: none;
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            color: var(--gray-600);
             font-size: 0.9rem;
-            display: inline-block;
-            margin-right: 0.5rem;
         }
 
-        .certificate-btn:hover {
-            background: var(--navy-light);
-            color: white;
-        }
-
+        /* Alerts */
         .alert {
             padding: 1rem;
-            border-radius: 8px;
+            border-radius: 6px;
             margin-bottom: 1rem;
         }
 
-        .alert-info {
-            background: #e6f3ff;
-            border: 1px solid #b3d9ff;
-            color: #0066cc;
-        }
-
         .alert-success {
-            background: #e6f7e6;
-            border: 1px solid #b3e6b3;
-            color: #006600;
+            background: #dcfce7;
+            border: 1px solid var(--success);
+            color: #065f46;
         }
 
-        /* New styles for enhanced features */
-        .profile-photo-section img {
-            border: 3px solid var(--navy);
+        .alert-info {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
         }
 
-        .ccu-card {
-            transition: transform 0.2s, box-shadow 0.2s;
+        .alert-warning {
+            background: #fef3c7;
+            border: 1px solid #d97706;
+            color: #92400e;
         }
 
-        .ccu-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        .alert-danger {
+            background: #fef2f2;
+            border: 1px solid var(--danger);
+            color: #991b1b;
         }
 
-        .notification-group label {
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Emergency Access */
+        .emergency-access {
+            background: #fef3c7;
+            border: 1px solid #d97706;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .emergency-access h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .emergency-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .notification-group label:hover {
-            background: var(--gray-100) !important;
-        }
-
-        .privacy-group label {
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .privacy-group label:hover {
-            background: var(--gray-100) !important;
-        }
-
-        /* Toggle switch styles */
-        .switch input:checked + .slider {
-            background-color: var(--gold);
-        }
-
-        .switch input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        /* Dark mode styles */
-        .dark-mode {
-            background: #1a1a1a;
-            color: #ffffff;
-        }
-
-        .dark-mode header {
-            background: #2a2a2a;
-        }
-
-        .dark-mode .account-sidebar,
-        .dark-mode .account-main {
-            background: #2a2a2a;
-            color: #ffffff;
-        }
-
-        .dark-mode .form-group input,
-        .dark-mode .form-group select,
-        .dark-mode .form-group textarea {
-            background: #3a3a3a;
-            color: #ffffff;
-            border-color: #4a4a4a;
-        }
-
-        .dark-mode .sidebar-nav a {
-            color: #cccccc;
-        }
-
-        .dark-mode .sidebar-nav a:hover,
-        .dark-mode .sidebar-nav a.active {
-            background: var(--gold);
-            color: #1a1a1a;
-        }
-
-        .dark-mode .btn {
-            background: var(--gold);
-            color: #1a1a1a;
-        }
-
-        .dark-mode .btn:hover {
-            background: var(--gold-light);
-        }
-
-        .dark-mode .ccu-card {
-            background: #3a3a3a;
-            border-left-color: var(--gold);
-        }
-
-        /* Print styles for CCU transcript */
-        @media print {
-            .btn, .sidebar-nav, header, .actions {
-                display: none !important;
-            }
-            .account-main {
-                box-shadow: none !important;
-                border: none !important;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .account-grid {
+            .account-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .form-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .profile-photo-section {
-                flex-direction: column !important;
-                align-items: center !important;
-                text-align: center;
-            }
-            
+
             .ccu-overview {
-                grid-template-columns: 1fr !important;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <header>
+    <!-- Header -->
+    <header class="header">
         <div class="header-container">
             <div class="logo">
-                <img src="courses/images/drtroy_logo.png" alt="DrTroy Continuing Education">
+                <a href="index.html">
+                    <img src="img/DrTroy-Logo.png" alt="DrTroy">
+                </a>
             </div>
-            <nav>
+            <nav class="nav">
                 <a href="index.html">Home</a>
                 <a href="courses.html">Courses</a>
+                <a href="pricing.html">Pricing</a>
                 <a href="#contact">Contact</a>
-                <a href="#" id="loginLink" class="login-link">Log In</a>
-                <a href="my-account.html" id="myAccountLink" class="my-account-link">My Account</a>
+                <a href="my-account.html" class="login-link" id="accountLink">My Account</a>
             </nav>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container">
-        <div id="loginRequired" class="alert alert-info" style="display: none;">
-            <strong>Account Access Required:</strong> Please <a href="index.html">log in or create an account</a> to access your account dashboard.
+        <!-- Login Required Message -->
+        <div id="loginRequired" class="login-required" style="display: none;">
+            <h2>🔐 Account Access Required</h2>
+            <p>Please log in or create an account to access your account dashboard.</p>
+            <a href="index.html" class="btn btn-primary">Go to Home Page</a>
             
-            <div style="margin-top: 1.5rem; padding: 1rem; background: #fef3c7; border: 1px solid #d97706; border-radius: 6px;">
-                <p><strong>🛠️ Emergency Access:</strong> If you're having login issues, use the buttons below:</p>
-                <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <button onclick="createEmergencyAccount()" style="background: #1e3a8a; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-weight: 600;">👤 Create Test Account</button>
-                    <a href="index.html" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block;">🏠 Back to Home</a>
+            <div class="emergency-access">
+                <h3>🚨 Emergency Access</h3>
+                <p>If you're having login issues, use the button below to create a test account:</p>
+                <div class="emergency-buttons">
+                    <button onclick="createEmergencyAccount()" class="emergency-btn" style="background: var(--navy); color: white;">👤 Create Test Account</button>
+                    <a href="index.html" class="emergency-btn" style="background: var(--gray-600); color: white;">🏠 Back to Home</a>
                 </div>
             </div>
         </div>
 
+        <!-- Account Content -->
         <div id="accountContent" style="display: none;">
             <div class="page-header">
                 <h1>My Account</h1>
                 <p>Manage your continuing education journey</p>
             </div>
 
-            <div class="account-grid">
-                <div class="account-sidebar">
-                    <div id="welcomeMessage" style="margin-bottom: 2rem;">
-                        <h3 style="color: var(--navy); margin-bottom: 0.5rem;">Welcome back!</h3>
-                        <p style="color: var(--gray-600); font-size: 0.9rem;">Member since <span id="memberSince"></span></p>
-                    </div>
-                    
-                    <ul class="sidebar-nav">
-                        <li><a href="#" data-section="overview" class="active">📋 Account Overview</a></li>
-                        <li><a href="#" data-section="personal">👤 Personal Information</a></li>
-                        <li><a href="#" data-section="profile">🖼️ Profile & Photo</a></li>
-                        <li><a href="#" data-section="ccu-dashboard">📊 CCU Dashboard</a></li>
-                        <li><a href="#" data-section="courses">📚 My Courses</a></li>
-                        <li><a href="#" data-section="certificates">🏆 Certificates</a></li>
-                        <li><a href="#" data-section="purchases">💳 Purchase History</a></li>
-                        <li><a href="#" data-section="notifications">🔔 Notifications</a></li>
-                        <li><a href="#" data-section="security">🔒 Security</a></li>
-                        <li><a href="#" data-section="privacy">🛡️ Privacy & Data</a></li>
-                        <li><a href="#" data-section="settings">⚙️ Settings</a></li>
+            <div class="account-layout">
+                <!-- Sidebar Navigation -->
+                <div class="sidebar">
+                    <h3>Account Menu</h3>
+                    <ul>
+                        <li><a href="#" onclick="showSection('overview')" class="nav-link active">📊 Overview</a></li>
+                        <li><a href="#" onclick="showSection('personal')" class="nav-link">👤 Personal Info</a></li>
+                        <li><a href="#" onclick="showSection('password')" class="nav-link">🔐 Password</a></li>
+                        <li><a href="#" onclick="showSection('ccu')" class="nav-link">🎓 CCU Dashboard</a></li>
+                        <li><a href="#" onclick="showSection('courses')" class="nav-link">📚 My Courses</a></li>
+                        <li><a href="#" onclick="showSection('notifications')" class="nav-link">🔔 Notifications</a></li>
+                        <li><a href="#" onclick="showSection('security')" class="nav-link">🛡️ Security</a></li>
+                        <li><a href="#" onclick="showSection('privacy')" class="nav-link">🔒 Privacy</a></li>
+                        <li><a href="#" onclick="showSection('settings')" class="nav-link">⚙️ Settings</a></li>
                     </ul>
                 </div>
 
-                <div class="account-main">
+                <!-- Main Content Area -->
+                <div class="main-content">
                     <!-- Overview Section -->
-                    <div id="overview" class="account-section active">
-                        <div class="section-header">
-                            <h2>Account Overview</h2>
-                            <p>Your continuing education progress at a glance</p>
-                        </div>
-
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-number" id="totalCourses">0</div>
-                                <div class="stat-label">Courses Purchased</div>
+                    <div id="overview" class="content-section active">
+                        <h2>Account Overview</h2>
+                        <p>Welcome back! Here's your account summary.</p>
+                        
+                        <div class="ccu-overview">
+                            <div class="ccu-card">
+                                <h4>CCUs Required</h4>
+                                <div class="value" id="requiredCCUs">27</div>
                             </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="completedCourses">0</div>
-                                <div class="stat-label">Courses Completed</div>
+                            <div class="ccu-card">
+                                <h4>CCUs Earned</h4>
+                                <div class="value" id="earnedCCUs">0</div>
                             </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="totalCCUs">0</div>
-                                <div class="stat-label">CCUs Earned</div>
+                            <div class="ccu-card">
+                                <h4>Courses Completed</h4>
+                                <div class="value" id="coursesCompleted">0</div>
                             </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="certificatesEarned">0</div>
-                                <div class="stat-label">Certificates Earned</div>
+                            <div class="ccu-card">
+                                <h4>License Status</h4>
+                                <div class="value" style="font-size: 1rem; color: var(--success);" id="licenseStatus">Current</div>
                             </div>
                         </div>
 
-                        <div id="recentActivity">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Recent Activity</h3>
-                            <div class="alert alert-info">
-                                <p>No recent activity. Start a course to see your progress here!</p>
+                        <div class="progress-container">
+                            <h3>CCU Progress</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                             </div>
+                            <div class="progress-text" id="progressText">0 of 27 CCUs completed (0%)</div>
                         </div>
                     </div>
 
-                    <!-- Personal Information Section -->
-                    <div id="personal" class="account-section">
-                        <div class="section-header">
-                            <h2>Personal Information</h2>
-                            <p>Update your account details and preferences</p>
-                        </div>
-
+                    <!-- Personal Info Section -->
+                    <div id="personal" class="content-section">
+                        <h2>Personal Information</h2>
+                        <p>Update your profile and contact information.</p>
+                        
                         <form id="personalInfoForm">
-                            <div class="form-group">
-                                <label for="editFirstName">First Name</label>
-                                <input type="text" id="editFirstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editLastName">Last Name</label>
-                                <input type="text" id="editLastName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editEmail">Email Address</label>
-                                <input type="email" id="editEmail" required>
-                            </div>
-                            <div style="margin-bottom: 1.5rem;">
-                                <input type="checkbox" id="licenseRenewalReminders" checked style="margin-right: 8px;">
-                                <label for="licenseRenewalReminders" style="font-weight: normal; color: var(--gray-700); cursor: pointer;">Send me email reminders when I get close to my license expiring.</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="editPhone">Phone Number</label>
-                                <input type="tel" id="editPhone" placeholder="(555) 123-4567">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" class="form-input" placeholder="(555) 123-4567">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" id="address" class="form-input" placeholder="123 Main Street">
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" class="form-input" placeholder="Your City">
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" class="form-input" placeholder="TX" maxlength="2" style="text-transform: uppercase;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="zipCode">ZIP Code</label>
+                                    <input type="text" id="zipCode" class="form-input" placeholder="12345" maxlength="10">
+                                </div>
+                                <div class="form-group">
+                                    <label for="discipline">Discipline</label>
+                                    <select id="discipline" class="form-select" disabled>
+                                        <option value="">Select Discipline</option>
+                                        <option value="PT">Physical Therapist (PT)</option>
+                                        <option value="PTA">Physical Therapist Assistant (PTA)</option>
+                                        <option value="OT">Occupational Therapist (OT)</option>
+                                        <option value="COTA">Certified OT Assistant (COTA)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="licenseNumber">License Number</label>
+                                    <input type="text" id="licenseNumber" class="form-input" placeholder="Your license number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="licenseState">License State</label>
+                                    <input type="text" id="licenseState" class="form-input" placeholder="TX" maxlength="2" style="text-transform: uppercase;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="licenseExpiration">License Expiration</label>
+                                    <input type="date" id="licenseExpiration" class="form-input">
+                                </div>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="editAddress">Street Address</label>
-                                <input type="text" id="editAddress" placeholder="123 Main Street">
-                            </div>
-                            <div class="form-group">
-                                <label for="editCity">City</label>
-                                <input type="text" id="editCity" placeholder="Your City">
-                            </div>
-                            <div class="form-group">
-                                <label for="editState">State</label>
-                                <input type="text" id="editState" placeholder="TX" maxlength="2" style="text-transform: uppercase;">
-                            </div>
-                            <div class="form-group">
-                                <label for="editZip">ZIP Code</label>
-                                <input type="text" id="editZip" placeholder="12345" maxlength="10">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="renewalReminders" checked>
+                                <label for="renewalReminders">Send me email reminders when my license is close to expiring</label>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="editDiscipline">Discipline</label>
-                                <select id="editDiscipline" required disabled>
-                                    <option value="PT">Physical Therapist (PT)</option>
-                                    <option value="PTA">Physical Therapist Assistant (PTA)</option>
-                                    <option value="OT">Occupational Therapist (OT)</option>
-                                    <option value="COTA">Certified Occupational Therapy Assistant (COTA)</option>
-                                </select>
-                                <small style="color: var(--gray-600); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
-                                    Discipline is set during account creation and cannot be changed. Contact support if you need to update this.
-                                </small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="editLicenseNumber">License Number</label>
-                                <input type="text" id="editLicenseNumber" placeholder="Enter your license number">
-                            </div>
-                            <div class="form-group">
-                                <label for="editLicenseState">License State</label>
-                                <input type="text" id="editLicenseState" placeholder="TX" maxlength="2" style="text-transform: uppercase;">
-                            </div>
-                            <div class="form-group">
-                                <label for="editLicenseExpiration">License Expiration Date</label>
-                                <input type="date" id="editLicenseExpiration">
-                            </div>
-                            <button type="submit" class="btn">Save Changes</button>
-                            <button type="button" class="btn btn-secondary" onclick="loadPersonalInfo()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
                         </form>
                     </div>
 
-                    <!-- My Courses Section -->
-                    <div id="courses" class="account-section">
-                        <div class="section-header">
-                            <h2>My Courses</h2>
-                            <p>Track your course progress and continue learning</p>
-                        </div>
-
-                        <ul class="course-list" id="courseList">
-                            <li class="course-item">
-                                <div class="course-title">No courses purchased yet</div>
-                                <div class="course-meta">
-                                    <a href="index.html" class="btn">Browse Courses</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Certificates Section -->
-                    <div id="certificates" class="account-section">
-                        <div class="section-header">
-                            <h2>Certificates</h2>
-                            <p>Download and manage your completion certificates</p>
-                        </div>
-
-                        <div id="certificatesList">
-                            <div class="alert alert-info">
-                                <p><strong>No certificates available yet.</strong> Complete courses to earn certificates that you can download for your records and license renewals.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Purchase History Section -->
-                    <div id="purchases" class="account-section">
-                        <div class="section-header">
-                            <h2>Purchase History</h2>
-                            <p>View your past orders and receipts</p>
-                        </div>
-
-                        <ul class="purchase-list" id="purchaseList">
-                            <li class="purchase-item">
-                                <div class="alert alert-info">
-                                    <p><strong>No purchases yet.</strong> <a href="index.html">Browse our continuing education packages</a> to get started with your professional development.</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Settings Section -->
-                    <div id="settings" class="account-section">
-                        <div class="section-header">
-                            <h2>Display & Preferences</h2>
-                            <p>Customize your account experience</p>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Interface Settings</h3>
-                            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
-                                <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                                    <div>
-                                        <strong>Dark Mode</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Switch to dark theme for reduced eye strain</div>
-                                    </div>
-                                    <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                                        <input type="checkbox" id="darkMode" style="opacity: 0; width: 0; height: 0;">
-                                        <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: 0.4s; border-radius: 34px;"></span>
-                                    </label>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Password Security</h3>
-                            <form id="passwordChangeForm">
+                    <!-- Password Section -->
+                    <div id="password" class="content-section">
+                        <h2>Change Password</h2>
+                        <p>Update your account password for security.</p>
+                        
+                        <form id="passwordForm">
+                            <div class="form-grid">
                                 <div class="form-group">
                                     <label for="currentPassword">Current Password</label>
-                                    <input type="password" id="currentPassword" required>
+                                    <input type="password" id="currentPassword" class="form-input" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="newPassword">New Password</label>
-                                    <input type="password" id="newPassword" minlength="8" required>
+                                    <input type="password" id="newPassword" class="form-input" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="confirmNewPassword">Confirm New Password</label>
-                                    <input type="password" id="confirmNewPassword" minlength="8" required>
-                                </div>
-                                <button type="submit" class="btn">Update Password</button>
-                            </form>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Notifications</h3>
-                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <input type="checkbox" id="emailNotifications" checked style="margin-right: 0.5rem;">
-                                Email notifications for course updates and new content
-                            </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem;">
-                                <span>License renewal email reminders</span>
-                            </label>
-                            <button class="btn btn-secondary" onclick="saveNotificationPreferences()">Save Preferences</button>
-                        </div>
-
-                        <div style="padding: 1.5rem; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px;">
-                            <h3 style="color: #c53030; margin-bottom: 1rem;">Danger Zone</h3>
-                            <p style="color: #4a5568; margin-bottom: 1rem;">Permanently delete your account and all associated data. This action cannot be undone.</p>
-                            <button class="btn" style="background: #c53030; color: white;" onclick="confirmAccountDeletion()">Delete Account</button>
-                        </div>
-                    </div>
-
-                    <!-- Profile & Photo Section -->
-                    <div id="profile" class="account-section">
-                        <div class="section-header">
-                            <h2>Profile & Photo</h2>
-                            <p>Manage your profile image and display preferences</p>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <div class="profile-photo-section" style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
-                                <div class="current-photo" style="flex-shrink: 0;">
-                                    <div id="profilePhotoDisplay" style="width: 120px; height: 120px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--gray-600); border: 3px solid var(--navy);">
-                                        👤
-                                    </div>
-                                </div>
-                                <div class="photo-controls" style="flex: 1;">
-                                    <h3 style="color: var(--navy); margin-bottom: 1rem;">Profile Photo</h3>
-                                    <input type="file" id="profilePhotoInput" accept="image/*" style="margin-bottom: 1rem;">
-                                    <div style="margin-bottom: 1rem;">
-                                        <button class="btn" onclick="uploadProfilePhoto()">Upload Photo</button>
-                                        <button class="btn btn-secondary" onclick="removeProfilePhoto()">Remove Photo</button>
-                                    </div>
-                                    <p style="font-size: 0.9rem; color: var(--gray-600);">Recommended: Square image, 200x200 pixels or larger, under 5MB</p>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="emergencyContact">Emergency Contact Name</label>
-                                <input type="text" id="emergencyContact" placeholder="Full name">
-                            </div>
-                            <div class="form-group">
-                                <label for="emergencyPhone">Emergency Contact Phone</label>
-                                <input type="tel" id="emergencyPhone" placeholder="(555) 123-4567">
-                            </div>
-                            <div class="form-group">
-                                <label for="preferredCommunication">Preferred Communication Method</label>
-                                <select id="preferredCommunication">
-                                    <option value="email">Email</option>
-                                    <option value="phone">Phone Call</option>
-                                    <option value="text">Text Message</option>
-                                </select>
-                            </div>
-                            <button class="btn" onclick="saveProfileData()">Save Profile</button>
-                        </div>
-                    </div>
-
-                    <!-- CCU Dashboard Section -->
-                    <div id="ccu-dashboard" class="account-section">
-                        <div class="section-header">
-                            <h2>CCU Dashboard</h2>
-                            <p>Track your continuing education progress and license requirements</p>
-                        </div>
-
-                        <div class="ccu-overview" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-                            <div class="ccu-card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border-left: 4px solid var(--gold);">
-                                <h3 style="color: var(--navy); margin-bottom: 1rem;">Current License Status</h3>
-                                <div id="licenseStatus" style="font-size: 1.1rem; font-weight: 600;">
-                                    <span id="daysUntilRenewal" style="color: var(--gold);">-- days</span> until renewal
-                                </div>
-                                <div style="font-size: 0.9rem; color: var(--gray-600); margin-top: 0.5rem;" id="renewalDate">
-                                    Expires: --
+                                    <label for="confirmPassword">Confirm New Password</label>
+                                    <input type="password" id="confirmPassword" class="form-input" required>
                                 </div>
                             </div>
                             
-                            <div class="ccu-card" style="background: var(--gray-50); padding: 2rem; border-radius: 12px; border-left: 4px solid var(--navy);">
-                                <h3 style="color: var(--navy); margin-bottom: 1rem;">CCU Progress</h3>
-                                <div id="ccuProgress" style="font-size: 1.1rem; font-weight: 600;">
-                                    <span id="earnedCCUs">0</span> / <span id="requiredCCUs">--</span> CCUs earned
-                                </div>
-                                <div class="progress-bar" style="background: var(--gray-200); border-radius: 10px; height: 12px; margin: 1rem 0;">
-                                    <div id="ccuProgressFill" class="progress-fill" style="width: 0%;"></div>
-                                </div>
-                                <div style="font-size: 0.9rem; color: var(--gray-600);" id="ccuRemaining">
-                                    -- CCUs remaining
-                                </div>
+                            <button type="submit" class="btn btn-primary">🔐 Change Password</button>
+                        </form>
+                    </div>
+
+                    <!-- CCU Dashboard Section -->
+                    <div id="ccu" class="content-section">
+                        <h2>CCU Dashboard</h2>
+                        <p>Track your continuing education progress and requirements.</p>
+                        
+                        <div class="ccu-overview">
+                            <div class="ccu-card">
+                                <h4>Required This Period</h4>
+                                <div class="value" id="ccuRequired">27</div>
+                            </div>
+                            <div class="ccu-card">
+                                <h4>Currently Earned</h4>
+                                <div class="value" id="ccuEarned">0</div>
+                            </div>
+                            <div class="ccu-card">
+                                <h4>Remaining</h4>
+                                <div class="value" id="ccuRemaining">27</div>
+                            </div>
+                            <div class="ccu-card">
+                                <h4>Days Until Renewal</h4>
+                                <div class="value" id="daysUntilRenewal">--</div>
                             </div>
                         </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Course Completion History</h3>
-                            <div id="ccuHistory" style="background: white; border-radius: 8px; padding: 1.5rem;">
-                                <p style="color: var(--gray-600); text-align: center; padding: 2rem;">Complete courses to see your CCU history here</p>
+                        
+                        <div class="progress-container">
+                            <h3>Progress to License Renewal</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="ccuProgressFill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text" id="ccuProgressText">0 of 27 CCUs completed (0%)</div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem;">
+                            <h3>Course History</h3>
+                            <div id="courseHistory">
+                                <p style="text-align: center; color: var(--gray-600); padding: 2rem;">Complete courses to see your CCU history here</p>
                             </div>
                         </div>
+                        
+                        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button onclick="printCCUTranscript()" class="btn btn-secondary">📄 Print CCU Transcript</button>
+                            <a href="courses.html" class="btn btn-primary">📚 Browse Courses</a>
+                        </div>
+                    </div>
 
-                        <div class="actions" style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                            <button class="btn" onclick="printCCUTranscript()">📄 Print CCU Transcript</button>
-                            <button class="btn btn-secondary" onclick="downloadCCUReport()">⬇️ Download Report</button>
-                            <a href="courses.html" class="btn" style="background: var(--gold); text-decoration: none;">📚 Browse More Courses</a>
+                    <!-- My Courses Section -->
+                    <div id="courses" class="content-section">
+                        <h2>My Courses</h2>
+                        <p>View your enrolled and completed courses.</p>
+                        
+                        <div id="coursesList">
+                            <div style="text-align: center; color: var(--gray-600); padding: 3rem;">
+                                <h3>No Courses Yet</h3>
+                                <p>You haven't enrolled in any courses yet.</p>
+                                <a href="courses.html" class="btn btn-primary" style="margin-top: 1rem;">📚 Browse Available Courses</a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Notifications Section -->
-                    <div id="notifications" class="account-section">
-                        <div class="section-header">
-                            <h2>Notification Preferences</h2>
-                            <p>Control how and when you receive updates</p>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Email Notifications</h3>
-                            <div class="notification-group">
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="courseUpdates" checked style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Course Updates</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">New courses, content updates, and educational announcements</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="licenseReminders" checked style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>License Renewal Reminders</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Automatic reminders 6 months, 1 month, and 1 week before expiration</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="promotions" checked style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Promotions & Discounts</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Special offers, bundle deals, and exclusive discounts</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="weeklyDigest" style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Weekly Progress Digest</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Summary of your learning progress and CCU status</div>
-                                    </div>
-                                </label>
+                    <div id="notifications" class="content-section">
+                        <h2>Notification Preferences</h2>
+                        <p>Control how and when you receive updates.</p>
+                        
+                        <form id="notificationsForm">
+                            <h3 style="margin-bottom: 1rem;">Email Notifications</h3>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="emailCourseUpdates" checked>
+                                <label for="emailCourseUpdates">Course updates and new content</label>
                             </div>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">SMS Notifications</h3>
-                            <div class="form-group">
-                                <label for="smsNotifications" style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                    <input type="checkbox" id="smsNotifications" style="margin-right: 1rem;">
-                                    Enable SMS notifications for urgent updates
-                                </label>
-                                <div id="smsOptions" style="margin-left: 2rem; display: none;">
-                                    <div class="form-group">
-                                        <label for="smsPhone">SMS Phone Number</label>
-                                        <input type="tel" id="smsPhone" placeholder="(555) 123-4567">
-                                    </div>
-                                    <label style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                        <input type="checkbox" id="urgentRenewals" style="margin-right: 0.5rem;">
-                                        License expiration within 30 days
-                                    </label>
-                                    <label style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                        <input type="checkbox" id="courseDeadlines" style="margin-right: 0.5rem;">
-                                        Course completion deadlines
-                                    </label>
-                                </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="emailLicenseReminders" checked>
+                                <label for="emailLicenseReminders">License renewal reminders</label>
                             </div>
-                        </div>
-
-                        <button class="btn" onclick="saveNotificationPreferences()">Save Preferences</button>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="emailPromotions">
+                                <label for="emailPromotions">Promotions and special offers</label>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="emailWeeklyDigest">
+                                <label for="emailWeeklyDigest">Weekly digest of platform activity</label>
+                            </div>
+                            
+                            <button type="button" onclick="saveNotificationPreferences()" class="btn btn-primary">💾 Save Preferences</button>
+                        </form>
                     </div>
 
                     <!-- Security Section -->
-                    <div id="security" class="account-section">
-                        <div class="section-header">
-                            <h2>Security & Login</h2>
-                            <p>Manage your account security and login preferences</p>
+                    <div id="security" class="content-section">
+                        <h2>Security Settings</h2>
+                        <p>Manage your account security and login settings.</p>
+                        
+                        <div style="background: var(--gray-50); padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+                            <h3>Two-Factor Authentication</h3>
+                            <p style="color: var(--gray-600); margin: 1rem 0;">Add an extra layer of security to your account.</p>
+                            <button class="btn btn-secondary">🔐 Enable 2FA (Coming Soon)</button>
                         </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Password Security</h3>
-                            <form id="passwordChangeForm" style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
-                                <div class="form-group">
-                                    <label for="currentPassword">Current Password</label>
-                                    <input type="password" id="currentPassword" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="newPassword">New Password</label>
-                                    <input type="password" id="newPassword" minlength="8" required>
-                                    <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 0.5rem;">
-                                        Minimum 8 characters with uppercase, lowercase, and numbers
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmNewPassword">Confirm New Password</label>
-                                    <input type="password" id="confirmNewPassword" minlength="8" required>
-                                </div>
-                                <button type="submit" class="btn">Update Password</button>
-                            </form>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Two-Factor Authentication</h3>
-                            <div style="background: var(--gray-50); padding: 1.5rem; border-radius: 8px;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                                    <div>
-                                        <strong>Status: <span id="twoFactorStatus" style="color: #dc2626;">Disabled</span></strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Add extra security to your account</div>
-                                    </div>
-                                    <button class="btn btn-secondary" onclick="toggle2FA()" id="toggle2FABtn">Enable 2FA</button>
-                                </div>
-                                <div id="twoFactorSetup" style="display: none;">
-                                    <p style="color: var(--gray-600); margin-bottom: 1rem;">Two-factor authentication adds an extra layer of security. When enabled, you'll need both your password and a verification code to log in.</p>
-                                    <div class="form-group">
-                                        <label for="authPhone">Authentication Phone Number</label>
-                                        <input type="tel" id="authPhone" placeholder="(555) 123-4567">
-                                    </div>
-                                    <button class="btn" onclick="enable2FA()">Complete Setup</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Recent Login Activity</h3>
-                            <div id="loginActivity" style="background: white; border: 1px solid var(--gray-200); border-radius: 8px;">
-                                <!-- Login activity will be populated by JavaScript -->
+                        
+                        <div style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <h3>Recent Login Activity</h3>
+                            <div id="loginActivity">
+                                <p style="color: var(--gray-600); text-align: center; padding: 2rem;">No recent login activity recorded</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Privacy & Data Section -->
-                    <div id="privacy" class="account-section">
-                        <div class="section-header">
-                            <h2>Privacy & Data Management</h2>
-                            <p>Control your data privacy and account management options</p>
-                        </div>
-
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Data Privacy Settings</h3>
-                            <div class="privacy-group">
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="dataAnalytics" checked style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Usage Analytics</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Help improve our courses by sharing anonymous usage data</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="dataSharing" style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Third-Party Sharing</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Allow sharing anonymized data with educational research partners</div>
-                                    </div>
-                                </label>
-                                <label style="display: flex; align-items: center; margin-bottom: 1rem; padding: 1rem; background: var(--gray-50); border-radius: 8px;">
-                                    <input type="checkbox" id="marketingConsent" checked style="margin-right: 1rem;">
-                                    <div>
-                                        <strong>Marketing Communications</strong>
-                                        <div style="font-size: 0.9rem; color: var(--gray-600);">Receive personalized course recommendations and offers</div>
-                                    </div>
-                                </label>
+                    <!-- Privacy Section -->
+                    <div id="privacy" class="content-section">
+                        <h2>Privacy & Data</h2>
+                        <p>Manage your privacy settings and data preferences.</p>
+                        
+                        <form id="privacyForm">
+                            <h3 style="margin-bottom: 1rem;">Data Usage</h3>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="dataAnalytics" checked>
+                                <label for="dataAnalytics">Allow anonymous usage analytics to improve the platform</label>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="marketingConsent">
+                                <label for="marketingConsent">Consent to marketing communications</label>
+                            </div>
+                            
+                            <button type="button" onclick="savePrivacySettings()" class="btn btn-primary">💾 Save Privacy Settings</button>
+                        </form>
+                        
+                        <div style="margin-top: 3rem; padding: 2rem; border: 1px solid var(--gray-200); border-radius: 8px;">
+                            <h3>Data Export & Deletion</h3>
+                            <p style="color: var(--gray-600); margin: 1rem 0;">Export your data or delete your account permanently.</p>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button onclick="exportAccountData()" class="btn btn-secondary">📥 Export My Data</button>
+                                <button onclick="requestAccountDeletion()" class="btn btn-danger">🗑️ Delete Account</button>
                             </div>
                         </div>
+                    </div>
 
-                        <div style="margin-bottom: 2rem;">
-                            <h3 style="color: var(--navy); margin-bottom: 1rem;">Data Export & Management</h3>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                                <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
-                                    <h4 style="margin-bottom: 0.5rem;">Export Account Data</h4>
-                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">Download all your account information, course progress, and certificates</p>
-                                    <button class="btn btn-secondary" onclick="exportAccountData()">📥 Export Data</button>
-                                </div>
-                                <div style="border: 1px solid var(--gray-200); padding: 1.5rem; border-radius: 8px;">
-                                    <h4 style="margin-bottom: 0.5rem;">Print CCU Transcript</h4>
-                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">Generate a professional transcript for license renewal submissions</p>
-                                    <button class="btn btn-secondary" onclick="printCCUTranscript()">🖨️ Print Transcript</button>
-                                </div>
+                    <!-- Settings Section -->
+                    <div id="settings" class="content-section">
+                        <h2>Account Settings</h2>
+                        <p>Customize your account preferences and interface.</p>
+                        
+                        <div style="background: var(--gray-50); padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+                            <h3>Interface Preferences</h3>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="darkMode">
+                                <label for="darkMode">Enable dark mode (Coming Soon)</label>
                             </div>
                         </div>
-
-                        <div style="padding: 1.5rem; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px;">
-                            <h3 style="color: #c53030; margin-bottom: 1rem;">Account Deletion</h3>
-                            <p style="color: #4a5568; margin-bottom: 1rem;">Permanently delete your account and all associated data. This action cannot be undone and you will lose access to all purchased courses and certificates.</p>
-                            <div style="margin-bottom: 1rem;">
-                                <label style="display: flex; align-items: center;">
-                                    <input type="checkbox" id="confirmDeletion" style="margin-right: 0.5rem;">
-                                    I understand this action is permanent and irreversible
-                                </label>
+                        
+                        <div style="background: var(--gray-50); padding: 2rem; border-radius: 8px;">
+                            <h3>Account Actions</h3>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                                <button onclick="logout()" class="btn btn-secondary">🚪 Logout</button>
+                                <a href="courses.html" class="btn btn-primary">📚 Browse Courses</a>
                             </div>
-                            <button class="btn" style="background: #c53030; color: white;" onclick="requestAccountDeletion()" disabled id="deleteAccountBtn">Request Account Deletion</button>
                         </div>
                     </div>
                 </div>
@@ -1065,632 +803,108 @@
     </main>
 
     <script>
-        // Initialize all functionality when page loads
+        // Global variables
+        let currentAccount = null;
+
+        // Initialize page when loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('My Account page loading...');
-            
+            console.log('My Account page initializing...');
             checkLoginStatus();
-            setupSidebarNavigation();
-            loadAccountData();
-            setupFieldFormatting();
-            initializeDarkMode();
-            initializeSMSToggle();
-            
-            // Clear saved tab when clicking home page links
-            const homeLinks = document.querySelectorAll('a[href="index.html"]');
-            homeLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    localStorage.removeItem('currentAccountTab');
-                });
-            });
-            
-            console.log('My Account page loaded successfully');
+            setupEventListeners();
         });
 
-        // Emergency account creation function
-        function createEmergencyAccount() {
-            if (confirm('🚨 This will create a test account for Troy Hounshell. Continue?')) {
-                const testAccount = {
-                    id: 'troy_emergency_' + Date.now(),
-                    firstName: 'Troy',
-                    lastName: 'Hounshell',
-                    email: 'troyh@texastherapypros.com',
-                    password: 'DrTroy2026!',
-                    discipline: 'PT',
-                    phone: '806-577-6908',
-                    address: '',
-                    city: '',
-                    state: '',
-                    zip: '',
-                    licenseNumber: '',
-                    licenseState: '',
-                    licenseExpiration: '',
-                    createdAt: new Date().toISOString(),
-                    licenseRenewalReminders: true,
-                    emailNotifications: true
-                };
-                
-                const testSession = {
-                    userId: testAccount.id,
-                    email: testAccount.email,
-                    loginTime: Date.now(),
-                    expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
-                };
-                
-                localStorage.setItem('drtroyAccount', JSON.stringify(testAccount));
-                localStorage.setItem('userSession', JSON.stringify(testSession));
-                localStorage.setItem('customerName', 'Troy Hounshell');
-                localStorage.setItem('customerEmail', 'troyh@texastherapypros.com');
-                localStorage.setItem('customerDiscipline', 'PT');
-                
-                alert('✅ Emergency account created!\n\nReloading page to log you in...');
-                location.reload();
-            }
-        }
-
-        function setupFieldFormatting() {
-            // Auto-uppercase state fields
-            document.getElementById('editState').addEventListener('input', function() {
-                this.value = this.value.toUpperCase();
-            });
-            document.getElementById('editLicenseState').addEventListener('input', function() {
-                this.value = this.value.toUpperCase();
-            });
-            
-            // Sync license renewal reminder checkboxes
-            document.getElementById('licenseRenewalReminders').addEventListener('change', function() {
-                document.getElementById('renewalReminders').checked = this.checked;
-            });
-            document.getElementById('renewalReminders').addEventListener('change', function() {
-                document.getElementById('licenseRenewalReminders').checked = this.checked;
-            });
-        }
-
+        // Check if user is logged in
         function checkLoginStatus() {
-            console.log('🔍 Checking login status...');
+            console.log('Checking login status...');
             
-            const hasAccount = localStorage.getItem('drtroyAccount');
-            const hasSession = localStorage.getItem('userSession');
+            const accountData = localStorage.getItem('drtroyAccount');
+            const sessionData = localStorage.getItem('userSession');
             
-            console.log('Account data exists:', !!hasAccount);
-            console.log('Session data exists:', !!hasSession);
-            
-            if (hasAccount && hasSession) {
-                console.log('✅ User is logged in - showing account content');
-                
+            if (accountData && sessionData) {
                 try {
-                    const account = JSON.parse(hasAccount);
-                    const session = JSON.parse(hasSession);
-                    console.log('Account name:', account.firstName, account.lastName);
-                    console.log('Session valid:', session.expires > Date.now());
+                    currentAccount = JSON.parse(accountData);
+                    const session = JSON.parse(sessionData);
                     
-                    const loginReq = document.getElementById('loginRequired');
-                    const accountContent = document.getElementById('accountContent');
-                    
-                    if (loginReq) loginReq.style.display = 'none';
-                    if (accountContent) accountContent.style.display = 'block';
-                    
-                    updateLoginButton();
-                    loadAccountData();
-                    restoreActiveTab();
+                    // Check if session is still valid
+                    if (session.expires > Date.now()) {
+                        console.log('User is logged in:', currentAccount.firstName);
+                        showAccountContent();
+                        loadAccountData();
+                    } else {
+                        console.log('Session expired');
+                        showLoginRequired();
+                    }
                 } catch (error) {
-                    console.error('❌ Error parsing account/session data:', error);
-                    showNotLoggedIn();
+                    console.error('Error parsing account data:', error);
+                    showLoginRequired();
                 }
             } else {
-                console.log('❌ User not logged in - showing login required message');
-                showNotLoggedIn();
+                console.log('No account or session found');
+                showLoginRequired();
             }
         }
 
-        function showNotLoggedIn() {
-            const loginReq = document.getElementById('loginRequired');
-            const accountContent = document.getElementById('accountContent');
+        // Show account content
+        function showAccountContent() {
+            document.getElementById('loginRequired').style.display = 'none';
+            document.getElementById('accountContent').style.display = 'block';
+        }
+
+        // Show login required message
+        function showLoginRequired() {
+            document.getElementById('loginRequired').style.display = 'block';
+            document.getElementById('accountContent').style.display = 'none';
             
-            if (loginReq) loginReq.style.display = 'block';
-            if (accountContent) accountContent.style.display = 'none';
-            
-            // Clear saved tab when not logged in
-            localStorage.removeItem('currentAccountTab');
-            
-            // Debug link removed per user request
-            
-            // Redirect to home page after 5 seconds (increased time)
+            // Redirect after 5 seconds
             setTimeout(() => {
-                console.log('Redirecting to home page...');
                 window.location.href = 'index.html';
             }, 5000);
         }
 
+        // Load account data into forms
         function loadAccountData() {
-            const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) return;
+            if (!currentAccount) return;
             
-            const account = JSON.parse(accountData);
+            console.log('Loading account data...');
             
-            // Update welcome message
-            if (document.querySelector('#welcomeMessage h3')) {
-                document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName || 'User'}!`;
-            }
-            if (document.getElementById('memberSince') && account.createdAt) {
-                document.getElementById('memberSince').textContent = new Date(account.createdAt).toLocaleDateString();
-            }
-            
-            // Load personal information form
-            loadPersonalInfo();
-            
-            // Load additional account data
-            loadExtendedAccountData(account);
-        }
-
-        function loadExtendedAccountData(account) {
-            // Load profile data
-            if (account.emergencyContact && document.getElementById('emergencyContact')) {
-                document.getElementById('emergencyContact').value = account.emergencyContact;
-            }
-            if (account.emergencyPhone && document.getElementById('emergencyPhone')) {
-                document.getElementById('emergencyPhone').value = account.emergencyPhone;
-            }
-            if (account.preferredCommunication && document.getElementById('preferredCommunication')) {
-                document.getElementById('preferredCommunication').value = account.preferredCommunication;
-            }
-            
-            // Load profile photo
-            if (account.profilePhoto && document.getElementById('profilePhotoDisplay')) {
-                const photoDisplay = document.getElementById('profilePhotoDisplay');
-                photoDisplay.innerHTML = `<img src="${account.profilePhoto}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
-            }
+            // Personal information
+            document.getElementById('firstName').value = currentAccount.firstName || '';
+            document.getElementById('lastName').value = currentAccount.lastName || '';
+            document.getElementById('email').value = currentAccount.email || '';
+            document.getElementById('phone').value = currentAccount.phone || '';
+            document.getElementById('address').value = currentAccount.address || '';
+            document.getElementById('city').value = currentAccount.city || '';
+            document.getElementById('state').value = currentAccount.state || '';
+            document.getElementById('zipCode').value = currentAccount.zipCode || '';
+            document.getElementById('discipline').value = currentAccount.discipline || '';
+            document.getElementById('licenseNumber').value = currentAccount.licenseNumber || '';
+            document.getElementById('licenseState').value = currentAccount.licenseState || '';
+            document.getElementById('licenseExpiration').value = currentAccount.licenseExpiration || '';
+            document.getElementById('renewalReminders').checked = currentAccount.licenseRenewalReminders !== false;
             
             // Load notification preferences
-            if (account.notifications) {
-                const n = account.notifications;
-                if (document.getElementById('courseUpdates') && n.courseUpdates !== undefined) {
-                    document.getElementById('courseUpdates').checked = n.courseUpdates;
-                }
-                if (document.getElementById('licenseReminders') && n.licenseReminders !== undefined) {
-                    document.getElementById('licenseReminders').checked = n.licenseReminders;
-                }
-                if (document.getElementById('promotions') && n.promotions !== undefined) {
-                    document.getElementById('promotions').checked = n.promotions;
-                }
-                if (document.getElementById('weeklyDigest') && n.weeklyDigest !== undefined) {
-                    document.getElementById('weeklyDigest').checked = n.weeklyDigest;
-                }
-                if (document.getElementById('smsNotifications') && n.smsEnabled !== undefined) {
-                    document.getElementById('smsNotifications').checked = n.smsEnabled;
-                }
-                if (document.getElementById('smsPhone') && n.smsPhone) {
-                    document.getElementById('smsPhone').value = n.smsPhone;
-                }
-                if (document.getElementById('urgentRenewals') && n.urgentRenewals !== undefined) {
-                    document.getElementById('urgentRenewals').checked = n.urgentRenewals;
-                }
-                if (document.getElementById('courseDeadlines') && n.courseDeadlines !== undefined) {
-                    document.getElementById('courseDeadlines').checked = n.courseDeadlines;
-                }
-                
-                // Show SMS options if enabled
-                if (n.smsEnabled && document.getElementById('smsOptions')) {
-                    document.getElementById('smsOptions').style.display = 'block';
-                }
-            }
-            
-            // Load security settings
-            if (account.twoFactorEnabled) {
-                if (document.getElementById('twoFactorStatus')) {
-                    document.getElementById('twoFactorStatus').textContent = 'Enabled';
-                    document.getElementById('twoFactorStatus').style.color = '#059669';
-                }
-                if (document.getElementById('toggle2FABtn')) {
-                    document.getElementById('toggle2FABtn').textContent = 'Disable 2FA';
-                }
-                if (account.authPhone && document.getElementById('authPhone')) {
-                    document.getElementById('authPhone').value = account.authPhone;
-                }
+            if (currentAccount.notifications) {
+                document.getElementById('emailCourseUpdates').checked = currentAccount.notifications.courseUpdates !== false;
+                document.getElementById('emailLicenseReminders').checked = currentAccount.notifications.licenseReminders !== false;
+                document.getElementById('emailPromotions').checked = currentAccount.notifications.promotions === true;
+                document.getElementById('emailWeeklyDigest').checked = currentAccount.notifications.weeklyDigest === true;
             }
             
             // Load privacy settings
-            if (account.privacy) {
-                const p = account.privacy;
-                if (document.getElementById('dataAnalytics') && p.dataAnalytics !== undefined) {
-                    document.getElementById('dataAnalytics').checked = p.dataAnalytics;
-                }
-                if (document.getElementById('dataSharing') && p.dataSharing !== undefined) {
-                    document.getElementById('dataSharing').checked = p.dataSharing;
-                }
-                if (document.getElementById('marketingConsent') && p.marketingConsent !== undefined) {
-                    document.getElementById('marketingConsent').checked = p.marketingConsent;
-                }
-            }
-            
-            // Load interface settings
-            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-            if (document.getElementById('darkMode')) {
-                document.getElementById('darkMode').checked = darkModeEnabled;
+            if (currentAccount.privacy) {
+                document.getElementById('dataAnalytics').checked = currentAccount.privacy.dataAnalytics !== false;
+                document.getElementById('marketingConsent').checked = currentAccount.privacy.marketingConsent === true;
             }
             
             // Update CCU dashboard
             updateCCUDashboard();
-            
-            // Populate login activity
-            populateLoginActivity();
-            
-            // Set discipline display
-            if (account.discipline && document.getElementById('disciplineDisplay')) {
-                document.getElementById('disciplineDisplay').textContent = account.discipline;
-            }
         }
 
-        function loadPersonalInfo() {
-            const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) {
-                console.log('No account data found in localStorage');
-                return;
-            }
-            
-            const account = JSON.parse(accountData);
-            console.log('Loading personal info for:', account.firstName);
-            
-            // Load basic personal info with error checking
-            const firstNameField = document.getElementById('editFirstName');
-            const lastNameField = document.getElementById('editLastName');
-            const emailField = document.getElementById('editEmail');
-            
-            if (firstNameField) firstNameField.value = account.firstName || '';
-            if (lastNameField) lastNameField.value = account.lastName || '';
-            if (emailField) emailField.value = account.email || '';
-            
-            // Set license renewal reminders (default to true for new accounts)
-            const remindersSetting = account.licenseRenewalReminders !== false;
-            document.getElementById('licenseRenewalReminders').checked = remindersSetting;
-            document.getElementById('renewalReminders').checked = remindersSetting;
-            
-            // Set email notifications (default to true)
-            document.getElementById('emailNotifications').checked = account.emailNotifications !== false;
-            
-            document.getElementById('editPhone').value = account.phone || '';
-            document.getElementById('editAddress').value = account.address || '';
-            document.getElementById('editCity').value = account.city || '';
-            document.getElementById('editState').value = account.state || '';
-            document.getElementById('editZip').value = account.zip || '';
-            document.getElementById('editDiscipline').value = account.discipline || '';
-            document.getElementById('editLicenseNumber').value = account.licenseNumber || '';
-            document.getElementById('editLicenseState').value = account.licenseState || '';
-            document.getElementById('editLicenseExpiration').value = account.licenseExpiration || '';
-        }
-
-        function setupSidebarNavigation() {
-            document.querySelectorAll('.sidebar-nav a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Update active nav item
-                    document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show corresponding section
-                    const sectionId = this.getAttribute('data-section');
-                    document.querySelectorAll('.account-section').forEach(section => {
-                        section.classList.remove('active');
-                    });
-                    document.getElementById(sectionId).classList.add('active');
-                    
-                    // Save current tab to localStorage
-                    localStorage.setItem('currentAccountTab', sectionId);
-                });
-            });
-        }
-
-        function restoreActiveTab() {
-            const savedTab = localStorage.getItem('currentAccountTab');
-            if (savedTab && document.getElementById(savedTab)) {
-                // Remove default active states
-                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
-                document.querySelectorAll('.account-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Activate saved tab
-                const tabLink = document.querySelector(`.sidebar-nav a[data-section="${savedTab}"]`);
-                if (tabLink) {
-                    tabLink.classList.add('active');
-                    document.getElementById(savedTab).classList.add('active');
-                }
-            }
-        }
-
-        // Update login button state
-        function updateLoginButton() {
-            const loginButton = document.getElementById('loginLink');
-            const myAccountButton = document.getElementById('myAccountLink');
-            const hasAccount = localStorage.getItem('drtroyAccount');
-            const hasSession = localStorage.getItem('userSession');
-            
-            if (hasAccount && hasSession) {
-                loginButton.textContent = 'Log Out';
-                loginButton.onclick = function(e) {
-                    e.preventDefault();
-                    handleLogout();
-                };
-                myAccountButton.style.display = 'inline-block';
-            } else {
-                loginButton.textContent = 'Log In';
-                loginButton.onclick = function(e) {
-                    e.preventDefault();
-                    window.location.href = 'index.html';
-                };
-                myAccountButton.style.display = 'none';
-            }
-        }
-
-        // Handle logout
-        function handleLogout() {
-            // Clear session data only, keep account for future login
-            localStorage.removeItem('userSession');
-            localStorage.removeItem('selectedPackage');
-            localStorage.removeItem('packagePrice');
-            localStorage.removeItem('selectedPackageCode');
-            localStorage.removeItem('customerName');
-            localStorage.removeItem('customerEmail');
-            localStorage.removeItem('customerDiscipline');
-            
-            // Clear saved tab when logging out
-            localStorage.removeItem('currentAccountTab');
-            
-            // Redirect to home page
-            window.location.href = 'index.html';
-        }
-
-        // Personal Information Form Handler
-        try {
-            const personalInfoForm = document.getElementById('personalInfoForm');
-            if (personalInfoForm) {
-                personalInfoForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    console.log('Personal info form submitted');
-                    
-                    const accountData = localStorage.getItem('drtroyAccount');
-                    if (!accountData) {
-                        console.error('No account data found');
-                        alert('Error: No account data found. Please log in again.');
-                        return;
-                    }
-                    
-                    const account = JSON.parse(accountData);
-                    
-                    // Update account data with error checking
-                    const firstNameField = document.getElementById('editFirstName');
-                    const lastNameField = document.getElementById('editLastName');
-                    const emailField = document.getElementById('editEmail');
-                    
-                    if (firstNameField) account.firstName = firstNameField.value;
-                    if (lastNameField) account.lastName = lastNameField.value;
-                    if (emailField) account.email = emailField.value;
-            account.licenseRenewalReminders = document.getElementById('licenseRenewalReminders').checked;
-            account.phone = document.getElementById('editPhone').value;
-            account.address = document.getElementById('editAddress').value;
-            account.city = document.getElementById('editCity').value;
-            account.state = document.getElementById('editState').value.toUpperCase();
-            account.zip = document.getElementById('editZip').value;
-            // Note: discipline is not updated here as it's set during account creation
-            account.licenseNumber = document.getElementById('editLicenseNumber').value;
-            account.licenseState = document.getElementById('editLicenseState').value.toUpperCase();
-            account.licenseExpiration = document.getElementById('editLicenseExpiration').value;
-            account.updatedAt = new Date().toISOString();
-            
-            // Save updated account data
-            localStorage.setItem('drtroyAccount', JSON.stringify(account));
-            
-            // Update other localStorage items that depend on this data
-            localStorage.setItem('customerName', `${account.firstName} ${account.lastName}`);
-            localStorage.setItem('customerEmail', account.email);
-            localStorage.setItem('customerDiscipline', account.discipline);
-            
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success';
-            successAlert.textContent = 'Your information has been updated successfully!';
-            
-            const form = document.getElementById('personalInfoForm');
-            form.parentNode.insertBefore(successAlert, form);
-            
-            // Remove success message after 3 seconds
-            setTimeout(() => {
-                successAlert.remove();
-            }, 3000);
-            
-                    // Update welcome message
-                    if (document.querySelector('#welcomeMessage h3')) {
-                        document.querySelector('#welcomeMessage h3').textContent = `Welcome back, ${account.firstName}!`;
-                    }
-                    
-                    console.log('Personal info updated successfully');
-                });
-            } else {
-                console.error('Personal info form not found');
-            }
-        } catch (error) {
-            console.error('Error setting up personal info form:', error);
-        }
-
-        // Password Change Form Handler
-        try {
-            const passwordChangeForm = document.getElementById('passwordChangeForm');
-            if (passwordChangeForm) {
-                passwordChangeForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-            
-            const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) return;
-            
-            const account = JSON.parse(accountData);
-            
-            // Verify current password
-            if (account.password !== currentPassword) {
-                alert('Current password is incorrect.');
-                return;
-            }
-            
-            // Verify new passwords match
-            if (newPassword !== confirmNewPassword) {
-                alert('New passwords do not match.');
-                return;
-            }
-            
-            // Update password
-            account.password = newPassword;
-            account.passwordUpdatedAt = new Date().toISOString();
-            
-            // Save updated account data
-            localStorage.setItem('drtroyAccount', JSON.stringify(account));
-            
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success';
-            successAlert.textContent = 'Your password has been updated successfully!';
-            
-            const form = document.getElementById('passwordChangeForm');
-            form.parentNode.insertBefore(successAlert, form);
-            
-            // Clear form
-            form.reset();
-            
-            // Remove success message after 3 seconds
-            setTimeout(() => {
-                successAlert.remove();
-            }, 3000);
-                });
-            } else {
-                console.error('Password change form not found');
-            }
-        } catch (error) {
-            console.error('Error setting up password change form:', error);
-        }
-
-        // Save notification preferences
-        function saveNotificationPreferences() {
-            const accountData = localStorage.getItem('drtroyAccount');
-            if (!accountData) return;
-            
-            const account = JSON.parse(accountData);
-            
-            // Update notification preferences
-            account.emailNotifications = document.getElementById('emailNotifications').checked;
-            account.licenseRenewalReminders = document.getElementById('renewalReminders').checked;
-            account.updatedAt = new Date().toISOString();
-            
-            // Save updated account data
-            localStorage.setItem('drtroyAccount', JSON.stringify(account));
-            
-            // Sync the other checkbox too
-            document.getElementById('licenseRenewalReminders').checked = account.licenseRenewalReminders;
-            
-            // Show success message
-            const successAlert = document.createElement('div');
-            successAlert.className = 'alert alert-success';
-            successAlert.textContent = 'Your notification preferences have been updated successfully!';
-            
-            const button = event.target;
-            button.parentNode.insertBefore(successAlert, button);
-            
-            // Remove success message after 3 seconds
-            setTimeout(() => {
-                successAlert.remove();
-            }, 3000);
-        }
-
-        // Account deletion confirmation
-        function confirmAccountDeletion() {
-            const confirmed = confirm('Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data, course progress, and certificates.');
-            
-            if (confirmed) {
-                const doubleConfirm = confirm('This is your final warning. Clicking OK will immediately delete your account and all associated data. Are you absolutely sure?');
-                
-                if (doubleConfirm) {
-                    // Clear all account data
-                    localStorage.removeItem('drtroyAccount');
-                    localStorage.removeItem('userSession');
-                    localStorage.removeItem('selectedPackage');
-                    localStorage.removeItem('packagePrice');
-                    localStorage.removeItem('selectedPackageCode');
-                    localStorage.removeItem('customerName');
-                    localStorage.removeItem('customerEmail');
-                    localStorage.removeItem('customerDiscipline');
-                    
-                    alert('Your account has been permanently deleted.');
-                    window.location.href = 'index.html';
-                }
-            }
-        }
-
-        // New Functions for Enhanced Features
-
-        // Profile Photo Management
-        function uploadProfilePhoto() {
-            const fileInput = document.getElementById('profilePhotoInput');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                alert('Please select a photo to upload.');
-                return;
-            }
-            
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                alert('File size must be under 5MB.');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const photoDisplay = document.getElementById('profilePhotoDisplay');
-                photoDisplay.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
-                
-                // Save to account data
-                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-                accountData.profilePhoto = e.target.result;
-                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
-                
-                alert('Profile photo updated successfully!');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function removeProfilePhoto() {
-            if (confirm('Are you sure you want to remove your profile photo?')) {
-                const photoDisplay = document.getElementById('profilePhotoDisplay');
-                photoDisplay.innerHTML = '👤';
-                
-                // Remove from account data
-                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-                delete accountData.profilePhoto;
-                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
-                
-                alert('Profile photo removed.');
-            }
-        }
-
-        function saveProfileData() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            
-            accountData.emergencyContact = document.getElementById('emergencyContact').value;
-            accountData.emergencyPhone = document.getElementById('emergencyPhone').value;
-            accountData.preferredCommunication = document.getElementById('preferredCommunication').value;
-            
-            localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
-            alert('Profile information saved successfully!');
-        }
-
-        // CCU Dashboard Functions
+        // Update CCU dashboard
         function updateCCUDashboard() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            const discipline = accountData.discipline || 'PT';
-            const expirationDate = accountData.licenseExpiration;
+            if (!currentAccount) return;
             
-            // CCU requirements by discipline
+            const discipline = currentAccount.discipline || 'PT';
             const ccuRequirements = {
                 'PT': 27,
                 'PTA': 17,
@@ -1698,63 +912,236 @@
                 'COTA': 23
             };
             
-            const requiredCCUs = ccuRequirements[discipline] || 27;
-            const earnedCCUs = calculateEarnedCCUs(); // Would calculate from completed courses
+            const required = ccuRequirements[discipline] || 27;
+            const earned = 0; // Would come from completed courses
+            const remaining = Math.max(0, required - earned);
+            const percentage = Math.min(100, (earned / required) * 100);
             
-            // Update display
-            document.getElementById('requiredCCUs').textContent = requiredCCUs;
-            document.getElementById('earnedCCUs').textContent = earnedCCUs;
-            document.getElementById('ccuRemaining').textContent = `${Math.max(0, requiredCCUs - earnedCCUs)} CCUs remaining`;
+            // Update displays
+            document.getElementById('requiredCCUs').textContent = required;
+            document.getElementById('earnedCCUs').textContent = earned;
+            document.getElementById('ccuRequired').textContent = required;
+            document.getElementById('ccuEarned').textContent = earned;
+            document.getElementById('ccuRemaining').textContent = remaining;
             
-            // Update progress bar
-            const progressPercent = Math.min(100, (earnedCCUs / requiredCCUs) * 100);
-            document.getElementById('ccuProgressFill').style.width = `${progressPercent}%`;
+            // Update progress bars
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('ccuProgressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${earned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
+            document.getElementById('ccuProgressText').textContent = `${earned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
             
-            // Calculate days until renewal
-            if (expirationDate) {
-                const expDate = new Date(expirationDate);
+            // Calculate days until renewal if expiration date is set
+            if (currentAccount.licenseExpiration) {
+                const expirationDate = new Date(currentAccount.licenseExpiration);
                 const today = new Date();
-                const daysUntil = Math.ceil((expDate - today) / (1000 * 60 * 60 * 24));
-                
-                document.getElementById('daysUntilRenewal').textContent = daysUntil;
-                document.getElementById('renewalDate').textContent = `Expires: ${expDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
-                
-                // Color-code urgency
-                const daysElement = document.getElementById('daysUntilRenewal');
-                if (daysUntil <= 30) {
-                    daysElement.style.color = '#dc2626'; // Red
-                } else if (daysUntil <= 90) {
-                    daysElement.style.color = '#d69e2e'; // Gold
-                } else {
-                    daysElement.style.color = '#059669'; // Green
+                const daysUntil = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
+                document.getElementById('daysUntilRenewal').textContent = daysUntil > 0 ? daysUntil : 'Expired';
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Personal info form
+            document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                savePersonalInfo();
+            });
+            
+            // Password form
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                changePassword();
+            });
+            
+            // Auto-uppercase state fields
+            document.getElementById('state').addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+            
+            document.getElementById('licenseState').addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        }
+
+        // Navigation functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+        }
+
+        // Save personal information
+        function savePersonalInfo() {
+            if (!currentAccount) return;
+            
+            console.log('Saving personal information...');
+            
+            // Update account data
+            currentAccount.firstName = document.getElementById('firstName').value;
+            currentAccount.lastName = document.getElementById('lastName').value;
+            currentAccount.email = document.getElementById('email').value;
+            currentAccount.phone = document.getElementById('phone').value;
+            currentAccount.address = document.getElementById('address').value;
+            currentAccount.city = document.getElementById('city').value;
+            currentAccount.state = document.getElementById('state').value.toUpperCase();
+            currentAccount.zipCode = document.getElementById('zipCode').value;
+            currentAccount.licenseNumber = document.getElementById('licenseNumber').value;
+            currentAccount.licenseState = document.getElementById('licenseState').value.toUpperCase();
+            currentAccount.licenseExpiration = document.getElementById('licenseExpiration').value;
+            currentAccount.licenseRenewalReminders = document.getElementById('renewalReminders').checked;
+            currentAccount.updatedAt = new Date().toISOString();
+            
+            // Save to localStorage
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            // Update other localStorage items
+            localStorage.setItem('customerName', `${currentAccount.firstName} ${currentAccount.lastName}`);
+            localStorage.setItem('customerEmail', currentAccount.email);
+            
+            showAlert('Personal information updated successfully!', 'success');
+            updateCCUDashboard();
+        }
+
+        // Change password
+        function changePassword() {
+            if (!currentAccount) return;
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate current password
+            if (currentAccount.password !== currentPassword) {
+                showAlert('Current password is incorrect.', 'danger');
+                return;
+            }
+            
+            // Validate new passwords match
+            if (newPassword !== confirmPassword) {
+                showAlert('New passwords do not match.', 'danger');
+                return;
+            }
+            
+            // Update password
+            currentAccount.password = newPassword;
+            currentAccount.updatedAt = new Date().toISOString();
+            
+            // Save to localStorage
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            // Clear form
+            document.getElementById('passwordForm').reset();
+            
+            showAlert('Password changed successfully!', 'success');
+        }
+
+        // Save notification preferences
+        function saveNotificationPreferences() {
+            if (!currentAccount) return;
+            
+            currentAccount.notifications = {
+                courseUpdates: document.getElementById('emailCourseUpdates').checked,
+                licenseReminders: document.getElementById('emailLicenseReminders').checked,
+                promotions: document.getElementById('emailPromotions').checked,
+                weeklyDigest: document.getElementById('emailWeeklyDigest').checked
+            };
+            
+            currentAccount.updatedAt = new Date().toISOString();
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            showAlert('Notification preferences saved!', 'success');
+        }
+
+        // Save privacy settings
+        function savePrivacySettings() {
+            if (!currentAccount) return;
+            
+            currentAccount.privacy = {
+                dataAnalytics: document.getElementById('dataAnalytics').checked,
+                marketingConsent: document.getElementById('marketingConsent').checked
+            };
+            
+            currentAccount.updatedAt = new Date().toISOString();
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            showAlert('Privacy settings saved!', 'success');
+        }
+
+        // Export account data
+        function exportAccountData() {
+            if (!currentAccount) return;
+            
+            const exportData = {
+                ...currentAccount,
+                exportDate: new Date().toISOString(),
+                dataVersion: '2.0'
+            };
+            
+            const dataBlob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `drtroy-account-${currentAccount.firstName}-${Date.now()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showAlert('Account data exported successfully!', 'success');
+        }
+
+        // Request account deletion
+        function requestAccountDeletion() {
+            if (confirm('⚠️ Are you sure you want to delete your account?\n\nThis action cannot be undone and will permanently remove:\n• All your personal information\n• Course progress and certificates\n• Account settings and preferences')) {
+                if (confirm('🚨 FINAL WARNING: This will permanently delete everything.\n\nType "DELETE" in the next prompt to confirm.')) {
+                    const confirmation = prompt('Type "DELETE" to permanently delete your account:');
+                    if (confirmation === 'DELETE') {
+                        // Clear all data
+                        localStorage.removeItem('drtroyAccount');
+                        localStorage.removeItem('userSession');
+                        localStorage.removeItem('customerName');
+                        localStorage.removeItem('customerEmail');
+                        localStorage.removeItem('customerDiscipline');
+                        
+                        alert('✅ Account deleted successfully. You will be redirected to the homepage.');
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Account deletion cancelled - confirmation text did not match.');
+                    }
                 }
             }
         }
 
-        function calculateEarnedCCUs() {
-            // This would calculate CCUs from completed courses
-            // For now, return 0 since no courses are implemented yet
-            return 0;
-        }
-
+        // Print CCU transcript
         function printCCUTranscript() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
+            if (!currentAccount) return;
             
-            // Create a printable transcript
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>CCU Transcript - ${accountData.firstName} ${accountData.lastName}</title>
+                    <title>CCU Transcript - ${currentAccount.firstName} ${currentAccount.lastName}</title>
                     <style>
                         body { font-family: Arial, sans-serif; margin: 2rem; }
-                        .header { border-bottom: 2px solid #1e3a8a; padding-bottom: 1rem; margin-bottom: 2rem; }
+                        .header { border-bottom: 2px solid #1a365d; padding-bottom: 1rem; margin-bottom: 2rem; }
                         .info-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
                         .info-table td { padding: 0.5rem; border-bottom: 1px solid #e5e7eb; }
                         .course-table { width: 100%; border-collapse: collapse; }
                         .course-table th, .course-table td { padding: 0.8rem; border: 1px solid #d1d5db; text-align: left; }
                         .course-table th { background: #f3f4f6; }
-                        @media print { body { margin: 0; } }
                     </style>
                 </head>
                 <body>
@@ -1763,11 +1150,12 @@
                         <h2>DrTroy.com Professional Development</h2>
                     </div>
                     <table class="info-table">
-                        <tr><td><strong>Name:</strong></td><td>${accountData.firstName || 'Not provided'} ${accountData.lastName || 'Not provided'}</td></tr>
-                        <tr><td><strong>License Number:</strong></td><td>${accountData.licenseNumber || 'Not provided'}</td></tr>
-                        <tr><td><strong>License State:</strong></td><td>${accountData.licenseState || 'Not provided'}</td></tr>
-                        <tr><td><strong>Discipline:</strong></td><td>${accountData.discipline || 'Not provided'}</td></tr>
-                        <tr><td><strong>License Expiration:</strong></td><td>${accountData.licenseExpiration ? new Date(accountData.licenseExpiration).toLocaleDateString() : 'Not provided'}</td></tr>
+                        <tr><td><strong>Name:</strong></td><td>${currentAccount.firstName} ${currentAccount.lastName}</td></tr>
+                        <tr><td><strong>Email:</strong></td><td>${currentAccount.email}</td></tr>
+                        <tr><td><strong>License Number:</strong></td><td>${currentAccount.licenseNumber || 'Not provided'}</td></tr>
+                        <tr><td><strong>License State:</strong></td><td>${currentAccount.licenseState || 'Not provided'}</td></tr>
+                        <tr><td><strong>Discipline:</strong></td><td>${currentAccount.discipline || 'Not provided'}</td></tr>
+                        <tr><td><strong>License Expiration:</strong></td><td>${currentAccount.licenseExpiration ? new Date(currentAccount.licenseExpiration).toLocaleDateString() : 'Not provided'}</td></tr>
                         <tr><td><strong>Transcript Generated:</strong></td><td>${new Date().toLocaleDateString()}</td></tr>
                     </table>
                     <h3>Course Completion History</h3>
@@ -1795,230 +1183,85 @@
             printWindow.print();
         }
 
-        function downloadCCUReport() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            
-            const reportData = {
-                name: `${accountData.firstName || 'Not provided'} ${accountData.lastName || 'Not provided'}`,
-                licenseNumber: accountData.licenseNumber || 'Not provided',
-                licenseState: accountData.licenseState || 'Not provided',
-                discipline: accountData.discipline || 'Not provided',
-                expirationDate: accountData.licenseExpiration || 'Not provided',
-                generatedDate: new Date().toISOString(),
-                courses: [], // Would be populated with actual course data
-                totalCCUs: calculateEarnedCCUs()
-            };
-            
-            const dataStr = JSON.stringify(reportData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `CCU_Report_${accountData.firstName}_${accountData.lastName}_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            
-            URL.revokeObjectURL(url);
-        }
-
-        // Notification Functions
-        function saveNotificationPreferences() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            
-            // Email preferences
-            accountData.notifications = {
-                courseUpdates: document.getElementById('courseUpdates').checked,
-                licenseReminders: document.getElementById('licenseReminders').checked,
-                promotions: document.getElementById('promotions').checked,
-                weeklyDigest: document.getElementById('weeklyDigest').checked,
-                smsEnabled: document.getElementById('smsNotifications').checked,
-                smsPhone: document.getElementById('smsPhone').value,
-                urgentRenewals: document.getElementById('urgentRenewals').checked,
-                courseDeadlines: document.getElementById('courseDeadlines').checked
-            };
-            
-            localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
-            alert('Notification preferences saved successfully!');
-        }
-
-        // Security Functions
-        function toggle2FA() {
-            const status = document.getElementById('twoFactorStatus');
-            const button = document.getElementById('toggle2FABtn');
-            const setup = document.getElementById('twoFactorSetup');
-            
-            if (status.textContent === 'Disabled') {
-                setup.style.display = 'block';
-                button.textContent = 'Cancel Setup';
-            } else {
-                if (confirm('Are you sure you want to disable two-factor authentication?')) {
-                    status.textContent = 'Disabled';
-                    status.style.color = '#dc2626';
-                    button.textContent = 'Enable 2FA';
-                    setup.style.display = 'none';
-                    
-                    // Remove from account data
-                    const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-                    delete accountData.twoFactorEnabled;
-                    delete accountData.authPhone;
-                    localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
-                }
-            }
-        }
-
-        function enable2FA() {
-            const phone = document.getElementById('authPhone').value;
-            if (!phone) {
-                alert('Please enter a phone number for authentication.');
-                return;
-            }
-            
-            if (confirm(`Send verification codes to ${phone}?`)) {
-                const status = document.getElementById('twoFactorStatus');
-                const button = document.getElementById('toggle2FABtn');
-                const setup = document.getElementById('twoFactorSetup');
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.removeItem('userSession');
+                localStorage.removeItem('customerName');
+                localStorage.removeItem('customerEmail');
+                localStorage.removeItem('customerDiscipline');
                 
-                status.textContent = 'Enabled';
-                status.style.color = '#059669';
-                button.textContent = 'Disable 2FA';
-                setup.style.display = 'none';
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Create emergency account
+        function createEmergencyAccount() {
+            if (confirm('🚨 Create emergency test account for Troy Hounshell?\n\nEmail: troyh@texastherapypros.com\nPassword: DrTroy2026!')) {
+                const testAccount = {
+                    id: 'emergency_' + Date.now(),
+                    firstName: 'Troy',
+                    lastName: 'Hounshell',
+                    email: 'troyh@texastherapypros.com',
+                    password: 'DrTroy2026!',
+                    discipline: 'PT',
+                    phone: '806-577-6908',
+                    address: '',
+                    city: '',
+                    state: '',
+                    zipCode: '',
+                    licenseNumber: '',
+                    licenseState: '',
+                    licenseExpiration: '',
+                    licenseRenewalReminders: true,
+                    createdAt: new Date().toISOString(),
+                    notifications: {
+                        courseUpdates: true,
+                        licenseReminders: true,
+                        promotions: false,
+                        weeklyDigest: false
+                    },
+                    privacy: {
+                        dataAnalytics: true,
+                        marketingConsent: false
+                    }
+                };
                 
-                // Save to account data
-                const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-                accountData.twoFactorEnabled = true;
-                accountData.authPhone = phone;
-                localStorage.setItem('drtroyAccount', JSON.stringify(accountData));
+                const testSession = {
+                    userId: testAccount.id,
+                    email: testAccount.email,
+                    loginTime: Date.now(),
+                    expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+                };
                 
-                alert('Two-factor authentication enabled successfully!');
+                localStorage.setItem('drtroyAccount', JSON.stringify(testAccount));
+                localStorage.setItem('userSession', JSON.stringify(testSession));
+                localStorage.setItem('customerName', 'Troy Hounshell');
+                localStorage.setItem('customerEmail', 'troyh@texastherapypros.com');
+                localStorage.setItem('customerDiscipline', 'PT');
+                
+                alert('✅ Emergency account created successfully!\n\nReloading page...');
+                location.reload();
             }
         }
 
-        function populateLoginActivity() {
-            const activityContainer = document.getElementById('loginActivity');
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
             
-            // Sample login activity (would come from server in real implementation)
-            const activities = [
-                { date: new Date(), device: 'Chrome on macOS', location: 'Lubbock, TX', success: true },
-                { date: new Date(Date.now() - 86400000), device: 'Safari on iPhone', location: 'Lubbock, TX', success: true },
-                { date: new Date(Date.now() - 172800000), device: 'Chrome on Windows', location: 'Austin, TX', success: false }
-            ];
-            
-            const html = activities.map(activity => `
-                <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-weight: 500; ${activity.success ? 'color: var(--navy)' : 'color: #dc2626'};">
-                            ${activity.success ? '✅ Successful login' : '❌ Failed login attempt'}
-                        </div>
-                        <div style="font-size: 0.9rem; color: var(--gray-600);">
-                            ${activity.device} • ${activity.location}
-                        </div>
-                    </div>
-                    <div style="font-size: 0.9rem; color: var(--gray-600);">
-                        ${activity.date.toLocaleDateString()} ${activity.date.toLocaleTimeString()}
-                    </div>
-                </div>
-            `).join('');
-            
-            activityContainer.innerHTML = html || '<div style="padding: 2rem; text-align: center; color: var(--gray-600);">No login activity recorded</div>';
-        }
-
-        // Privacy Functions
-        function exportAccountData() {
-            const accountData = JSON.parse(localStorage.getItem('drtroyAccount') || '{}');
-            
-            const exportData = {
-                ...accountData,
-                exportDate: new Date().toISOString(),
-                dataVersion: '1.0',
-                source: 'DrTroy.com Account Export'
-            };
-            
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `DrTroy_Account_Export_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            
-            URL.revokeObjectURL(url);
-            alert('Account data exported successfully!');
-        }
-
-        function requestAccountDeletion() {
-            if (!document.getElementById('confirmDeletion').checked) {
-                alert('Please confirm that you understand this action is permanent.');
-                return;
-            }
-            
-            if (confirm('This will permanently delete your account and all data. This action cannot be undone. Are you absolutely sure?')) {
-                if (confirm('Last chance: Are you completely sure you want to delete your account? All courses, certificates, and progress will be lost forever.')) {
-                    // Clear all stored data
-                    localStorage.removeItem('drtroyAccount');
-                    localStorage.removeItem('selectedPackageCode');
-                    localStorage.removeItem('customerName');
-                    localStorage.removeItem('customerEmail');
-                    localStorage.removeItem('customerDiscipline');
-                    
-                    alert('Your account deletion request has been processed. You will be redirected to the homepage.');
-                    window.location.href = 'index.html';
-                }
+            // Find the active section and prepend the alert
+            const activeSection = document.querySelector('.content-section.active');
+            if (activeSection) {
+                activeSection.insertBefore(alertDiv, activeSection.firstChild);
+                
+                // Remove alert after 5 seconds
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
             }
         }
-
-        // SMS Options Toggle (moved to main DOMContentLoaded above)
-        function initializeSMSToggle() {
-            const smsCheckbox = document.getElementById('smsNotifications');
-            const smsOptions = document.getElementById('smsOptions');
-            
-            if (smsCheckbox && smsOptions) {
-                smsCheckbox.addEventListener('change', function() {
-                    smsOptions.style.display = this.checked ? 'block' : 'none';
-                });
-            }
-        }
-            
-        // Confirmation deletion checkbox
-            const confirmDeletion = document.getElementById('confirmDeletion');
-            const deleteBtn = document.getElementById('deleteAccountBtn');
-            
-            if (confirmDeletion && deleteBtn) {
-                confirmDeletion.addEventListener('change', function() {
-                    deleteBtn.disabled = !this.checked;
-                });
-            }
-        });
-
-        // Dark Mode Functions
-        function toggleDarkMode() {
-            const body = document.body;
-            const isDark = body.classList.contains('dark-mode');
-            
-            if (isDark) {
-                body.classList.remove('dark-mode');
-                localStorage.setItem('darkMode', 'false');
-            } else {
-                body.classList.add('dark-mode');
-                localStorage.setItem('darkMode', 'true');
-            }
-        }
-
-        function initializeDarkMode() {
-            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-            const darkModeToggle = document.getElementById('darkMode');
-            
-            if (darkModeEnabled) {
-                document.body.classList.add('dark-mode');
-                if (darkModeToggle) darkModeToggle.checked = true;
-            }
-            
-            if (darkModeToggle) {
-                darkModeToggle.addEventListener('change', toggleDarkMode);
-            }
-        }
-
-        // Enhanced functionality moved to main loadAccountData function above
     </script>
 </body>
 </html>
