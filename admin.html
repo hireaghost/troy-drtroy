@@ -918,7 +918,7 @@
             
             if (!adminSession) {
                 console.log('🚨 No admin session found, redirecting to login...');
-                window.location.href = 'login.html';
+                window.location.href = 'secure-admin-access-2026.html';
                 return false;
             }
             
@@ -930,7 +930,7 @@
                 if (now >= expiresTime) {
                     console.log('🕒 Admin session expired, redirecting to login...');
                     localStorage.removeItem('drtroyAdminSession');
-                    window.location.href = 'login.html';
+                    window.location.href = 'secure-admin-access-2026.html';
                     return false;
                 }
                 
@@ -940,7 +940,7 @@
             } catch (error) {
                 console.error('Session validation error:', error);
                 localStorage.removeItem('drtroyAdminSession');
-                window.location.href = 'login.html';
+                window.location.href = 'secure-admin-access-2026.html';
                 return false;
             }
         }
@@ -950,7 +950,7 @@
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('drtroyAdminSession');
                 console.log('👋 Admin logged out');
-                window.location.href = 'login.html';
+                window.location.href = 'secure-admin-access-2026.html';
             }
         }
 
