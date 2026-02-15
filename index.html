@@ -1785,7 +1785,8 @@
         }
 
         // Account creation form handling
-        document.querySelector('.optin-form').addEventListener('submit', function(e) {
+        // OLD HANDLER DISABLED - Using #accountCreationForm handler instead
+        // document.querySelector('.optin-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const firstName = e.target.querySelector('input[placeholder="First name"]').value;
             const lastName = e.target.querySelector('input[placeholder="Last name"]').value;
@@ -1860,7 +1861,7 @@
                 
                 showModal('Welcome! 🎉', message, true);
             }
-        });
+        // }); // OLD HANDLER DISABLED
 
         // Package selection handling - Redirect to checkout page
         document.querySelectorAll('.select-package').forEach(button => {
