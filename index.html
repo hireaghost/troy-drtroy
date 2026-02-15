@@ -1403,6 +1403,16 @@
             
             if (existingAccount) {
                 const account = JSON.parse(existingAccount);
+                
+                // Debug login attempt
+                console.log('🔍 Debug - Login attempt:');
+                console.log('  - Stored email:', account.email);
+                console.log('  - Input email:', email);
+                console.log('  - Email match:', account.email === email);
+                console.log('  - Stored password exists:', account.password ? 'YES' : 'NO');
+                console.log('  - Input password exists:', password ? 'YES' : 'NO');
+                console.log('  - Password match:', account.password === password);
+                
                 if (account.email === email && account.password === password) {
                     // Successful login — save to localStorage and update UI
                     localStorage.setItem('customerName', account.firstName + ' ' + (account.lastName || ''));
@@ -2203,8 +2213,10 @@
                     </div>
                 `;
                 
-                // Log security event
+                // Log security event and debug info
                 console.log(`🔒 Account created: ${formData.email.substring(0, 3)}**** (${formData.discipline})`);
+                console.log('🔍 Debug - Password stored:', accountData.password ? 'YES' : 'NO');
+                console.log('🔍 Debug - Account data:', { ...accountData, password: accountData.password ? '[HIDDEN]' : 'MISSING' });
                 
                 // Update UI elements immediately after account creation
                 setTimeout(() => {
@@ -2313,6 +2325,9 @@
                 password: document.getElementById('password').value,
                 confirmPassword: document.getElementById('confirmPassword').value
             };
+            
+            // Debug: Check if password was captured from form
+            console.log('🔍 Debug - Form password captured:', formData.password ? 'YES' : 'NO');
             
             // Validation
             const errors = [];
