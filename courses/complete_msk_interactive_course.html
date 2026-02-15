@@ -2439,7 +2439,11 @@ function submitQuiz() {
     } else {
         resultsHTML += '<p style="color: #ef4444; font-weight: bold;">❌ NOT PASSED</p>';
         resultsHTML += '<p>You need 70% or higher to pass. Please review the course material and retake the quiz.</p>';
-        resultsHTML += '<button class="btn btn-danger" onclick="retakeQuiz()">Retake Knowledge Check</button>';
+        resultsHTML += '<div style="text-align: center; margin: 20px 0;">';
+        resultsHTML += '<button class="btn btn-danger" onclick="retakeQuiz()" style="font-size: 18px; padding: 15px 30px; margin: 10px;">🔄 Retake Knowledge Check</button><br>';
+        resultsHTML += '<button class="btn btn-primary" onclick="scrollToCourseContent()" style="margin: 10px;">📚 Review Course Content</button>';
+        resultsHTML += '</div>';
+        resultsHTML += '<p><strong>Study Tips:</strong> Review the detailed explanations below, then use "Review Course Content" to go back to the modules before retaking.</p>';
     }
     resultsHTML += '</div>';
     
@@ -2490,8 +2494,21 @@ function retakeQuiz() {
     document.getElementById('certificateSection').classList.add('hidden');
     document.getElementById('feedbackSection').classList.add('hidden');
     
-    // Scroll back to quiz
+    // Clear any stored data
+    localStorage.removeItem('mskCoursePassed');
+    localStorage.removeItem('mskCourseScore');
+    
+    // Show confirmation and scroll to quiz
+    alert('Quiz reset! You can now retake the exam. Good luck!');
     document.getElementById('knowledgeExam').scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToCourseContent() {
+    // Scroll to the first module to review content
+    const firstModule = document.querySelector('.module-header');
+    if (firstModule) {
+        firstModule.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 function generateCertificate() {
