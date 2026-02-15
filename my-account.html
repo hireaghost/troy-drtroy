@@ -477,6 +477,10 @@
                             <div class="form-group">
                                 <label for="editEmail">Email Address</label>
                                 <input type="email" id="editEmail" required>
+                                <label style="display: flex; align-items: flex-start; margin-top: 0.75rem; font-weight: normal; color: var(--gray-700); font-size: 0.9rem; line-height: 1.4;">
+                                    <input type="checkbox" id="licenseRenewalReminders" checked style="margin-right: 0.5rem; margin-top: 0.1rem; flex-shrink: 0;">
+                                    <span>Send me license renewal reminder emails starting 6 months before my license expires. These will continue until I purchase another course or opt out.</span>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label for="editPhone">Phone Number</label>
@@ -609,11 +613,11 @@
                                 <input type="checkbox" id="emailNotifications" checked style="margin-right: 0.5rem;">
                                 Email notifications for course updates and new content
                             </label>
-                            <label style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem;">
-                                License renewal reminders
+                            <label style="display: flex; align-items: flex-start; margin-bottom: 1rem; line-height: 1.4;">
+                                <input type="checkbox" id="renewalReminders" checked style="margin-right: 0.5rem; margin-top: 0.1rem; flex-shrink: 0;">
+                                <span>License renewal reminder emails (starting 6 months before expiration)</span>
                             </label>
-                            <button class="btn btn-secondary">Save Preferences</button>
+                            <button class="btn btn-secondary" onclick="saveNotificationPreferences()">Save Preferences</button>
                         </div>
 
                         <div style="padding: 1.5rem; background: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px;">
@@ -643,6 +647,14 @@
             });
             document.getElementById('editLicenseState').addEventListener('input', function() {
                 this.value = this.value.toUpperCase();
+            });
+            
+            // Sync license renewal reminder checkboxes
+            document.getElementById('licenseRenewalReminders').addEventListener('change', function() {
+                document.getElementById('renewalReminders').checked = this.checked;
+            });
+            document.getElementById('renewalReminders').addEventListener('change', function() {
+                document.getElementById('licenseRenewalReminders').checked = this.checked;
             });
         }
 
@@ -687,6 +699,15 @@
             document.getElementById('editFirstName').value = account.firstName || '';
             document.getElementById('editLastName').value = account.lastName || '';
             document.getElementById('editEmail').value = account.email || '';
+            
+            // Set license renewal reminders (default to true for new accounts)
+            const remindersSetting = account.licenseRenewalReminders !== false;
+            document.getElementById('licenseRenewalReminders').checked = remindersSetting;
+            document.getElementById('renewalReminders').checked = remindersSetting;
+            
+            // Set email notifications (default to true)
+            document.getElementById('emailNotifications').checked = account.emailNotifications !== false;
+            
             document.getElementById('editPhone').value = account.phone || '';
             document.getElementById('editAddress').value = account.address || '';
             document.getElementById('editCity').value = account.city || '';
@@ -769,6 +790,7 @@
             account.firstName = document.getElementById('editFirstName').value;
             account.lastName = document.getElementById('editLastName').value;
             account.email = document.getElementById('editEmail').value;
+            account.licenseRenewalReminders = document.getElementById('licenseRenewalReminders').checked;
             account.phone = document.getElementById('editPhone').value;
             account.address = document.getElementById('editAddress').value;
             account.city = document.getElementById('editCity').value;
@@ -853,6 +875,38 @@
                 successAlert.remove();
             }, 3000);
         });
+
+        // Save notification preferences
+        function saveNotificationPreferences() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (!accountData) return;
+            
+            const account = JSON.parse(accountData);
+            
+            // Update notification preferences
+            account.emailNotifications = document.getElementById('emailNotifications').checked;
+            account.licenseRenewalReminders = document.getElementById('renewalReminders').checked;
+            account.updatedAt = new Date().toISOString();
+            
+            // Save updated account data
+            localStorage.setItem('drtroyAccount', JSON.stringify(account));
+            
+            // Sync the other checkbox too
+            document.getElementById('licenseRenewalReminders').checked = account.licenseRenewalReminders;
+            
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.textContent = 'Your notification preferences have been updated successfully!';
+            
+            const button = event.target;
+            button.parentNode.insertBefore(successAlert, button);
+            
+            // Remove success message after 3 seconds
+            setTimeout(() => {
+                successAlert.remove();
+            }, 3000);
+        }
 
         // Account deletion confirmation
         function confirmAccountDeletion() {
