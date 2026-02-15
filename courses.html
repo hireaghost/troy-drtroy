@@ -100,81 +100,72 @@
         }
 
         .login-link:hover {
-            background: #f6d55c !important;
-            color: var(--navy) !important;
-            transform: translateY(-2px) !important;
+            background: var(--gold-light) !important;
         }
 
         .page-header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-            color: white;
-            padding: 3rem 2rem;
             text-align: center;
+            padding: 3rem 2rem;
+            background: var(--gray-50);
         }
 
         .page-header h1 {
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
         }
 
         .page-header p {
-            opacity: 0.9;
-        }
-
-        .catalog {
-            padding: 3rem 2rem;
-            max-width: 1000px;
+            font-size: 1.2rem;
+            color: var(--gray-600);
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        .profession-section {
-            margin-bottom: 3rem;
+        .catalog {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
         }
 
-        .profession-header {
+        .section {
+            margin-bottom: 4rem;
+            border: 1px solid var(--gray-100);
+            border-radius: 12px;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
             background: var(--navy);
             color: white;
-            padding: 1.25rem 1.5rem;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
         }
 
-        .profession-header h2 {
-            font-size: 1.25rem;
+        .section-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        .total-badge {
-            background: var(--gold);
-            color: var(--navy);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
+        .section-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
         }
 
-        .course-list {
-            background: white;
-            border: 1px solid var(--gray-100);
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            overflow: hidden;
-        }
-
-        .catalog-course-header {
+        .course-table-header {
             padding: 1rem 1.5rem;
-            background: var(--gold);
-            color: var(--navy);
+            background: var(--gray-100);
+            color: var(--gray-800);
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            border-bottom: 2px solid var(--gold);
         }
 
         .course-item {
-            padding: 1rem 1.5rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--gray-100);
             display: flex;
             justify-content: space-between;
@@ -186,13 +177,20 @@
             border-bottom: none;
         }
 
-        .course-item:hover {
-            background: var(--gray-50);
+        .course-content {
+            flex: 1;
         }
 
         .course-title {
-            font-weight: 500;
-            flex: 1;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+        }
+
+        .course-description {
+            font-size: 0.9rem;
+            color: var(--gray-600);
             line-height: 1.4;
         }
 
@@ -206,25 +204,44 @@
             text-align: right;
         }
 
-        @media (max-width: 768px) {
-            .course-item > div {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
+        .profession-totals {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-100);
         }
 
-        .compliance-banner {
-            background: var(--gold-light);
-            padding: 1rem 1.5rem;
-            border-left: 4px solid var(--gold);
-            margin-top: 1rem;
-            font-size: 0.9rem;
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
         }
 
-        .compliance-banner a {
+        .total-item {
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--gray-100);
+            text-align: center;
+        }
+
+        .total-profession {
+            font-weight: 600;
             color: var(--navy);
-            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-ccus {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .compliance-note {
+            background: var(--gray-50);
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-100);
+            font-size: 0.9rem;
+            color: var(--gray-600);
         }
 
         .back-link {
@@ -233,59 +250,22 @@
             color: var(--navy);
             text-decoration: none;
             font-weight: 500;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--navy);
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
         .back-link:hover {
-            text-decoration: underline;
+            background: var(--navy);
+            color: white;
         }
 
         footer {
             background: var(--navy);
             color: white;
-            padding: 1.5rem;
             text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 768px) {
-            .logo img {
-                height: 200px;
-                max-width: 95vw;
-                width: auto;
-            }
-            
-            .header-container {
-                padding: 1.5rem 1rem 1rem;
-            }
-            
-            .profession-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.5rem;
-            }
-
-            .course-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo img {
-                height: 150px;
-                max-width: 90vw;
-                width: auto;
-            }
-            
-            .header-container {
-                padding: 1rem 0.75rem 1rem;
-            }
+            padding: 2rem;
         }
     </style>
 </head>
@@ -293,7 +273,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="courses/images/drtroy_logo.png" alt="DrTroy Continuing Education">
+                <img src="drtroy-logo.png" alt="DrTroy Continuing Education" />
             </div>
             <nav>
                 <a href="index.html">Home</a>
@@ -306,464 +286,220 @@
     </header>
 
     <section class="page-header">
-        <h1>Unified Course Catalog</h1>
-        <p>Streamlined PT/PTA education with shared fundamentals and role-specific applications</p>
+        <h1>Course Catalog</h1>
+        <p>Quality continuing education courses for physical therapy and occupational therapy professionals</p>
     </section>
 
-    <div style="background: #dcfce7; border-left: 4px solid #22c55e; padding: 1rem 2rem; margin: 2rem auto; max-width: 1000px; border-radius: 6px;">
-        <h3 style="color: #166534; margin-bottom: 0.5rem;">🎯 Complete Standardization: PT/PTA Unified Learning</h3>
-        <p style="color: #166534; margin: 0;">We've achieved maximum efficiency by unifying all compatible content. PTAs now access the same comprehensive evidence base as PTs, with role-appropriate applications. No more separate PTA-only courses needed - everything is unified or PT-advanced level.</p>
-    </div>
-
     <section class="catalog">
-        <!-- Unified Courses Section -->
-        <div style="margin-bottom: 3rem; border: 2px solid #22c55e; border-radius: 12px; background: white; overflow: hidden;">
-            <div style="background: #22c55e; color: white; padding: 1.5rem; text-align: center;">
-                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤝 Unified PT/PTA Courses</h2>
-                <p style="opacity: 0.9; font-size: 0.95rem; margin: 0;">Shared foundational content with profession-specific applications</p>
+        <!-- All Disciplines Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>All Disciplines</h2>
+                <p>Available for PTs, PTAs, OTs, and COTAs</p>
             </div>
-            <div style="background: white;">
-                <div style="padding: 1rem 1.5rem; background: #22c55e; color: white; display: flex; justify-content: space-between; align-items: center; font-weight: 600; border-bottom: 2px solid #22c55e;">
-                    <span>Course Name</span>
-                    <span>CCUs</span>
+            <div class="course-table-header">
+                <span>Course Name</span>
+                <span>CCUs</span>
+            </div>
+            
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Comprehensive Mobility and Fall Prevention</div>
+                    <div class="course-description">Evidence-based fall prevention strategies, safe transfer techniques, and mobility interventions.</div>
                 </div>
-                
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Comprehensive Mobility and Fall Prevention
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Evidence-based fall prevention strategies, safe transfer techniques, and mobility interventions. PT focus: assessment and treatment planning. PTA focus: implementation and hands-on techniques.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
-                    </div>
-                </div>
+                <span class="course-hours">2</span>
+            </div>
 
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Balance, Gait, and Vestibular Management
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Comprehensive approach to balance disorders, gait abnormalities, and vestibular dysfunction. Shared anatomy/pathophysiology with role-appropriate assessment and intervention strategies.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Balance, Gait, and Vestibular Management</div>
+                    <div class="course-description">Comprehensive approach to balance disorders, gait abnormalities, and vestibular dysfunction.</div>
+                </div>
+                <span class="course-hours">2</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Post-Surgical and Therapeutic Exercise</div>
+                    <div class="course-description">Exercise principles, post-surgical rehabilitation, and progressive strengthening.</div>
+                </div>
+                <span class="course-hours">2</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Geriatric Care Across the Continuum</div>
+                    <div class="course-description">Age-related changes, common geriatric conditions, and safety considerations.</div>
+                </div>
+                <span class="course-hours">2</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Professional Documentation and Communication</div>
+                    <div class="course-description">Documentation standards, legal requirements, and professional communication.</div>
+                </div>
+                <span class="course-hours">3</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Physical Agents, Modalities, and Wound Care</div>
+                    <div class="course-description">Therapeutic modalities, physical agents, and wound care principles.</div>
+                </div>
+                <span class="course-hours">3</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Neurological Rehabilitation</div>
+                    <div class="course-description">Treatment approaches for stroke, SCI, TBI, and progressive neurological conditions.</div>
+                </div>
+                <span class="course-hours">2</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Infection Control and Patient Safety</div>
+                    <div class="course-description">Universal precautions, infection prevention, and patient safety protocols.</div>
+                </div>
+                <span class="course-hours">1</span>
+            </div>
+
+            <div class="profession-totals">
+                <div class="totals-grid">
+                    <div class="total-item">
+                        <div class="total-profession">PTAs & COTAs</div>
+                        <div class="total-ccus">17 CCUs Total</div>
                     </div>
                 </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Post-Surgical and Therapeutic Exercise
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Exercise principles, post-surgical rehabilitation, and progressive strengthening. PT focus: evaluation and protocol development. PTA focus: exercise implementation and progression.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Geriatric Care Across the Continuum
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Age-related changes, common geriatric conditions, and safety considerations. Addresses both PT evaluation/planning and PTA implementation perspectives in geriatric care.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Professional Documentation and Communication
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Documentation standards, legal requirements, and professional communication. PT focus: evaluation documentation and billing. PTA focus: treatment notes and PT communication.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Neurological Rehabilitation
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Treatment approaches for stroke, SCI, TBI, and progressive neurological conditions. Identical course content for both PT and PTA - same evidence-based principles.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Physical Agents, Modalities, and Wound Care
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Therapeutic modalities, physical agents, and wound care principles. PT focus: prescription, contraindications, and complex wound assessment. PTA focus: hands-on application, basic wound care, and equipment operation.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Infection Control and Patient Safety
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Universal precautions, infection prevention, and patient safety protocols. Identical course content for both PT and PTA - universal healthcare requirements.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">1</span>
-                    </div>
+                <div class="compliance-note">
+                    <strong>Both Professions:</strong> Ethics requirement (2 CCUs) satisfied by Texas PT Jurisprudence Exam | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
                 </div>
             </div>
         </div>
 
-        <!-- PT-Specific Courses -->
-        <div class="profession-section">
-            <div class="profession-header">
+        <!-- PT-Specific Section -->
+        <div class="section">
+            <div class="section-header">
                 <h2>Physical Therapists Only</h2>
-                <span class="total-badge">10 Hours</span>
+                <p>Advanced courses requiring PT-level assessment and diagnostic skills</p>
             </div>
-            <div class="course-list">
-                <div class="catalog-course-header">
-                    <span>Course Name</span>
-                    <span>CCUs</span>
-                </div>
-                
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Comprehensive Musculoskeletal Evaluation
-                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            Advanced evaluation techniques, differential diagnosis, and treatment planning for musculoskeletal conditions. Requires PT-level assessment and diagnostic skills.
-                        </div>
-                    </div>
-                    <span class="course-hours">3</span>
-                </div>
-
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Chronic Pain Management
-                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            Complex pain assessment, biopsychosocial factors, and interdisciplinary pain management approaches. Requires PT evaluation and diagnostic capabilities.
-                        </div>
-                    </div>
-                    <span class="course-hours">3</span>
-                </div>
-
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Sports Injury Rehabilitation
-                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">PT SCOPE</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            Sport-specific injury assessment, return-to-play decisions, and performance optimization. Emphasizes evaluation and complex decision-making.
-                        </div>
-                    </div>
-                    <span class="course-hours">4</span>
-                </div>
+            <div class="course-table-header">
+                <span>Course Name</span>
+                <span>CCUs</span>
             </div>
-            <div class="compliance-banner">
-                <strong>PT Profession-Specific: 10 CCUs</strong> (Advanced evaluation, assessment, and diagnostic content) | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+            
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Comprehensive Musculoskeletal Evaluation</div>
+                    <div class="course-description">Advanced evaluation techniques, differential diagnosis, and treatment planning for musculoskeletal conditions.</div>
+                </div>
+                <span class="course-hours">3</span>
             </div>
-        </div>
 
-        <!-- Compliance Section (Both Professions) -->
-        <div class="profession-section">
-            <div class="profession-header" style="background: #22c55e;">
-                <h2>Continuing Education Totals</h2>
-                <span style="background: white; color: #22c55e;" class="total-badge">Standardized</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Chronic Pain Management</div>
+                    <div class="course-description">Complex pain assessment, biopsychosocial factors, and interdisciplinary pain management approaches.</div>
+                </div>
+                <span class="course-hours">3</span>
             </div>
-            <div class="course-list">
-                <div style="padding: 1rem 1.5rem; background: #22c55e; color: white; font-weight: 600; border-bottom: 2px solid #22c55e;">
-                    <span>Professional Requirements</span>
-                </div>
-                
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Physical Therapists (PT)
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            <strong>27 Total CCUs:</strong> 17 unified CCUs + 10 PT-specific CCUs<br>
-                            All courses accessible with profession-specific content and assessments
-                        </div>
-                    </div>
-                    <span class="course-hours">27</span>
-                </div>
 
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Physical Therapist Assistants (PTA)
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            <strong>17 Total CCUs:</strong> All from unified courses with PTA-focused content<br>
-                            Streamlined content matching exact PTA licensing requirements
-                        </div>
-                    </div>
-                    <span class="course-hours">17</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Sports Injury Rehabilitation</div>
+                    <div class="course-description">Sport-specific injury assessment, return-to-play decisions, and performance optimization.</div>
                 </div>
+                <span class="course-hours">4</span>
             </div>
-            <div class="compliance-banner">
-                <strong>Both Professions:</strong> Ethics requirement (2 CCUs) satisfied by Texas PT Jurisprudence Exam | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
-            </div>
-        </div>
 
-        <!-- Unified OT/COTA Courses Section -->
-        <div style="margin-bottom: 3rem; border: 2px solid #22c55e; border-radius: 12px; background: white; overflow: hidden;">
-            <div style="background: #22c55e; color: white; padding: 1.5rem; text-align: center;">
-                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤝 Unified OT/COTA Courses</h2>
-                <p style="opacity: 0.9; font-size: 0.95rem; margin: 0;">Shared occupational therapy foundations with role-specific applications</p>
-            </div>
-            <div style="background: white;">
-                <div style="padding: 1rem 1.5rem; background: #22c55e; color: white; display: flex; justify-content: space-between; align-items: center; font-weight: 600; border-bottom: 2px solid #22c55e;">
-                    <span>Course Name</span>
-                    <span>CCUs</span>
-                </div>
-                
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Functional Assessment and Patient-Centered Care
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                ADL assessment, functional mobility, and patient-centered intervention approaches. OT focus: comprehensive evaluation and treatment planning. COTA focus: implementation techniques and patient education.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Upper Extremity Rehabilitation and Orthotic Management
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Upper extremity conditions, treatment approaches, and orthotic/splinting interventions. OT focus: assessment and orthotic prescription. COTA focus: fabrication techniques and patient training.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Environmental Modification and Assistive Technology
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Home safety assessment, environmental modifications, and assistive technology solutions. OT focus: complex evaluations and recommendations. COTA focus: equipment training and environmental setup.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Pediatric Occupational Therapy Across the Continuum
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Pediatric development, assessment, and intervention strategies. OT focus: developmental assessment and complex cases. COTA focus: play-based interventions and family education.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Therapeutic Activities and Group Interventions
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Activity analysis, therapeutic activities, and group intervention strategies. OT focus: activity analysis and group dynamics assessment. COTA focus: activity implementation and group leadership.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Professional Documentation and Communication
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Documentation standards, legal requirements, and professional communication in OT practice. OT focus: evaluation documentation and billing. COTA focus: treatment notes and OT communication.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">3</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #edf2f7; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Neurological Rehabilitation
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Neurological conditions and rehabilitation approaches in occupational therapy. Identical course content for both OT and COTA - same evidence-based principles.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">2</span>
-                    </div>
-                </div>
-
-                <div style="padding: 1.25rem 1.5rem; background: #f7fafc;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600; font-size: 1.1rem; color: #22c55e; margin-bottom: 0.25rem;">
-                                Infection Control and Patient Safety
-                                <span style="display: inline-block; background: #22c55e; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">UNIFIED</span>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                                Universal precautions, infection prevention, and patient safety protocols. Identical course content for all healthcare professions - universal requirements.
-                            </div>
-                            </div>
-                        <span style="color: #4a5568; font-size: 0.9rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; min-width: 30px; text-align: right;">1</span>
+            <div class="profession-totals">
+                <div class="totals-grid">
+                    <div class="total-item">
+                        <div class="total-profession">Physical Therapists</div>
+                        <div class="total-ccus">27 CCUs Total</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 0.25rem;">17 All Disciplines + 10 PT-Specific</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- OT-Specific Courses -->
-        <div class="profession-section">
-            <div class="profession-header">
+        <!-- OT-Specific Section -->
+        <div class="section">
+            <div class="section-header">
                 <h2>Occupational Therapists Only</h2>
-                <span class="total-badge">6 Hours</span>
+                <p>Advanced courses requiring OT-level assessment and complex intervention planning</p>
             </div>
-            <div class="course-list">
-                <div class="catalog-course-header">
-                    <span>Course Name</span>
-                    <span>CCUs</span>
+            <div class="course-table-header">
+                <span>Course Name</span>
+                <span>CCUs</span>
+            </div>
+            
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Functional Assessment and Patient-Centered Care</div>
+                    <div class="course-description">ADL assessment, functional mobility, and patient-centered intervention approaches.</div>
                 </div>
-                
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Cognitive Assessment and Intervention
-                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">OT SCOPE</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            Complex cognitive assessment, intervention planning, and treatment approaches. Requires OT-level evaluation and diagnostic capabilities.
-                        </div>
-                    </div>
-                    <span class="course-hours">3</span>
-                </div>
+                <span class="course-hours">3</span>
+            </div>
 
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Mental Health in Occupational Therapy
-                            <span style="display: inline-block; background: #3b82f6; color: white; padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem;">OT SCOPE</span>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            Psychological assessment, mental health conditions, and intervention approaches. Emphasizes complex evaluation and treatment planning.
-                        </div>
-                    </div>
-                    <span class="course-hours">3</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Upper Extremity Rehabilitation and Orthotic Management</div>
+                    <div class="course-description">Upper extremity conditions, treatment approaches, and orthotic/splinting interventions.</div>
                 </div>
+                <span class="course-hours">3</span>
             </div>
-            <div class="compliance-banner">
-                <strong>OT Profession-Specific: 6 CCUs</strong> (Advanced assessment and complex intervention content) | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
-            </div>
-        </div>
 
-        <!-- OT/COTA Totals Section -->
-        <div class="profession-section">
-            <div class="profession-header" style="background: #22c55e;">
-                <h2>OT/COTA Continuing Education Totals</h2>
-                <span style="background: white; color: #22c55e;" class="total-badge">Standardized</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Environmental Modification and Assistive Technology</div>
+                    <div class="course-description">Home safety assessment, environmental modifications, and assistive technology solutions.</div>
+                </div>
+                <span class="course-hours">3</span>
             </div>
-            <div class="course-list">
-                <div style="padding: 1rem 1.5rem; background: #22c55e; color: white; font-weight: 600; border-bottom: 2px solid #22c55e;">
-                    <span>Professional Requirements</span>
-                </div>
-                
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Occupational Therapists (OT)
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            <strong>23 Total CCUs:</strong> 17 unified CCUs + 6 OT-specific CCUs<br>
-                            All courses accessible with profession-specific content and assessments
-                        </div>
-                    </div>
-                    <span class="course-hours">23</span>
-                </div>
 
-                <div class="course-item">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #1a365d; margin-bottom: 0.25rem;">
-                            Certified Occupational Therapy Assistants (COTA)
-                        </div>
-                        <div style="font-size: 0.9rem; color: #4a5568; line-height: 1.4;">
-                            <strong>17 Total CCUs:</strong> 17 unified CCUs<br>
-                            COTAs get universal unified content same as PTAs
-                        </div>
-                    </div>
-                    <span class="course-hours">17</span>
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Pediatric Occupational Therapy Across the Continuum</div>
+                    <div class="course-description">Pediatric development, assessment, and intervention strategies.</div>
                 </div>
+                <span class="course-hours">3</span>
             </div>
-            <div class="compliance-banner">
-                <strong>OT Professions:</strong> OTs=23 CCUs, COTAs=17 CCUs | <a href="https://www.hhs.texas.gov/sites/default/files/documents/hhs-approved-human-trafficking-training.pdf" target="_blank">Human trafficking training (1 hr required) →</a>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Therapeutic Activities and Group Interventions</div>
+                    <div class="course-description">Activity analysis, therapeutic activities, and group intervention strategies.</div>
+                </div>
+                <span class="course-hours">3</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Cognitive Assessment and Intervention</div>
+                    <div class="course-description">Complex cognitive assessment, intervention planning, and treatment approaches.</div>
+                </div>
+                <span class="course-hours">3</span>
+            </div>
+
+            <div class="course-item">
+                <div class="course-content">
+                    <div class="course-title">Mental Health in Occupational Therapy</div>
+                    <div class="course-description">Psychological assessment, mental health conditions, and intervention approaches.</div>
+                </div>
+                <span class="course-hours">3</span>
+            </div>
+
+            <div class="profession-totals">
+                <div class="totals-grid">
+                    <div class="total-item">
+                        <div class="total-profession">Occupational Therapists</div>
+                        <div class="total-ccus">23 CCUs Total</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-600); margin-top: 0.25rem;">17 All Disciplines + 6 OT-Specific</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -779,9 +515,9 @@
         // Login link handler - redirect to homepage with login modal
         document.getElementById('loginLink').addEventListener('click', function(e) {
             e.preventDefault();
-            // Redirect to home page and open login modal
             window.location.href = 'index.html?login=true';
         });
     </script>
+
 </body>
 </html>
