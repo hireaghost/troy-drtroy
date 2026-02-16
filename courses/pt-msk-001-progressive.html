@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Musculoskeletal Evaluation - DrTroy CE</title>
+    <style>
+        @page { size: letter; margin: 0.75in; @bottom-center { content: counter(page); font-size: 10pt; color: #666; } }
+        * { box-sizing: border-box; }
+
+        /* Base styles */
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        /* Content container - responsive */
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Progress Bar Styles */
+        .progress-container {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #059669;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a365d;
+        }
+
+        .save-status {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #059669, #0ea570);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Module Container Styles */
+        .module-container {
+            margin: 20px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #1a365d, #2d3748);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+        }
+
+        .module-header:hover {
+            background: linear-gradient(135deg, #2d3748, #1a365d);
+        }
+
+        .module-header.completed {
+            background: linear-gradient(135deg, #059669, #0ea570);
+        }
+
+        .module-header.locked {
+            background: #cbd5e0;
+            color: #718096;
+            cursor: not-allowed;
+        }
+
+        .module-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .module-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-icon {
+            font-size: 20px;
+        }
+
+        .module-content {
+            padding: 30px;
+            display: none;
+            background: white;
+        }
+
+        .module-content.active {
+            display: block;
+        }
+
+        /* Knowledge Check Styles */
+        .knowledge-check {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .knowledge-check h3 {
+            color: #1a365d;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .answer-options {
+            margin: 20px 0;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .answer-option:hover {
+            background: #f7fafc;
+            border-color: #059669;
+        }
+
+        .answer-option input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 3px;
+        }
+
+        .answer-option.correct {
+            background: #f0fff4;
+            border-color: #059669;
+            color: #065f46;
+        }
+
+        .answer-option.incorrect {
+            background: #fef2f2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .check-answer-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s ease;
+            margin-right: 10px;
+        }
+
+        .check-answer-btn:hover {
+            background: #047857;
+        }
+
+        .check-answer-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #f0fff4;
+            border: 1px solid #059669;
+            color: #065f46;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #fef2f2;
+            border: 1px solid #dc2626;
+            color: #991b1b;
+            display: block;
+        }
+
+        .continue-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .continue-btn.show {
+            display: inline-block;
+        }
+
+        /* Save Button Styles */
+        .save-progress-btn {
+            background: #1a365d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .save-progress-btn:hover {
+            background: #2d3748;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #059669;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                padding: 30px 40px;
+                margin: 0 20px;
+            }
+            .progress-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .content-wrapper {
+                padding: 20px;
+                margin: 0 10px;
+            }
+            body {
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            .module-title {
+                font-size: 16px;
+            }
+            .module-status {
+                gap: 5px;
+            }
+            .module-icon {
+                font-size: 16px;
+            }
+        }
+
+        /* Original course styles */
+        .cover-page {
+            text-align: center;
+            padding: 60px 30px;
+            background: linear-gradient(135deg, #1a365d, #2d3748);
+            color: white;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .cover-page img {
+            max-width: 250px;
+            height: auto;
+            margin: 0 auto 30px auto;
+            display: block;
+        }
+
+        .cover-page h1 {
+            font-size: 28px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .cover-page .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 10px 0;
+        }
+
+        /* Standard typography */
+        h1 {
+            color: #1a365d;
+            font-size: 24px;
+            margin: 30px 0 20px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: #1a365d;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            font-weight: bold;
+        }
+
+        h3 {
+            color: #2d3748;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        th, td {
+            border: 1px solid #059669;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #059669;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        /* Special boxes */
+        .figure-box {
+            border: 2px solid #059669;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            background: #f8fbff;
+            text-align: center;
+        }
+
+        .figure-number {
+            display: block;
+            font-weight: bold;
+            color: #1a365d;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .figure-caption {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4a5568;
+            font-style: italic;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .figure-box img {
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
+            border-radius: 4px;
+        }
+
+        .test-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #059669;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .clinical-pearl {
+            background-color: #fff8e1;
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .caution-box {
+            background-color: #fef2f2;
+            border: 2px solid #dc2626;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .important-box {
+            background-color: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .divider {
+            text-align: center;
+            font-size: 24px;
+            color: #059669;
+            margin: 40px 0;
+            font-weight: bold;
+        }
+
+        /* Hide original module headers since we're using the new collapsible ones */
+        .original-module-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <!-- Course Header -->
+        <div class="cover-page">
+            <img src="images/drtroy_logo_new.jpg" alt="DrTroy Continuing Education">
+            <h1>Comprehensive Musculoskeletal Evaluation</h1>
+            <div class="subtitle">Evidence-Based Special Tests and Clinical Reasoning</div>
+            <div class="subtitle">PT-MSK-001 | 3.0 CCUs | 180 Minutes</div>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-title">Course Progress</div>
+                <div class="save-status">
+                    <span id="saveStatus">Never saved</span>
+                    <button class="save-progress-btn" onclick="saveProgress()">
+                        💾 Save Progress
+                    </button>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progressText">Ready to begin • 0 of 12 modules completed</div>
+        </div>
+
+        <!-- Course Introduction -->
+        <div style="padding: 20px; background: #f7fafc; border-radius: 8px; margin-bottom: 30px;">
+            <h2>Welcome to Your Interactive Course Experience</h2>
+            <p>This course features progressive learning with knowledge checks at the end of each module. Complete each section and answer the knowledge check question correctly to unlock the next module.</p>
+            <ul>
+                <li><strong>Auto-Save:</strong> Your progress is automatically saved every 5 minutes</li>
+                <li><strong>Resume Anytime:</strong> Come back later and continue where you left off</li>
+                <li><strong>Knowledge Checks:</strong> One question per module reinforces key concepts</li>
+                <li><strong>Final Assessment:</strong> 20-question quiz after completing all modules</li>
+            </ul>
+        </div>
+
+        <!-- Module 1 -->
+        <div class="module-container" id="module-1">
+            <div class="module-header" onclick="toggleModule(1)">
+                <div class="module-title">Module 1: Introduction to MSK Evaluation (18 min)</div>
+                <div class="module-status">
+                    <span class="module-icon">🔓</span>
+                    <span>Ready to Start</span>
+                </div>
+            </div>
+            <div class="module-content" id="content-1">
+                <h2>1.1 Examination Model</h2>
+                
+                <div class="figure-box">
+                    <span class="figure-number">FIGURE 1: Examination Sequence Flowchart (SOAP Format)</span>
+                    <img src="images/figure_1_examination_sequence.svg" alt="Flowchart showing SOAP examination sequence">
+                    <div class="figure-caption">Illustration showing the systematic examination process: Subjective (patient history, pain assessment, functional limitations), Objective (observation, ROM, special tests, palpation), Assessment (diagnosis, impairments), and Plan (interventions, goals). Arrows indicate the cyclical nature of reassessment.</div>
+                </div>
+
+                <p>The systematic examination follows four phases: Subjective, Objective, Assessment, and Plan (SOAP).</p>
+
+                <h3>Subjective Examination Components</h3>
+                <ul>
+                    <li>Chief complaint and history of present illness</li>
+                    <li>Pain assessment (location, quality, intensity, aggravating/relieving factors)</li>
+                    <li>Functional limitations and patient goals</li>
+                    <li>Medical history, medications, social history</li>
+                </ul>
+
+                <h3>Objective Examination Components</h3>
+                <ul>
+                    <li>Observation (posture, gait, functional movements)</li>
+                    <li>Active and passive range of motion</li>
+                    <li>Resisted isometric testing</li>
+                    <li>Special tests</li>
+                    <li>Palpation</li>
+                    <li>Neurological examination when indicated</li>
+                </ul>
+
+                <h2>1.2 Red Flags Screening</h2>
+
+                <table>
+                    <tr><th>Red Flag</th><th>Potential Pathology</th><th>Action</th></tr>
+                    <tr><td>Bowel/bladder dysfunction with back pain</td><td>Cauda equina syndrome</td><td>EMERGENCY ED referral</td></tr>
+                    <tr><td>Saddle anesthesia</td><td>Cauda equina syndrome</td><td>EMERGENCY ED referral</td></tr>
+                    <tr><td>Progressive neurological deficits</td><td>Spinal cord compression</td><td>Urgent referral</td></tr>
+                    <tr><td>Unexplained weight loss >10%</td><td>Malignancy</td><td>Immediate referral</td></tr>
+                    <tr><td>Night pain unrelieved by position</td><td>Tumor, infection, fracture</td><td>Immediate imaging</td></tr>
+                    <tr><td>Fever with musculoskeletal pain</td><td>Infection</td><td>Urgent evaluation</td></tr>
+                    <tr><td>History of cancer with new pain</td><td>Metastatic disease</td><td>Immediate imaging</td></tr>
+                    <tr><td>Trauma age >65</td><td>Fracture</td><td>Immediate imaging</td></tr>
+                </table>
+
+                <div class="figure-box">
+                    <span class="figure-number">FIGURE 2: Red Flags Decision Tree</span>
+                    <img src="images/figure_2_red_flags.svg" alt="Decision tree for red flag screening">
+                    <div class="figure-caption">Flowchart diagram showing the decision-making process for red flag screening. Starting with initial patient presentation, branches lead to various red flag categories (neurological, systemic, oncological, traumatic) with corresponding actions: emergency referral, urgent imaging, or continue with standard examination.</div>
+                </div>
+
+                <div class="caution-box">
+                    <strong>Documentation:</strong> Always document red flag screening: "Patient screened for red flags including [list]. No red flags identified."
+                </div>
+
+                <h2>1.3 Pain Mechanisms</h2>
+
+                <div class="figure-box">
+                    <span class="figure-number">FIGURE 3: Pain Mechanism Classification Diagram</span>
+                    <img src="images/figure_3_pain_mechanism.svg" alt="Classification diagram of pain mechanisms">
+                    <div class="figure-caption">Classification diagram illustrating the three primary pain mechanisms in physical therapy evaluation: nociceptive pain (tissue damage, localized, mechanical pattern), neuropathic pain (nervous system lesion, dermatomal distribution, burning/shooting quality), and nociplastic pain (altered central processing, widespread distribution, disproportionate to tissue damage). Understanding these mechanisms guides appropriate examination and intervention strategies.</div>
+                </div>
+
+                <h3>Nociceptive Pain</h3>
+                <p>From actual tissue damage. Localized, mechanical pattern, responds to treatment.</p>
+
+                <h3>Neuropathic Pain</h3>
+                <p>From nervous system lesion. Burning/shooting, dermatomal distribution, night symptoms.</p>
+
+                <h3>Nociplastic Pain</h3>
+                <p>Altered pain processing. Widespread, disproportionate, psychosocial factors.</p>
+
+                <div class="figure-box">
+                    <span class="figure-number">FIGURE 4: Tissue Healing Phases Timeline</span>
+                    <img src="images/figure_4_tissue_healing.svg" alt="Timeline of tissue healing phases">
+                    <div class="figure-caption">Timeline illustrating the three phases of tissue healing: Inflammatory phase (0-6 days), Proliferative phase (3-21 days), and Remodeling phase (21 days to 2+ years). Each phase has distinct cellular activities, clinical presentations, and treatment considerations that guide physical therapy intervention timing and approach.</div>
+                </div>
+
+                <!-- Knowledge Check for Module 1 -->
+                <div class="knowledge-check">
+                    <h3>🧠 Knowledge Check - Module 1</h3>
+                    <div class="question">
+                        A 35-year-old patient presents with low back pain and reports new onset bowel incontinence. What is the MOST appropriate immediate action?
+                    </div>
+                    <div class="answer-options">
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="A">
+                            A) Begin lumbar spine examination with special tests
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="B">
+                            B) Apply heat and electrical stimulation
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="C">
+                            C) Immediately refer to emergency department for potential cauda equina syndrome
+                        </label>
+                        <label class="answer-option">
+                            <input type="radio" name="q1" value="D">
+                            D) Schedule a follow-up appointment in 2 weeks
+                        </label>
+                    </div>
+                    <button class="check-answer-btn" onclick="checkAnswer(1, 'C')">Check Answer</button>
+                    <div class="feedback" id="feedback-1"></div>
+                    <button class="continue-btn" id="continue-1" onclick="unlockNextModule(2)">Continue to Module 2</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="module-container" id="module-2">
+            <div class="module-header locked" onclick="toggleModule(2)">
+                <div class="module-title">Module 2: Cervical Spine (15 min)</div>
+                <div class="module-status">
+                    <span class="module-icon">🔒</span>
+                    <span>Complete Module 1</span>
+                </div>
+            </div>
+            <div class="module-content" id="content-2">
+                <p><em>Content will be revealed after completing Module 1...</em></p>
+            </div>
+        </div>
+
+        <!-- Placeholder for remaining modules -->
+        <div class="module-container" id="module-3">
+            <div class="module-header locked">
+                <div class="module-title">Module 3: Thoracic Spine (12 min)</div>
+                <div class="module-status">
+                    <span class="module-icon">🔒</span>
+                    <span>Locked</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue with remaining modules... -->
+        <div style="text-align: center; padding: 40px; color: #666; border: 2px dashed #e2e8f0; border-radius: 8px;">
+            <h3>More Modules Coming Soon...</h3>
+            <p>Complete the current modules to unlock additional content.</p>
+            <p><strong>Remaining:</strong> Modules 4-12 (Lumbar Spine, SI Joint, Shoulder, Elbow, Wrist & Hand, Hip, Knee, Ankle & Foot, Clinical Reasoning)</p>
+        </div>
+
+        <!-- Final Assessment (unlocked after all modules) -->
+        <div class="module-container" id="final-assessment" style="display: none;">
+            <div class="module-header locked">
+                <div class="module-title">Final Assessment (20 Questions)</div>
+                <div class="module-status">
+                    <span class="module-icon">🎯</span>
+                    <span>Complete All Modules</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notification element -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Course Progress Management
+        let courseProgress = {
+            currentModule: 1,
+            completedModules: [],
+            unlockedModules: [1],
+            knowledgeCheckAnswers: {},
+            scrollPositions: {},
+            timeSpent: 0,
+            lastSaved: null,
+            startTime: Date.now()
+        };
+
+        // Load saved progress on page load
+        window.addEventListener('load', function() {
+            loadProgress();
+            updateProgressDisplay();
+            startAutoSave();
+            trackTimeSpent();
+        });
+
+        // Save/Load Functions
+        function saveProgress() {
+            courseProgress.lastSaved = new Date().toISOString();
+            courseProgress.scrollPositions[courseProgress.currentModule] = window.scrollY;
+            localStorage.setItem('pt-msk-001-progress', JSON.stringify(courseProgress));
+            
+            document.getElementById('saveStatus').textContent = 'Saved just now';
+            showNotification('💾 Progress saved!');
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('pt-msk-001-progress');
+            if (saved) {
+                courseProgress = { ...courseProgress, ...JSON.parse(saved) };
+                
+                // Update UI based on loaded progress
+                courseProgress.unlockedModules.forEach(moduleNum => {
+                    unlockModule(moduleNum, false);
+                });
+                
+                courseProgress.completedModules.forEach(moduleNum => {
+                    markModuleComplete(moduleNum);
+                });
+
+                // Update save status
+                if (courseProgress.lastSaved) {
+                    const timeDiff = Math.round((Date.now() - new Date(courseProgress.lastSaved)) / 60000);
+                    document.getElementById('saveStatus').textContent = 
+                        timeDiff < 1 ? 'Saved just now' : `Saved ${timeDiff} minutes ago`;
+                }
+            }
+        }
+
+        // Auto-save every 5 minutes
+        function startAutoSave() {
+            setInterval(() => {
+                saveProgress();
+            }, 300000); // 5 minutes
+        }
+
+        // Track time spent
+        function trackTimeSpent() {
+            setInterval(() => {
+                courseProgress.timeSpent = Math.round((Date.now() - courseProgress.startTime) / 60000);
+            }, 60000); // Every minute
+        }
+
+        // Module Management
+        function toggleModule(moduleNum) {
+            const moduleContainer = document.getElementById(`module-${moduleNum}`);
+            const content = document.getElementById(`content-${moduleNum}`);
+            const header = moduleContainer.querySelector('.module-header');
+            
+            if (header.classList.contains('locked')) {
+                showNotification('⚠️ Complete previous modules first');
+                return;
+            }
+
+            // Close all other modules
+            document.querySelectorAll('.module-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Open this module
+            content.classList.add('active');
+            courseProgress.currentModule = moduleNum;
+            
+            // Scroll to module
+            moduleContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function unlockModule(moduleNum, showNotification = true) {
+            const moduleContainer = document.getElementById(`module-${moduleNum}`);
+            if (!moduleContainer) return;
+            
+            const header = moduleContainer.querySelector('.module-header');
+            const status = header.querySelector('.module-status');
+            
+            header.classList.remove('locked');
+            header.onclick = () => toggleModule(moduleNum);
+            
+            status.innerHTML = '<span class="module-icon">🔓</span><span>Ready to Start</span>';
+            
+            if (!courseProgress.unlockedModules.includes(moduleNum)) {
+                courseProgress.unlockedModules.push(moduleNum);
+            }
+            
+            if (showNotification) {
+                showNotification(`🔓 Module ${moduleNum} unlocked!`);
+            }
+        }
+
+        function markModuleComplete(moduleNum) {
+            const moduleContainer = document.getElementById(`module-${moduleNum}`);
+            if (!moduleContainer) return;
+            
+            const header = moduleContainer.querySelector('.module-header');
+            const status = header.querySelector('.module-status');
+            
+            header.classList.add('completed');
+            status.innerHTML = '<span class="module-icon">✅</span><span>Completed</span>';
+            
+            if (!courseProgress.completedModules.includes(moduleNum)) {
+                courseProgress.completedModules.push(moduleNum);
+            }
+        }
+
+        function unlockNextModule(nextModuleNum) {
+            unlockModule(nextModuleNum);
+            updateProgressDisplay();
+            saveProgress();
+        }
+
+        // Knowledge Check Functions
+        function checkAnswer(moduleNum, correctAnswer) {
+            const selectedOption = document.querySelector(`input[name="q${moduleNum}"]:checked`);
+            const feedback = document.getElementById(`feedback-${moduleNum}`);
+            const continueBtn = document.getElementById(`continue-${moduleNum}`);
+            const checkBtn = event.target;
+            
+            if (!selectedOption) {
+                showNotification('⚠️ Please select an answer');
+                return;
+            }
+
+            const userAnswer = selectedOption.value;
+            checkBtn.disabled = true;
+            
+            // Store the answer
+            courseProgress.knowledgeCheckAnswers[`module${moduleNum}`] = {
+                answer: userAnswer,
+                correct: userAnswer === correctAnswer,
+                timestamp: new Date().toISOString()
+            };
+
+            // Show visual feedback on options
+            const options = document.querySelectorAll(`input[name="q${moduleNum}"]`);
+            options.forEach(option => {
+                const label = option.parentElement;
+                if (option.value === correctAnswer) {
+                    label.classList.add('correct');
+                } else if (option.value === userAnswer && userAnswer !== correctAnswer) {
+                    label.classList.add('incorrect');
+                }
+                option.disabled = true;
+            });
+
+            // Show feedback message
+            if (userAnswer === correctAnswer) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✅ Excellent! You can now continue to the next module.';
+                continueBtn.classList.add('show');
+                markModuleComplete(moduleNum);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = '❌ Incorrect. Please review the material and try again.';
+                
+                // Allow retry after 3 seconds
+                setTimeout(() => {
+                    checkBtn.disabled = false;
+                    checkBtn.textContent = 'Try Again';
+                    options.forEach(option => {
+                        option.disabled = false;
+                        option.parentElement.classList.remove('correct', 'incorrect');
+                    });
+                    feedback.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Progress Display
+        function updateProgressDisplay() {
+            const totalModules = 12;
+            const completedCount = courseProgress.completedModules.length;
+            const progressPercent = Math.round((completedCount / totalModules) * 100);
+            
+            document.getElementById('progressFill').style.width = `${progressPercent}%`;
+            
+            const statusText = completedCount === 0 ? 
+                'Ready to begin • 0 of 12 modules completed' :
+                `Module ${courseProgress.currentModule} of 12 • ${completedCount} modules completed (${progressPercent}%)`;
+            
+            document.getElementById('progressText').textContent = statusText;
+        }
+
+        // Notification System
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Auto-save on scroll (every 30 seconds of activity)
+        let scrollSaveTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollSaveTimeout);
+            scrollSaveTimeout = setTimeout(() => {
+                courseProgress.scrollPositions[courseProgress.currentModule] = window.scrollY;
+                saveProgress();
+            }, 30000);
+        });
+
+        // Save before page unload
+        window.addEventListener('beforeunload', function() {
+            saveProgress();
+        });
+    </script>
+</body>
+</html>
