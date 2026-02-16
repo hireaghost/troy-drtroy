@@ -437,6 +437,13 @@ Email: troyh@texastherapypros.com
         function checkCourseAccess() {
             console.log('🔍 Checking course access for:', COURSE_ID);
             
+            // TEMP: Admin override for Troy
+            const adminAccess = localStorage.getItem('troyadmin');
+            if (adminAccess === 'true') {
+                console.log('🔑 Admin access granted for Troy');
+                return true;
+            }
+            
             // Get user account data
             const accountData = localStorage.getItem('drtroyAccount');
             if (!accountData) {
