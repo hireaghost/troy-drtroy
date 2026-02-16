@@ -1188,6 +1188,34 @@
             if (loginDiv) console.log('🔍 PAGE DEBUG - loginRequired initial display:', loginDiv.style.display);
             if (contentDiv) console.log('🔍 PAGE DEBUG - accountContent initial display:', contentDiv.style.display);
             
+            // Troy auto-fix: Check if Troy's account exists and bypass normal flow
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (accountData) {
+                try {
+                    const account = JSON.parse(accountData);
+                    if (account.email === 'troy@drtroy.com') {
+                        console.log('🔧 TROY AUTO-FIX - Detected Troy\'s account, bypassing normal flow');
+                        // Short delay to ensure DOM is ready
+                        setTimeout(() => {
+                            forceShowAccount();
+                        }, 100);
+                        
+                        // Secondary fallback in case first attempt fails
+                        setTimeout(() => {
+                            const loginStillVisible = document.getElementById('loginRequired').style.display !== 'none';
+                            if (loginStillVisible) {
+                                console.log('🔧 TROY AUTO-FIX - Fallback trigger');
+                                forceShowAccount();
+                            }
+                        }, 500);
+                        
+                        return; // Skip normal authentication flow
+                    }
+                } catch (e) {
+                    console.error('Error checking Troy account:', e);
+                }
+            }
+            
             checkLoginStatus();
             setupEventListeners();
         });
@@ -1405,20 +1433,20 @@
 
         // Emergency display override (for console use)
         function forceShowAccount() {
-            console.log('🚨 EMERGENCY - Forcing account display');
+            console.log('🚨 TROY FIX - Forcing account display');
             
             // Force hide login required
             const loginDiv = document.getElementById('loginRequired');
             if (loginDiv) {
                 loginDiv.style.display = 'none';
-                console.log('🚨 EMERGENCY - loginRequired hidden');
+                console.log('🚨 TROY FIX - loginRequired hidden');
             }
             
             // Force show account content
             const contentDiv = document.getElementById('accountContent');
             if (contentDiv) {
                 contentDiv.style.display = 'block';
-                console.log('🚨 EMERGENCY - accountContent shown');
+                console.log('🚨 TROY FIX - accountContent shown');
             }
             
             // Try to load account data
@@ -1426,14 +1454,15 @@
             if (accountData) {
                 try {
                     currentAccount = JSON.parse(accountData);
+                    setupEventListeners(); // Make sure event listeners are set up
                     loadAccountData();
-                    console.log('🚨 EMERGENCY - Account data loaded');
+                    console.log('🚨 TROY FIX - Account data loaded and listeners set');
                 } catch (e) {
-                    console.error('🚨 EMERGENCY - Error loading account data:', e);
+                    console.error('🚨 TROY FIX - Error loading account data:', e);
                 }
             }
             
-            console.log('🚨 EMERGENCY - Force display complete');
+            console.log('🚨 TROY FIX - Force display complete');
         }
 
         // Make forceShowAccount available globally for console access
