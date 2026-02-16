@@ -435,6 +435,19 @@
             margin-bottom: 0.5rem;
         }
 
+        .course-format {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .course-instructor {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
         .course-approval {
             font-size: 0.8rem;
             color: var(--gray-600);
@@ -964,6 +977,31 @@
             
             console.log('Loading account data...');
             
+            // Ensure user has access to MSK course (until we have proper enrollment system)
+            if (!currentAccount.enrolledCourses) {
+                currentAccount.enrolledCourses = [];
+            }
+            if (!currentAccount.enrolledCourses.includes('PT-MSK-001')) {
+                currentAccount.enrolledCourses.push('PT-MSK-001');
+            }
+            
+            // Ensure course progress exists and MSK course is marked as accessible
+            if (!currentAccount.courseProgress) {
+                currentAccount.courseProgress = {};
+            }
+            if (!currentAccount.courseProgress['PT-MSK-001']) {
+                currentAccount.courseProgress['PT-MSK-001'] = {
+                    enrolledAt: new Date().toISOString(),
+                    startedAt: null,
+                    completed: false,
+                    completedAt: null,
+                    progress: 0
+                };
+            }
+            
+            // Save updated account data
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
             // Personal information
             document.getElementById('firstName').value = currentAccount.firstName || '';
             document.getElementById('lastName').value = currentAccount.lastName || '';
@@ -995,20 +1033,28 @@
             
             // Update CCU dashboard
             updateCCUDashboard();
+            
+            // Update courses display
+            updateCoursesDisplay();
         }
 
         // Course Information Database (Enhanced with individual pricing & approval numbers)
         const COURSE_DATABASE = {
             // PT-Specific Course (Available Now)
             'PT-MSK-001': {
-                title: 'PT Musculoskeletal Evaluation and Diagnosis',
+                title: 'Comprehensive Musculoskeletal Evaluation',
                 credits: 3,
-                description: 'Comprehensive MSK evaluation and treatment approaches',
-                url: 'courses/pt-msk-001.html',
+                description: 'Evidence-based special tests and clinical reasoning for systematic MSK evaluation',
+                url: 'courses/pt-msk-001-progressive.html',
+                alternativeUrl: 'courses/pt-msk-001.html',
                 status: 'available',
                 approvalNumber: 'DRTROY-PT-MSK-001-2024',
                 individualPrice: 45, // $15 per CCU
-                provider: 'DrTroy Continuing Education'
+                provider: 'DrTroy Continuing Education',
+                duration: '180 minutes',
+                modules: 12,
+                format: 'Interactive Progressive Learning',
+                instructor: 'Troy Hounshell, PT, ScD'
             },
             // OT-Specific Course (Coming Soon)
             'OT-ADL-001': {
@@ -1242,11 +1288,14 @@
                         </div>
                         <p class="course-description">${course.description}</p>
                         <div class="course-details">
-                            <div class="course-credits">${course.credits} CCUs</div>
+                            <div class="course-credits"><strong>${course.credits} CCUs</strong> • ${course.duration || '180 minutes'}</div>
+                            ${course.modules ? `<div class="course-format">${course.modules} Interactive Modules • ${course.format || 'Progressive Learning'}</div>` : ''}
+                            ${course.instructor ? `<div class="course-instructor">Instructor: ${course.instructor}</div>` : ''}
                             <div class="course-approval">Approval #: ${course.approvalNumber}</div>
                         </div>
                         <div class="course-actions">
                             ${actionButton}
+                            ${course.alternativeUrl ? `<a href="${course.alternativeUrl}" class="btn btn-secondary">Original Version</a>` : ''}
                             ${individualPriceButton}
                         </div>
                     </div>
