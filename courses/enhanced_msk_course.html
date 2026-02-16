@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Musculoskeletal Evaluation - DrTroy CE</title>
+    <style>
+        @page { size: letter; margin: 0.75in; @bottom-center { content: counter(page); font-size: 10pt; color: #666; } }
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d69e2e 0%, #1a365d 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Navigation Menu */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 18px;
+        }
+        .nav-toggle:hover {
+            background: #2c5282;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            z-index: 999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 80px 20px 20px;
+        }
+        .nav-menu.open {
+            right: 0;
+        }
+        .nav-menu h3 {
+            color: #1a365d;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 1.3;
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover {
+            background: #f7fafc;
+            color: #1a365d;
+        }
+        .nav-item.completed {
+            background: #dcfce7;
+            color: #059669;
+        }
+        .nav-item.current {
+            background: #fef3c7;
+            color: #d69e2e;
+            font-weight: 600;
+        }
+
+        /* Bookmark Button */
+        .bookmark-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #d69e2e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 18px;
+        }
+        .bookmark-btn:hover {
+            background: #b7791f;
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 60px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .content-wrapper {
+                padding: 50px 30px 30px;
+                margin: 6px 10px 0;
+            }
+            .nav-menu {
+                width: 280px;
+                right: -280px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .content-wrapper {
+                padding: 40px 20px 20px;
+                margin: 6px 5px 0;
+            }
+            body {
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            .nav-toggle, .bookmark-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+            .nav-toggle {
+                top: 15px;
+                right: 15px;
+            }
+            .bookmark-btn {
+                bottom: 15px;
+                right: 15px;
+            }
+            .nav-menu {
+                width: 250px;
+                right: -250px;
+                padding: 70px 15px 15px;
+            }
+        }
+
+        /* Course Content Styles */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .cover-page h1 {
+            font-size: 28px;
+            color: #1a365d;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .cover-page .subtitle {
+            font-size: 16px;
+            color: #d69e2e;
+            margin-bottom: 40px;
+        }
+        .cover-page .course-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 60px;
+        }
+        .cover-page img {
+            max-width: 250px;
+            height: auto;
+        }
+        
+        @media (max-width: 600px) {
+            .cover-page {
+                padding: 40px 15px;
+            }
+            .cover-page h1 {
+                font-size: 24px;
+            }
+            .cover-page img {
+                max-width: 200px;
+            }
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #1a365d;
+            border-bottom: 2px solid #d69e2e;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            page-break-after: avoid;
+        }
+        h2 {
+            font-size: 18px;
+            color: #2c5282;
+            margin-top: 30px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+        p {
+            margin: 12px 0;
+            text-align: left;
+        }
+        ul, ol {
+            margin: 12px 0;
+            padding-left: 25px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            overflow-x: auto;
+            display: block;
+        }
+        @media (min-width: 601px) {
+            table {
+                display: table;
+            }
+        }
+        @media (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 8px;
+                word-break: break-word;
+            }
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #f0f4f8;
+            font-weight: bold;
+        }
+
+        .module-header {
+            page-break-before: always;
+            margin-top: 60px;
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .module-header h1 {
+            margin: 0;
+            color: white;
+            border: none;
+        }
+        .module-complete {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #059669;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            .module-header {
+                padding: 15px;
+                margin-top: 40px;
+            }
+            .module-header h1 {
+                font-size: 18px;
+                line-height: 1.3;
+                padding-right: 80px;
+            }
+            .module-complete {
+                top: 10px;
+                right: 15px;
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+        }
+
+        strong {
+            color: #1a365d;
+        }
+        .test-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .caution-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-left: 4px solid #ef4444;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 4px solid #22c55e;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        /* Mobile image optimization */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+        }
+
+        @media (max-width: 600px) {
+            .test-box, .caution-box, .tip-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 14px;
+            }
+        }
+
+        /* Overlay for nav menu */
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .nav-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation Toggle -->
+    <button class="nav-toggle" onclick="toggleNav()">☰</button>
+
+    <!-- Navigation Menu -->
+    <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+    <nav class="nav-menu" id="navMenu">
+        <h3>Course Navigation</h3>
+        <a href="#cover" class="nav-item" onclick="navigateToSection('cover', event)">Course Information</a>
+        <a href="#module1" class="nav-item" onclick="navigateToSection('module1', event)">Module 1: Introduction</a>
+        <a href="#module2" class="nav-item" onclick="navigateToSection('module2', event)">Module 2: Cervical Spine</a>
+        <a href="#module3" class="nav-item" onclick="navigateToSection('module3', event)">Module 3: Thoracic Spine</a>
+        <a href="#module4" class="nav-item" onclick="navigateToSection('module4', event)">Module 4: Lumbar Spine</a>
+        <a href="#module5" class="nav-item" onclick="navigateToSection('module5', event)">Module 5: SI Joint</a>
+        <a href="#module6" class="nav-item" onclick="navigateToSection('module6', event)">Module 6: Shoulder</a>
+        <a href="#module7" class="nav-item" onclick="navigateToSection('module7', event)">Module 7: Elbow</a>
+        <a href="#module8" class="nav-item" onclick="navigateToSection('module8', event)">Module 8: Wrist & Hand</a>
+        <a href="#module9" class="nav-item" onclick="navigateToSection('module9', event)">Module 9: Hip</a>
+        <a href="#module10" class="nav-item" onclick="navigateToSection('module10', event)">Module 10: Knee</a>
+        <a href="#module11" class="nav-item" onclick="navigateToSection('module11', event)">Module 11: Ankle & Foot</a>
+        <a href="#module12" class="nav-item" onclick="navigateToSection('module12', event)">Module 12: Clinical Reasoning</a>
+    </nav>
+
+    <!-- Bookmark Button -->
+    <button class="bookmark-btn" onclick="saveBookmark()" title="Save your place">📍</button>
+
+    <div class="content-wrapper">
+
+<div class="cover-page" id="cover">
+    <img src="images/drtroy_logo_new.jpg" alt="DrTroy Continuing Education">
+    <h1>Comprehensive Musculoskeletal Evaluation</h1>
+    <div class="subtitle">A Systematic Regional Approach to Clinical Assessment</div>
+    <div class="course-info">
+        <p><strong>Course #PT-MSK-001 • 3 CCUs</strong></p>
+        <p><strong>Complete Coverage:</strong> Cervical • Thoracic • Lumbar • SI Joint • Shoulder • Elbow • Wrist • Hip • Knee • Ankle</p>
+    </div>
+</div>
+
+---
+
+## Course Information
+
+## Course Description
+
+This comprehensive continuing education course provides physical therapy professionals with systematic, evidence-based approaches to musculoskeletal evaluation and treatment across all major body regions. Participants will learn examination techniques, special tests with diagnostic accuracy metrics, differential diagnosis strategies, and evidence-informed interventions for the cervical spine, thoracic spine, lumbar spine, sacroiliac joint, shoulder, elbow, wrist/hand, hip, knee, and ankle/foot.
+
+## Target Audience
+
+This course is designed for licensed physical therapists seeking to enhance their musculoskeletal examination skills and clinical decision-making abilities.
+
+## Course Objectives
+
+Upon completion of this course, participants will be able to:
+
+- Perform comprehensive regional musculoskeletal evaluations using systematic, evidence-based examination approaches
+
+- Apply and interpret special tests with knowledge of sensitivity, specificity, likelihood ratios, and clinical utility
+
+- Identify red flags and recognize when immediate physician referral is indicated
+
+- Develop differential diagnoses based on subjective history and objective examination findings
+
+- Design evidence-based, region-specific treatment plans tailored to specific pathologies
+
+- Integrate examination findings to formulate clinical diagnoses and prognoses
+
+- Document findings using appropriate clinical reasoning frameworks
+
+## Instructional Method
+
+This is a self-paced online course delivered through written content with illustrative figures. The course includes:
+
+- 12 instructional modules with anatomical illustrations
+
+- Special test demonstrations with diagnostic accuracy data
+
+- Clinical pearls and caution boxes highlighting key concepts
+
+- 20-question knowledge check assessment
+
+## Course Instructor
+
+**Troy Hounshell, PT, ScD**
+
+Dr. Hounshell is a physical therapist with over 25 years of clinical experience across outpatient, inpatient, home health, and skilled nursing settings. He is the CEO of Texas Therapy Pros and holds a Doctor of Science in Physical Therapy from Texas Tech University Health Sciences Center.
+
+## Disclosure Statement
+
+**Financial Disclosure:** Troy Hounshell, PT, ScD is the owner of Texas Therapy Pros and DrTroy Continuing Education, the company selling this course. He receives financial compensation from course sales. This relationship has been reviewed and the content has been developed to ensure objectivity and balance in presentation.
+
+**Non-Financial Disclosure:** The instructor has no other non-financial relationships to disclose that would create a conflict of interest regarding this educational activity.
+
+**Content Development:** The content of this course was developed based on current evidence-based practice and established clinical guidelines. All recommendations are supported by peer-reviewed literature and standard physical therapy practice patterns.
+
+## Completion Requirements
+
+To successfully complete this course and receive continuing education credit, participants must:
+
+- Review all course materials
+
+- Complete the 20-question knowledge check with a score of 70% or higher
+
+- Complete the course evaluation
+
+## Time Allocation
+
+| Module | Content | Time |
+|--------|---------|------|
+| 1 | Introduction to MSK Evaluation | 20 min |
+| 2 | Cervical Spine | 18 min |
+| 3 | Thoracic Spine | 15 min |
+| 4 | Lumbar Spine | 20 min |
+| 5 | SI Joint | 12 min |
+| 6 | Shoulder | 20 min |
+| 7 | Elbow | 12 min |
+| 8 | Wrist and Hand | 12 min |
+| 9 | Hip | 15 min |
+| 10 | Knee | 18 min |
+| 11 | Ankle and Foot | 15 min |
+| 12 | Clinical Reasoning | 35 min |
+
+**Total:** 3 CCUs
+
+## Important Note on Special Tests
+
+**Clinical Judgment Required:** This course presents selected special tests commonly used in musculoskeletal evaluation. It is not an exhaustive or comprehensive list of all available tests. Clinical judgment should always dictate which tests are performed for each individual patient. Consider the patient's presentation, contraindications, and the diagnostic utility of each test when making examination decisions. Special tests should be performed only when indicated by the patient's history and initial examination findings.
+
+---
+
+<div class="module-header" id="module1">
+    <h1>Module 1: Introduction to MSK Evaluation (20 minutes)</h1>
+    <div class="module-complete" id="module1-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Understand the systematic approach to musculoskeletal evaluation
+- Recognize the importance of evidence-based examination techniques
+- Apply clinical reasoning principles to examination planning
+
+## Introduction to Systematic MSK Assessment
+
+The musculoskeletal examination forms the foundation of physical therapy practice. A systematic, evidence-based approach ensures comprehensive evaluation while maximizing diagnostic accuracy and clinical efficiency.
+
+### The Examination Framework
+
+**1. Subjective History**
+- Chief complaint and mechanism of injury
+- Pain characteristics (location, quality, behavior)
+- Functional limitations and activity restrictions
+- Previous treatments and interventions
+- Medical history and red flags
+
+**2. Objective Examination**
+- Observation and postural assessment
+- Active and passive range of motion
+- Manual muscle testing
+- Palpation and tissue assessment
+- Special tests and neurological screening
+- Functional movement assessment
+
+**3. Clinical Reasoning**
+- Integration of subjective and objective findings
+- Formation of clinical hypothesis
+- Differential diagnosis considerations
+- Treatment planning and goal setting
+
+### Evidence-Based Special Testing
+
+<div class="tip-box">
+**Clinical Pearl:** The diagnostic value of special tests is enhanced when combined with thorough history and basic examination findings. No single test should be used in isolation for clinical decision-making.
+</div>
+
+Understanding test characteristics is essential:
+- **Sensitivity**: Ability to correctly identify those with the condition
+- **Specificity**: Ability to correctly identify those without the condition
+- **Positive Likelihood Ratio (+LR)**: How much a positive test increases probability of diagnosis
+- **Negative Likelihood Ratio (-LR)**: How much a negative test decreases probability of diagnosis
+
+### Red Flags in MSK Examination
+
+<div class="caution-box">
+**Immediate Physician Referral Required:**
+- Cauda equina syndrome signs
+- Progressive neurological deficits
+- Signs of fracture or dislocation
+- Systemic illness indicators
+- Vascular compromise
+- Severe night pain with systemic symptoms
+</div>
+
+---
+
+<div class="module-header" id="module2">
+    <h1>Module 2: Cervical Spine (18 minutes)</h1>
+    <div class="module-complete" id="module2-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Perform systematic cervical spine examination
+- Apply and interpret key cervical spine special tests
+- Recognize red flags requiring immediate referral
+
+## Subjective Examination Considerations
+
+### Key Historical Elements
+- Mechanism of injury (flexion, extension, rotation)
+- Pain distribution and referral patterns
+- Associated neurological symptoms
+- Activities that aggravate or relieve symptoms
+- Previous cervical spine injuries or interventions
+
+### Red Flags for Cervical Spine
+
+<div class="caution-box">
+**Immediate Medical Attention Required:**
+- Signs of vertebrobasilar insufficiency
+- Upper motor neuron signs
+- Progressive myelopathy
+- Severe restriction of cervical movement
+- Drop attacks or transient loss of consciousness
+</div>
+
+## Objective Examination
+
+### Range of Motion Assessment
+Normal cervical spine ranges:
+- Flexion: 50-60°
+- Extension: 60-75°
+- Side bending: 45° bilateral
+- Rotation: 80° bilateral
+
+### Key Special Tests
+
+<div class="test-box">
+**Spurling's Test**
+- **Purpose**: Cervical radiculopathy
+- **Technique**: Lateral flexion + compression
+- **Positive**: Reproduction of arm pain
+- **Sensitivity**: 30-60%
+- **Specificity**: 85-100%
+- **+LR**: 3.5
+</div>
+
+<div class="test-box">
+**Upper Limb Neurodynamic Test (ULNT)**
+- **Purpose**: Neural mechanosensitivity
+- **Technique**: Sequential positioning of shoulder, elbow, wrist
+- **Positive**: Reproduction of symptoms with structural differentiation
+- **Sensitivity**: 70-83%
+- **Specificity**: 22-33%
+</div>
+
+<div class="test-box">
+**Deep Neck Flexor Endurance Test**
+- **Purpose**: Assess deep cervical flexor function
+- **Technique**: Cranio-cervical flexion with chin tuck
+- **Normal**: Hold 10 repetitions for 10 seconds
+- **Clinical significance**: Reduced endurance associated with neck pain
+</div>
+
+### Clinical Decision Making
+
+Cervical radiculopathy diagnosis is enhanced when multiple findings are present:
+- Positive Spurling's test
+- Distraction test relieves symptoms  
+- Reduced cervical rotation <60°
+- Positive ULNT
+
+<div class="tip-box">
+**Clinical Pearl:** The combination of age >55, positive Spurling's test, and symptom relief with cervical distraction significantly increases probability of cervical radiculopathy.
+</div>
+
+---
+
+<div class="module-header" id="module3">
+    <h1>Module 3: Thoracic Spine (15 minutes)</h1>
+    <div class="module-complete" id="module3-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Assess thoracic spine mobility and function
+- Differentiate thoracic spine from cardiac/pulmonary conditions
+- Apply evidence-based thoracic spine interventions
+
+## Functional Anatomy Considerations
+
+The thoracic spine's unique anatomy influences examination approach:
+- Rib cage attachment limits movement
+- Kyphotic curvature affects mechanics
+- Transitional zones (cervicothoracic, thoracolumbar) prone to dysfunction
+
+## Key Examination Components
+
+### Range of Motion
+- Flexion: 20-45°
+- Extension: 15-20°
+- Side bending: 20-40°
+- Rotation: 35-50°
+
+### Special Considerations
+
+<div class="caution-box">
+**Differential Diagnosis Alert:**
+Thoracic pain may indicate:
+- Cardiac conditions (angina, MI)
+- Pulmonary pathology (pneumonia, PE)
+- Gastrointestinal disorders
+- Systemic conditions
+</div>
+
+### Assessment Techniques
+
+<div class="test-box">
+**Thoracic Rotation Test**
+- **Purpose**: Assess thoracic rotation mobility
+- **Technique**: Seated rotation with arms crossed
+- **Normal**: 50-60° bilateral
+- **Significance**: Limited rotation common in thoracic dysfunction
+</div>
+
+<div class="test-box">
+**Rib Spring Test**
+- **Purpose**: Assess rib mobility and pain provocation
+- **Technique**: Posterior-anterior pressure over rib angles
+- **Positive**: Pain reproduction or restricted mobility
+- **Clinical use**: Identifying rib dysfunction
+</div>
+
+### Treatment Considerations
+
+Evidence supports:
+- Thoracic manipulation for neck pain
+- Thoracic mobility exercises
+- Postural education and ergonomic modification
+- Breathing pattern retraining
+
+<div class="tip-box">
+**Clinical Pearl:** Thoracic spine manipulation can significantly improve cervical spine pain and mobility, even when thoracic symptoms are minimal.
+</div>
+
+---
+
+<div class="module-header" id="module4">
+    <h1>Module 4: Lumbar Spine (20 minutes)</h1>
+    <div class="module-complete" id="module4-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Perform comprehensive lumbar spine examination
+- Apply clinical prediction rules for lumbar conditions
+- Recognize serious pathology requiring immediate referral
+
+## Red Flags Assessment
+
+<div class="caution-box">
+**Cauda Equina Syndrome - Emergency Referral:**
+- Bilateral sciatica
+- Saddle anesthesia
+- Bladder/bowel dysfunction
+- Progressive motor deficit
+- Severe or progressive neurological deficit
+</div>
+
+## Systematic Examination Approach
+
+### Range of Motion Assessment
+- Flexion: 40-60°
+- Extension: 20-35°
+- Side bending: 15-20° bilateral
+- Rotation: 5-18° bilateral
+
+### Neurological Screening
+
+| Level | Myotome | Dermatome | Reflex |
+|-------|---------|-----------|--------|
+| L3 | Quadriceps | Anterior thigh | None |
+| L4 | Tibialis anterior | Medial leg | Patellar |
+| L5 | Extensor hallucis longus | Lateral leg/dorsal foot | None |
+| S1 | Plantar flexors | Lateral foot | Achilles |
+
+### Key Special Tests
+
+<div class="test-box">
+**Straight Leg Raise (SLR)**
+- **Purpose**: Lumbar radiculopathy screening
+- **Technique**: Passive hip flexion with knee extended
+- **Positive**: Leg pain <70° hip flexion
+- **Sensitivity**: 91%
+- **Specificity**: 26%
+- **+LR**: 1.2
+</div>
+
+<div class="test-box">
+**Crossed Straight Leg Raise**
+- **Purpose**: Disc herniation
+- **Technique**: SLR on unaffected leg reproduces affected leg pain
+- **Sensitivity**: 29%
+- **Specificity**: 88%
+- **+LR**: 2.4
+</div>
+
+<div class="test-box">
+**Slump Test**
+- **Purpose**: Neural mechanosensitivity
+- **Technique**: Progressive spinal flexion, knee extension, ankle dorsiflexion
+- **Positive**: Symptom reproduction with structural differentiation
+- **Sensitivity**: 84%
+- **Specificity**: 83%
+</div>
+
+### Clinical Prediction Rules
+
+**Lumbar Manipulation CPR** (Flynn et al.)
+Presence of ≥4 factors predicts success:
+1. Duration of symptoms <16 days
+2. No symptoms distal to knee
+3. FABQ work subscale score <19
+4. Hip internal rotation >35° (at least one side)
+5. Lumbar hypomobility
+
+**Lumbar Stabilization CPR** (Hicks et al.)
+Presence of ≥3 factors:
+1. Positive prone instability test
+2. Aberrant movements present
+3. Average SLR >91°
+4. Age <40 years
+
+<div class="tip-box">
+**Clinical Pearl:** The combination of positive SLR, positive crossed SLR, and appropriate neurological findings significantly increases the likelihood of disc herniation requiring surgical consultation.
+</div>
+
+## Classification-Based Treatment
+
+**Treatment-Based Classification System:**
+1. **Manipulation** - Acute, no distal symptoms
+2. **Stabilization** - Recurrent episodes, instability signs
+3. **Specific Exercise** - Directional preference identified
+4. **Traction** - Nerve root compression signs
+
+---
+
+<div class="module-header" id="module5">
+    <h1>Module 5: Sacroiliac Joint (12 minutes)</h1>
+    <div class="module-complete" id="module5-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Assess sacroiliac joint function and mobility
+- Apply validated SIJ pain provocation tests
+- Differentiate SIJ from lumbar spine pathology
+
+## Functional Anatomy
+
+The SIJ presents unique examination challenges:
+- Minimal movement available (2-4mm translation, 1-3° rotation)
+- Multiple pain generators in region
+- Referred pain patterns can mimic lumbar radiculopathy
+
+## Clinical Presentation
+
+Typical SIJ pain characteristics:
+- Unilateral low back/buttock pain
+- Pain below L5 level
+- Absence of centralization with repeated movements
+- Pain with transitional movements (sit-to-stand)
+
+## Examination Strategy
+
+### Pain Provocation Tests
+
+<div class="test-box">
+**Posterior Pelvic Pain Provocation Test (P4/Thigh Thrust)**
+- **Technique**: Hip flexed 90°, posterior force through femur
+- **Positive**: Reproduction of familiar pain
+- **Sensitivity**: 88%
+- **Specificity**: 69%
+- **+LR**: 2.8
+</div>
+
+<div class="test-box">
+**Distraction Test**
+- **Technique**: ASIS pressure in supine
+- **Positive**: Familiar pain reproduction
+- **Sensitivity**: 60%
+- **Specificity**: 81%
+- **+LR**: 3.2
+</div>
+
+<div class="test-box">
+**Compression Test**
+- **Technique**: Lateral pressure with patient side-lying
+- **Positive**: Familiar pain reproduction
+- **Sensitivity**: 69%
+- **Specificity**: 69%
+- **+LR**: 2.2
+</div>
+
+<div class="test-box">
+**Sacral Thrust**
+- **Technique**: Anterior pressure over sacrum (prone)
+- **Positive**: Familiar pain reproduction
+- **Sensitivity**: 63%
+- **Specificity**: 75%
+- **+LR**: 2.5
+</div>
+
+### Composite Testing
+
+<div class="tip-box">
+**Clinical Pearl:** The presence of 3 or more positive SIJ provocation tests significantly increases the likelihood of SIJ-related pain (+LR = 6.8).
+</div>
+
+**Laslett's SIJ Cluster:**
+- When ≥3 of 5 tests positive: +LR = 6.8
+- When <3 tests positive: -LR = 0.16
+
+### Treatment Considerations
+
+Evidence supports:
+- Manual therapy techniques (manipulation/mobilization)
+- Specific exercise targeting hip and pelvic stabilizers
+- Activity modification during acute phases
+- Patient education regarding aggravating factors
+
+---
+
+<div class="module-header" id="module6">
+    <h1>Module 6: Shoulder (20 minutes)</h1>
+    <div class="module-complete" id="module6-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Perform systematic shoulder examination including rotator cuff assessment
+- Differentiate between various shoulder pathologies using special tests
+- Apply evidence-based examination techniques for shoulder impingement
+
+## Functional Anatomy Review
+
+The shoulder complex includes:
+- Glenohumeral joint
+- Acromioclavicular joint
+- Sternoclavicular joint  
+- Scapulothoracic articulation
+
+## Systematic Examination Approach
+
+### Range of Motion Assessment
+- Flexion: 150-180°
+- Extension: 45-60°
+- Abduction: 150-180°
+- External rotation (arm at side): 45-60°
+- Internal rotation: T7-T10 vertebral level
+
+### Rotator Cuff Assessment
+
+<div class="test-box">
+**Empty Can Test (Supraspinatus)**
+- **Technique**: Shoulder abducted 90°, thumbs down, resistance to elevation
+- **Positive**: Pain or weakness
+- **Sensitivity**: 64%
+- **Specificity**: 65%
+- **+LR**: 1.8
+</div>
+
+<div class="test-box">
+**External Rotation Lag Sign (Infraspinatus)**
+- **Technique**: Arm positioned in external rotation, release support
+- **Positive**: Inability to maintain position (lag)
+- **Sensitivity**: 70%
+- **Specificity**: 100%
+- **+LR**: Infinite when positive
+</div>
+
+<div class="test-box">
+**Lift-off Test (Subscapularis)**
+- **Technique**: Hand behind back, lift off from lumbar spine
+- **Positive**: Inability to lift hand away from back
+- **Sensitivity**: 62%
+- **Specificity**: 100%
+- **+LR**: Infinite when positive
+</div>
+
+### Impingement Testing
+
+<div class="test-box">
+**Hawkins-Kennedy Test**
+- **Technique**: Shoulder flexed 90°, forced internal rotation
+- **Positive**: Pain reproduction
+- **Sensitivity**: 79%
+- **Specificity**: 59%
+- **+LR**: 1.9
+</div>
+
+<div class="test-box">
+**Neer Impingement Sign**
+- **Technique**: Passive forward elevation with scapula stabilized
+- **Positive**: Pain in impingement arc
+- **Sensitivity**: 79%
+- **Specificity**: 53%
+- **+LR**: 1.7
+</div>
+
+### Labral Testing
+
+<div class="test-box">
+**O'Brien's Test (Active Compression)**
+- **Purpose**: SLAP lesion detection
+- **Technique**: Forward elevation 90°, adduction 15°, thumb down then up
+- **Positive**: Pain with thumb down, reduced with thumb up
+- **Sensitivity**: 63%
+- **Specificity**: 73%
+- **+LR**: 2.3
+</div>
+
+### Instability Assessment
+
+<div class="test-box">
+**Apprehension Test**
+- **Technique**: Shoulder abducted 90°, externally rotated
+- **Positive**: Patient apprehension or guarding
+- **Sensitivity**: 72%
+- **Specificity**: 96%
+- **+LR**: 18
+</div>
+
+<div class="tip-box">
+**Clinical Pearl:** Combining multiple rotator cuff tests increases diagnostic accuracy. A positive lag sign is pathognomonic for full-thickness rotator cuff tear.
+</div>
+
+### Clinical Decision Making
+
+**Full-thickness rotator cuff tear probability increases with:**
+- Age >60 years
+- Night pain
+- Weakness in external rotation
+- Positive lag signs
+
+**Shoulder impingement syndrome characteristics:**
+- Painful arc 60-120° abduction
+- Positive Hawkins-Kennedy test
+- Pain with overhead activities
+- Response to subacromial injection
+
+---
+
+<div class="module-header" id="module7">
+    <h1>Module 7: Elbow (12 minutes)</h1>
+    <div class="module-complete" id="module7-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Assess elbow joint function and common pathologies
+- Differentiate between lateral and medial epicondylalgia
+- Apply appropriate special tests for elbow examination
+
+## Common Elbow Conditions
+
+### Lateral Epicondylalgia (Tennis Elbow)
+- Most common elbow overuse injury
+- Pain over lateral epicondyle with gripping activities
+- Tenderness over common extensor origin
+
+### Medial Epicondylalgia (Golfer's Elbow)
+- Pain over medial epicondyle
+- Associated with repetitive wrist flexion/pronation
+- Less common than lateral epicondylalgia
+
+## Examination Techniques
+
+### Range of Motion
+- Flexion: 135-145°
+- Extension: 0-5° hyperextension
+- Pronation: 75-85°
+- Supination: 80-85°
+
+### Special Tests
+
+<div class="test-box">
+**Lateral Epicondylalgia Test**
+- **Technique**: Resisted wrist extension with elbow extended
+- **Positive**: Pain over lateral epicondyle
+- **Clinical utility**: Provocation test for lateral epicondylalgia
+</div>
+
+<div class="test-box">
+**Cozen's Test**
+- **Technique**: Resisted wrist extension with radial deviation
+- **Positive**: Pain over lateral epicondyle
+- **Sensitivity**: 88%
+- **Specificity**: Not well established
+</div>
+
+<div class="test-box">
+**Mill's Test**
+- **Technique**: Passive wrist flexion with elbow extension
+- **Positive**: Pain over lateral epicondyle
+- **Clinical use**: Stretching test for lateral epicondylalgia
+</div>
+
+<div class="test-box">
+**Medial Epicondylalgia Test**
+- **Technique**: Resisted wrist flexion with elbow extended
+- **Positive**: Pain over medial epicondyle
+- **Clinical utility**: Provocation test for medial epicondylalgia
+</div>
+
+### Neurological Considerations
+
+<div class="caution-box">
+**Nerve Entrapment Assessment:**
+- **Radial tunnel syndrome**: Pain with resisted middle finger extension
+- **Cubital tunnel syndrome**: Elbow flexion test, Tinel's sign at cubital tunnel
+- **Pronator syndrome**: Resisted pronation reproduces symptoms
+</div>
+
+<div class="tip-box">
+**Clinical Pearl:** Lateral epicondylalgia pain typically worsens with grip strength activities and improves with rest. The condition is often self-limiting but can become chronic without appropriate management.
+</div>
+
+### Treatment Considerations
+
+Evidence-based interventions:
+- Activity modification and load management
+- Progressive strengthening exercises
+- Manual therapy techniques
+- Patient education regarding aggravating factors
+
+---
+
+<div class="module-header" id="module8">
+    <h1>Module 8: Wrist and Hand (12 minutes)</h1>
+    <div class="module-complete" id="module8-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Assess wrist and hand function systematically
+- Apply special tests for common hand/wrist pathologies
+- Recognize signs requiring specialized hand therapy referral
+
+## Functional Anatomy Considerations
+
+The wrist and hand's complex anatomy requires systematic examination:
+- 8 carpal bones with multiple articulations
+- Intricate ligamentous support system
+- Multiple tendon systems (flexors, extensors, intrinsics)
+- Critical neurovascular structures
+
+## Common Conditions
+
+### Carpal Tunnel Syndrome
+- Most common nerve entrapment of upper extremity
+- Median nerve compression at carpal tunnel
+- Symptoms: numbness/tingling in median nerve distribution
+
+### De Quervain's Tenosynovitis
+- Inflammation of APL and EPB tendons
+- Pain over radial styloid process
+- Associated with repetitive thumb movements
+
+## Examination Techniques
+
+### Range of Motion Assessment
+**Wrist:**
+- Flexion: 65-85°
+- Extension: 65-85°  
+- Radial deviation: 15-25°
+- Ulnar deviation: 25-35°
+
+### Carpal Tunnel Assessment
+
+<div class="test-box">
+**Phalen's Test**
+- **Technique**: Sustained wrist flexion for 60 seconds
+- **Positive**: Numbness/tingling in median nerve distribution
+- **Sensitivity**: 68%
+- **Specificity**: 73%
+- **+LR**: 2.5
+</div>
+
+<div class="test-box">
+**Tinel's Sign at Wrist**
+- **Technique**: Tapping over carpal tunnel
+- **Positive**: Tingling in median nerve distribution
+- **Sensitivity**: 50%
+- **Specificity**: 77%
+- **+LR**: 2.2
+</div>
+
+<div class="test-box">
+**Carpal Compression Test**
+- **Technique**: Direct pressure over carpal tunnel for 30 seconds
+- **Positive**: Numbness/tingling reproduction
+- **Sensitivity**: 87%
+- **Specificity**: 90%
+- **+LR**: 8.7
+</div>
+
+### De Quervain's Assessment
+
+<div class="test-box">
+**Finkelstein's Test**
+- **Technique**: Thumb in palm, ulnar deviation of wrist
+- **Positive**: Pain over radial styloid process
+- **High sensitivity and specificity for De Quervain's tenosynovitis
+</div>
+
+### Scaphoid Fracture Screening
+
+<div class="test-box">
+**Scaphoid Compression Test**
+- **Technique**: Axial compression of thumb metacarpal
+- **Positive**: Pain in anatomical snuffbox
+- **Clinical significance**: Suggests scaphoid fracture
+</div>
+
+<div class="caution-box">
+**Red Flags - Immediate Referral Required:**
+- Suspected scaphoid fracture
+- Signs of compartment syndrome
+- Severe crushing injuries
+- Complete tendon ruptures
+- Digital amputations
+</div>
+
+<div class="tip-box">
+**Clinical Pearl:** The combination of positive carpal compression test with clinical symptoms provides the strongest evidence for carpal tunnel syndrome diagnosis.
+</div>
+
+### Treatment Considerations
+
+**Carpal Tunnel Syndrome:**
+- Activity modification and ergonomic training
+- Night splinting in neutral position
+- Nerve gliding exercises
+- Consideration for steroid injection or surgical consultation
+
+**De Quervain's Tenosynovitis:**
+- Activity modification
+- Thumb spica splinting
+- Progressive strengthening
+- Manual therapy techniques
+
+---
+
+<div class="module-header" id="module9">
+    <h1>Module 9: Hip (15 minutes)</h1>
+    <div class="module-complete" id="module9-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Perform comprehensive hip examination including special tests
+- Differentiate hip pathology from lumbar spine referred pain
+- Recognize signs of serious hip pathology requiring imaging
+
+## Functional Anatomy and Biomechanics
+
+The hip joint's ball-and-socket configuration provides:
+- Stability for weight-bearing activities
+- Mobility for functional movement patterns
+- Complex muscle interactions for dynamic control
+
+## Common Hip Conditions by Age
+
+**Young Adults (16-35):**
+- Femoroacetabular impingement (FAI)
+- Labral tears
+- Athletic injuries
+
+**Middle Age (35-55):**
+- Early osteoarthritis
+- Greater trochanteric pain syndrome
+- Hip flexor strains
+
+**Older Adults (>55):**
+- Osteoarthritis
+- Fractures (especially with osteoporosis)
+- Referred pain from lumbar spine
+
+## Systematic Examination
+
+### Range of Motion Assessment
+- Flexion: 110-120°
+- Extension: 10-30°
+- Abduction: 30-45°
+- Adduction: 20-30°
+- Internal rotation: 30-40°
+- External rotation: 40-60°
+
+### Key Special Tests
+
+<div class="test-box">
+**FABER Test (Patrick's Test)**
+- **Technique**: Hip flexed, abducted, externally rotated
+- **Positive**: Groin pain (hip pathology) vs. posterior pain (SIJ)
+- **Sensitivity**: 57% (hip pathology)
+- **Specificity**: 71%
+- **+LR**: 2.0
+</div>
+
+<div class="test-box">
+**FADIR Test (Hip Impingement)**
+- **Technique**: Hip flexed 90°, adducted and internally rotated
+- **Positive**: Groin pain reproduction
+- **Sensitivity**: 78% (labral tears)
+- **Specificity**: 10%
+- **+LR**: 0.87
+</div>
+
+<div class="test-box">
+**Trendelenburg Test**
+- **Technique**: Single-leg stance for 10 seconds
+- **Positive**: Contralateral pelvis drops
+- **Indicates**: Hip abductor weakness
+- **Clinical significance**: Functional impairment indicator
+</div>
+
+<div class="test-box">
+**Thomas Test**
+- **Technique**: Supine, opposite hip flexed to chest
+- **Positive**: Test leg rises off table (hip flexor tightness)
+- **Clinical use**: Assess hip flexor length
+</div>
+
+### Differential Diagnosis
+
+<div class="tip-box">
+**Hip vs. Lumbar Spine Differentiation:**
+- Hip pathology: Groin pain, limited hip internal rotation
+- Lumbar spine: Back pain with radiation, normal hip ROM
+- Combined pathology possible, especially in older adults
+</div>
+
+| Finding | Hip Pathology | Lumbar Spine |
+|---------|---------------|--------------|
+| Pain location | Groin/anterior thigh | Back with radiation |
+| Hip internal rotation | Limited/painful | Usually normal |
+| SLR test | Negative | May be positive |
+| FABER test | Groin pain | Posterior pain |
+
+### Serious Pathology Recognition
+
+<div class="caution-box">
+**Red Flags - Immediate Referral:**
+- Suspected fracture (trauma, severe pain, inability to bear weight)
+- Signs of avascular necrosis
+- Severe night pain with systemic symptoms
+- Progressive neurological deficits
+- Infection signs (fever, warmth, severe inflammation)
+</div>
+
+### Age-Specific Considerations
+
+**Femoroacetabular Impingement (FAI):**
+- Young, active patients
+- Groin pain with hip flexion activities
+- Positive FADIR test
+- May require specialized imaging (MRI arthrogram)
+
+**Hip Osteoarthritis:**
+- Morning stiffness <60 minutes
+- Crepitus with movement
+- Limited internal rotation (<25°)
+- Age >50 years
+
+<div class="tip-box">
+**Clinical Pearl:** Hip internal rotation limitation is often the first and most sensitive sign of hip joint pathology, particularly osteoarthritis.
+</div>
+
+---
+
+<div class="module-header" id="module10">
+    <h1>Module 10: Knee (18 minutes)</h1>
+    <div class="module-complete" id="module10-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Perform systematic knee examination including ligament and meniscal testing
+- Apply evidence-based special tests with knowledge of diagnostic accuracy
+- Recognize acute knee injuries requiring immediate referral
+
+## Functional Anatomy Review
+
+The knee's complexity requires systematic examination:
+- Tibiofemoral joint (primary weight-bearing)
+- Patellofemoral joint (tracking and stability)
+- Four major ligaments (ACL, PCL, MCL, LCL)
+- Two menisci (medial and lateral)
+- Multiple bursae and fat pads
+
+## History and Mechanism of Injury
+
+### Acute Injuries
+**Non-contact mechanisms:**
+- ACL injury: Cutting, pivoting, landing
+- Meniscal injury: Twisting with planted foot
+- Patellar dislocation: Valgus stress with external rotation
+
+**Contact mechanisms:**
+- MCL/LCL injury: Direct lateral/medial force
+- PCL injury: Dashboard injury, direct posterior force
+- Multiple ligament injury: High-energy trauma
+
+## Systematic Examination
+
+### Range of Motion Assessment
+- Flexion: 130-140°
+- Extension: 0-5° hyperextension
+- Note: Any loss of terminal extension is significant
+
+### Ligament Testing
+
+<div class="test-box">
+**Anterior Drawer Test (ACL)**
+- **Technique**: Knee flexed 90°, anterior force on tibia
+- **Positive**: Increased anterior translation
+- **Sensitivity**: 55%
+- **Specificity**: 92%
+- **+LR**: 6.9
+</div>
+
+<div class="test-box">
+**Lachman Test (ACL)**
+- **Technique**: Knee flexed 20-30°, anterior force on tibia
+- **Positive**: Increased anterior translation, soft end-feel
+- **Sensitivity**: 85%
+- **Specificity**: 94%
+- **+LR**: 14.2
+</div>
+
+<div class="test-box">
+**Pivot Shift Test (ACL)**
+- **Technique**: Complex maneuver with valgus and rotation
+- **Positive**: Subluxation and reduction felt
+- **Sensitivity**: 61%
+- **Specificity**: 97%
+- **+LR**: 20.3
+</div>
+
+<div class="test-box">
+**Posterior Drawer Test (PCL)**
+- **Technique**: Knee flexed 90°, posterior force on tibia
+- **Positive**: Increased posterior translation
+- **Sensitivity**: 79%
+- **Specificity**: 100%
+</div>
+
+<div class="test-box">
+**Valgus Stress Test (MCL)**
+- **Technique**: Knee extended and 30° flexed, valgus force
+- **Positive**: Increased medial joint opening
+- **Grade I**: <5mm opening
+- **Grade II**: 5-10mm opening
+- **Grade III**: >10mm opening
+</div>
+
+<div class="test-box">
+**Varus Stress Test (LCL)**
+- **Technique**: Knee extended and 30° flexed, varus force
+- **Positive**: Increased lateral joint opening
+- **Less common injury than MCL
+</div>
+
+### Meniscal Testing
+
+<div class="test-box">
+**McMurray's Test**
+- **Technique**: Knee flexed, rotation with extension
+- **Positive**: Click or pain with manipulation
+- **Sensitivity**: 16%
+- **Specificity**: 98%
+- **+LR**: 8.0 when positive
+</div>
+
+<div class="test-box">
+**Thessaly Test**
+- **Technique**: Single-leg squat with rotation at 20°
+- **Positive**: Medial/lateral joint line pain
+- **Sensitivity**: 90%
+- **Specificity**: 97%
+- **+LR**: 30
+</div>
+
+### Patellofemoral Assessment
+
+<div class="test-box">
+**Patellar Apprehension Test**
+- **Technique**: Lateral pressure on patella with knee extended
+- **Positive**: Patient guarding or apprehension
+- **Indicates**: Patellar instability
+</div>
+
+<div class="test-box">
+**Clarke's Sign**
+- **Technique**: Patellar compression with quadriceps contraction
+- **Positive**: Pain prevents contraction
+- **Note**: High false-positive rate, use cautiously
+</div>
+
+### Clinical Decision Making
+
+**ACL Injury Probability Increases With:**
+- Positive Lachman test
+- Positive pivot shift test
+- Mechanism consistent with ACL injury
+- Immediate effusion development
+
+**Meniscal Injury Considerations:**
+- Joint line tenderness
+- Mechanical symptoms (locking, catching)
+- Positive Thessaly test
+- MRI most definitive for diagnosis
+
+<div class="tip-box">
+**Clinical Pearl:** The Lachman test is the most sensitive and specific single test for ACL injury. A positive pivot shift test is highly specific but requires patient relaxation.
+</div>
+
+### Ottawa Knee Rules
+
+**Knee X-ray indicated if ANY of following present:**
+- Age ≥55 years
+- Isolated tenderness of patella
+- Tenderness at fibular head
+- Inability to flex knee to 90°
+- Inability to bear weight both immediately and in ED (4 steps)
+
+<div class="caution-box">
+**Immediate Referral Required:**
+- Multi-ligament injury (knee dislocation)
+- Vascular compromise
+- Compartment syndrome signs
+- Open fractures
+- Locked knee unable to extend
+</div>
+
+---
+
+<div class="module-header" id="module11">
+    <h1>Module 11: Ankle and Foot (15 minutes)</h1>
+    <div class="module-complete" id="module11-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Assess ankle and foot injuries using systematic approach
+- Apply Ottawa Ankle Rules for fracture screening
+- Differentiate between various ankle pathologies
+
+## Functional Anatomy Considerations
+
+The ankle and foot complex includes:
+- **Talocrural joint**: Primary dorsi/plantarflexion
+- **Subtalar joint**: Inversion/eversion
+- **Midfoot**: Multiple small joints for adaptation
+- **Forefoot**: MTP and IP joints for propulsion
+
+## Common Injury Mechanisms
+
+### Ankle Sprains
+- **Inversion sprains**: 85% of all ankle sprains
+- **Eversion sprains**: Less common, potentially more serious
+- **High ankle sprains**: Syndesmotic injury, longer recovery
+
+### Acute vs. Chronic Conditions
+**Acute**: Fractures, sprains, Achilles rupture
+**Chronic**: Tendinopathies, arthritis, posterior impingement
+
+## Systematic Examination
+
+### Range of Motion Assessment
+- Dorsiflexion: 10-20°
+- Plantarflexion: 40-55°
+- Inversion: 20-30°
+- Eversion: 10-20°
+
+### Fracture Screening - Ottawa Ankle Rules
+
+<div class="test-box">
+**Ottawa Ankle Rules - X-ray Indicated If:**
+
+**Ankle X-ray needed if pain in malleolar zone AND:**
+- Bone tenderness at posterior edge/tip of lateral malleolus OR
+- Bone tenderness at posterior edge/tip of medial malleolus OR
+- Inability to bear weight both immediately and in ED
+
+**Foot X-ray needed if pain in midfoot zone AND:**
+- Bone tenderness at navicular OR
+- Bone tenderness at base of 5th metatarsal OR
+- Inability to bear weight both immediately and in ED
+
+**Sensitivity**: Nearly 100% for fractures
+**Specificity**: ~40%
+</div>
+
+### Ligament Testing
+
+<div class="test-box">
+**Anterior Drawer Test (ATFL)**
+- **Technique**: Ankle neutral, anterior force on calcaneus
+- **Positive**: Increased anterior translation
+- **Sensitivity**: 71%
+- **Specificity**: 33%
+- **Most sensitive test for ATFL injury
+</div>
+
+<div class="test-box">
+**Talar Tilt Test (CFL)**
+- **Technique**: Ankle neutral, inversion stress
+- **Positive**: Increased inversion compared to opposite side
+- **Sensitivity**: 79%
+- **Specificity**: 74%
+- **Tests calcaneofibular ligament integrity
+</div>
+
+<div class="test-box">
+**Squeeze Test (Syndesmosis)**
+- **Technique**: Compression of tibia/fibula at mid-calf
+- **Positive**: Pain at distal tibiofibular joint
+- **Sensitivity**: 96%
+- **Specificity**: 88%
+- **Indicates high ankle sprain
+</div>
+
+### Achilles Tendon Assessment
+
+<div class="test-box">
+**Thompson Test (Achilles Rupture)**
+- **Technique**: Prone, squeeze calf muscle
+- **Positive**: Absence of plantarflexion
+- **Sensitivity**: 96%
+- **Specificity**: 93%
+- **Definitive test for complete Achilles rupture
+</div>
+
+### Plantar Fascia Assessment
+
+<div class="test-box">
+**Windlass Test**
+- **Technique**: Passive extension of 1st MTP joint
+- **Positive**: Reproduction of plantar heel pain
+- **Clinical significance**: Suggests plantar fasciitis
+</div>
+
+### Tendinopathy Screening
+
+**Common locations:**
+- **Achilles**: Posterior ankle pain, morning stiffness
+- **Posterior tibial**: Medial ankle pain, arch collapse
+- **Peroneal**: Lateral ankle pain, especially with eversion
+
+<div class="tip-box">
+**Clinical Pearl:** Ankle sprains involving syndesmotic injury (high ankle sprain) have significantly longer recovery times and may require different management than typical inversion sprains.
+</div>
+
+### Clinical Decision Making
+
+**Ankle Sprain Grading:**
+- **Grade I**: Minimal swelling, no instability
+- **Grade II**: Moderate swelling, mild instability
+- **Grade III**: Severe swelling, significant instability
+
+**Return to Sport Considerations:**
+- Full pain-free ROM
+- Normal strength
+- Functional movement patterns restored
+- Sport-specific activities tolerated
+
+<div class="caution-box">
+**Red Flags - Consider Immediate Referral:**
+- Suspected Achilles rupture
+- Compartment syndrome signs
+- Neurovascular compromise
+- Open fractures
+- Signs of infection
+</div>
+
+---
+
+<div class="module-header" id="module12">
+    <h1>Module 12: Clinical Reasoning and Integration (35 minutes)</h1>
+    <div class="module-complete" id="module12-complete" style="display: none;">✓ Complete</div>
+</div>
+
+## Learning Objectives
+
+After completing this module, participants will be able to:
+- Integrate examination findings using systematic clinical reasoning
+- Formulate clinical hypotheses and differential diagnoses
+- Apply evidence-based decision-making in musculoskeletal practice
+
+## Clinical Reasoning Framework
+
+### The Hypothetico-Deductive Model
+
+**1. Initial Hypothesis Generation**
+- Based on chief complaint and initial observation
+- Consider multiple possible diagnoses
+- Use pattern recognition from clinical experience
+
+**2. Data Collection**
+- Targeted history taking
+- Systematic physical examination
+- Special test selection based on hypotheses
+
+**3. Hypothesis Refinement**
+- Compare findings to expected patterns
+- Rule in/out specific conditions
+- Modify probability of various diagnoses
+
+**4. Clinical Decision Making**
+- Integrate all findings
+- Consider patient factors and preferences
+- Develop treatment plan
+
+### Evidence Integration
+
+#### Understanding Test Characteristics
+
+**Pre-test Probability**: Likelihood of condition before testing
+**Post-test Probability**: Likelihood after testing
+
+<div class="tip-box">
+**Clinical Pearl:** Special tests are most valuable when pre-test probability is moderate (30-70%). Very high or low pre-test probabilities are less influenced by test results.
+</div>
+
+#### Likelihood Ratios in Practice
+
+- **+LR >10**: Large increase in probability
+- **+LR 5-10**: Moderate increase in probability
+- **+LR 2-5**: Small increase in probability
+- **+LR 1-2**: Minimal increase in probability
+
+### Multi-Regional Assessment
+
+Many musculoskeletal conditions require examination of multiple regions:
+
+**Cervical Radiculopathy**: Cervical spine + upper limb neurodynamics
+**Lumbar Radiculopathy**: Lumbar spine + lower limb neurodynamics + hip screen
+**Shoulder Pain**: Shoulder + cervical + thoracic spine
+**Knee Pain**: Knee + hip + ankle/foot alignment
+
+### Case Integration Examples
+
+#### Case 1: 45-year-old with Shoulder Pain
+
+**History**: Gradual onset shoulder pain, worse with overhead activities
+
+**Key Examination Findings**:
+- Limited shoulder flexion (160°) and abduction (150°)
+- Positive Hawkins-Kennedy test
+- Negative lag signs
+- Positive impingement signs
+
+**Clinical Reasoning**:
+- Pre-test probability for impingement: High (age, symptoms, activity)
+- Positive impingement tests support hypothesis
+- Negative lag signs rule out full-thickness rotator cuff tear
+- **Likely diagnosis**: Subacromial impingement syndrome
+
+#### Case 2: 30-year-old with Low Back Pain
+
+**History**: Acute onset during lifting, radiating leg pain
+
+**Key Examination Findings**:
+- Positive SLR at 45° (reproduces leg pain)
+- Positive crossed SLR
+- L5 myotome weakness (4/5)
+- Decreased L5 sensation
+
+**Clinical Reasoning**:
+- High pre-test probability for disc herniation (age, mechanism)
+- Multiple positive neurological findings
+- **Likely diagnosis**: L5 radiculopathy secondary to disc herniation
+
+### Red Flag Recognition and Management
+
+#### Systematic Red Flag Screening
+
+**Constitutional Symptoms**:
+- Fever, chills, night sweats
+- Unexplained weight loss
+- Severe night pain
+- General malaise
+
+**Neurological Red Flags**:
+- Progressive neurological deficit
+- Cauda equina symptoms
+- Upper motor neuron signs
+- Multiple nerve root involvement
+
+**Vascular Red Flags**:
+- Absent pulses
+- Significant color/temperature changes
+- Claudication symptoms
+- Cold extremity
+
+<div class="caution-box">
+**Emergency Referral Protocols:**
+- Cauda equina syndrome: Immediate emergency department
+- Suspected fracture with neurovascular compromise: Immediate orthopedic referral
+- Signs of serious pathology: Urgent physician consultation
+- Progressive neurological deficit: Priority referral within 24-48 hours
+</div>
+
+### Documentation and Communication
+
+#### SOAP Note Structure for MSK Conditions
+
+**Subjective**:
+- Chief complaint and functional limitations
+- Pain characteristics and behavior
+- Relevant medical history
+- Patient goals and expectations
+
+**Objective**:
+- Systematic examination findings
+- Special test results with interpretation
+- Functional assessment results
+- Red flag screening results
+
+**Assessment**:
+- Clinical reasoning process
+- Working diagnosis/differential diagnosis
+- Prognosis and risk factors
+- Goals and expected outcomes
+
+**Plan**:
+- Evidence-based interventions
+- Patient education priorities
+- Referral recommendations if indicated
+- Follow-up and reassessment plan
+
+### Treatment Planning Integration
+
+#### Matching Interventions to Findings
+
+**Manual Therapy Indications**:
+- Joint hypomobility
+- Positive response to accessory movements
+- Specific clinical prediction rule criteria met
+
+**Exercise Therapy Focus**:
+- Strength deficits identified
+- Movement pattern dysfunctions
+- Functional limitations present
+
+**Patient Education Priorities**:
+- Activity modification recommendations
+- Pain science education when appropriate
+- Self-management strategies
+- Expected timeline and prognosis
+
+### Outcome Measurement
+
+#### Region-Specific Outcome Measures
+
+**Neck**: Neck Disability Index (NDI)
+**Shoulder**: Disabilities of Arm, Shoulder, and Hand (DASH)
+**Low Back**: Oswestry Disability Index (ODI)
+**Knee**: International Knee Documentation Committee (IKDC)
+**Ankle**: Foot and Ankle Ability Measure (FAAM)
+
+#### Functional Outcome Measures
+- Patient-Specific Functional Scale (PSFS)
+- Global Rating of Change (GROC)
+- Numeric Pain Rating Scale (NPRS)
+
+### Reassessment and Modification
+
+#### Systematic Reassessment
+
+**Timeline for Reassessment**:
+- Acute conditions: 1-2 weeks
+- Chronic conditions: 2-4 weeks
+- Post-surgical: Variable based on protocol
+
+**Key Reassessment Elements**:
+- Pain and functional status changes
+- Treatment response indicators
+- Goal achievement progress
+- Need for plan modification
+
+<div class="tip-box">
+**Clinical Pearl:** Successful musculoskeletal practice requires balancing evidence-based examination with clinical experience, patient preferences, and individual presentation factors.
+</div>
+
+### Continuous Learning and Development
+
+#### Staying Current with Evidence
+- Regular review of systematic reviews
+- Professional development courses
+- Clinical mentorship and peer consultation
+- Integration of new research into practice
+
+#### Quality Improvement
+- Outcome tracking and analysis
+- Patient satisfaction monitoring
+- Continuing education requirements
+- Professional competency maintenance
+
+---
+
+## Course Summary
+
+This comprehensive course has provided evidence-based approaches to musculoskeletal evaluation across all major body regions. Key takeaways include:
+
+1. **Systematic Examination Approach**: Consistent methodology improves diagnostic accuracy
+2. **Evidence Integration**: Understanding test characteristics enhances clinical decision-making
+3. **Red Flag Recognition**: Early identification of serious pathology ensures patient safety
+4. **Clinical Reasoning**: Structured thinking processes improve diagnostic accuracy
+5. **Multi-Regional Assessment**: Complex conditions often require examination of multiple areas
+
+### Next Steps for Implementation
+
+1. **Practice Integration**: Apply systematic approaches in clinical practice
+2. **Outcome Monitoring**: Track patient outcomes to evaluate effectiveness
+3. **Continuous Learning**: Stay current with evolving evidence and techniques
+4. **Peer Collaboration**: Engage colleagues in evidence-based practice discussions
+
+---
+
+## Knowledge Check - 20 Questions
+
+*[Knowledge check questions would be implemented here with interactive functionality]*
+
+---
+
+## Course Evaluation
+
+*[Course evaluation form would be implemented here]*
+
+---
+
+**Course Completed Successfully**
+
+Thank you for completing "Comprehensive Musculoskeletal Evaluation." Your certificate will be available for download upon successful completion of the knowledge check and course evaluation.
+
+**For questions or support, contact:**
+Troy Hounshell, PT, ScD
+Email: troyh@texastherapypros.com
+
+    </div>
+
+    <script>
+        // Course Progress and Bookmarking System
+        let currentModule = 0;
+        const totalModules = 12;
+        let completedModules = [];
+        let bookmarkedPosition = 0;
+
+        // Initialize course on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            loadBookmark();
+            updateProgress();
+            updateNavigation();
+        });
+
+        // Navigation Functions
+        function toggleNav() {
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+            
+            navMenu.classList.toggle('open');
+            navOverlay.classList.toggle('show');
+        }
+
+        function closeNav() {
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+            
+            navMenu.classList.remove('open');
+            navOverlay.classList.remove('show');
+        }
+
+        function navigateToSection(sectionId, event) {
+            event.preventDefault();
+            closeNav();
+            
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Update current module if it's a module
+                if (sectionId.includes('module')) {
+                    currentModule = parseInt(sectionId.replace('module', ''));
+                    updateNavigation();
+                }
+            }
+        }
+
+        // Progress Tracking Functions
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = (completedModules.length / totalModules) * 100;
+            progressBar.style.width = progressPercent + '%';
+        }
+
+        function markModuleComplete(moduleNumber) {
+            if (!completedModules.includes(moduleNumber)) {
+                completedModules.push(moduleNumber);
+                saveProgress();
+                updateProgress();
+                updateNavigation();
+                
+                // Show completion indicator
+                const completeIndicator = document.getElementById(`module${moduleNumber}-complete`);
+                if (completeIndicator) {
+                    completeIndicator.style.display = 'block';
+                }
+            }
+        }
+
+        function saveProgress() {
+            const courseId = 'msk-course-001';
+            localStorage.setItem(courseId + '_completed', JSON.stringify(completedModules));
+        }
+
+        function loadProgress() {
+            const courseId = 'msk-course-001';
+            const saved = localStorage.getItem(courseId + '_completed');
+            if (saved) {
+                completedModules = JSON.parse(saved);
+                // Show completion indicators
+                completedModules.forEach(moduleNum => {
+                    const completeIndicator = document.getElementById(`module${moduleNum}-complete`);
+                    if (completeIndicator) {
+                        completeIndicator.style.display = 'block';
+                    }
+                });
+            }
+        }
+
+        // Bookmarking Functions
+        function saveBookmark() {
+            const courseId = 'msk-course-001';
+            const scrollPosition = window.pageYOffset;
+            const bookmarkData = {
+                position: scrollPosition,
+                module: currentModule,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem(courseId + '_bookmark', JSON.stringify(bookmarkData));
+            
+            // Show confirmation
+            showBookmarkConfirmation();
+        }
+
+        function loadBookmark() {
+            const courseId = 'msk-course-001';
+            const saved = localStorage.getItem(courseId + '_bookmark');
+            if (saved) {
+                const bookmarkData = JSON.parse(saved);
+                bookmarkedPosition = bookmarkData.position;
+                
+                // Offer to return to bookmarked position
+                if (bookmarkedPosition > 0) {
+                    showBookmarkPrompt(bookmarkData);
+                }
+            }
+        }
+
+        function showBookmarkPrompt(bookmarkData) {
+            const bookmarkDate = new Date(bookmarkData.timestamp).toLocaleDateString();
+            const resumePrompt = confirm(
+                `Resume from where you left off?\n\nLast studied: ${bookmarkDate}\nModule: ${bookmarkData.module || 'Course Information'}\n\nClick OK to resume, Cancel to start from top.`
+            );
+            
+            if (resumePrompt) {
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: bookmarkedPosition,
+                        behavior: 'smooth'
+                    });
+                }, 500);
+            }
+        }
+
+        function showBookmarkConfirmation() {
+            const btn = document.querySelector('.bookmark-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✓';
+            btn.style.background = '#059669';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '#d69e2e';
+            }, 2000);
+        }
+
+        // Navigation Updates
+        function updateNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach((item, index) => {
+                // Remove all classes
+                item.classList.remove('current', 'completed');
+                
+                // Add completed class if module is completed
+                if (index > 0 && completedModules.includes(index)) {
+                    item.classList.add('completed');
+                }
+                
+                // Add current class if this is the current module
+                if (index === currentModule) {
+                    item.classList.add('current');
+                }
+            });
+        }
+
+        // Scroll tracking for automatic progress
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                checkModuleProgress();
+            }, 150);
+        });
+
+        function checkModuleProgress() {
+            const modules = document.querySelectorAll('.module-header');
+            modules.forEach((module, index) => {
+                const moduleNumber = index + 1;
+                const rect = module.getBoundingClientRect();
+                
+                // If module header is in viewport or has been passed
+                if (rect.top <= window.innerHeight * 0.3) {
+                    currentModule = moduleNumber;
+                    
+                    // Auto-complete module if user has scrolled significantly past it
+                    const nextModule = modules[index + 1];
+                    if (nextModule) {
+                        const nextRect = nextModule.getBoundingClientRect();
+                        if (nextRect.top <= window.innerHeight * 0.5) {
+                            markModuleComplete(moduleNumber);
+                        }
+                    } else if (index === modules.length - 1) {
+                        // Last module - complete if scrolled 80% through
+                        const scrollPercent = (window.innerHeight + window.pageYOffset) / document.body.offsetHeight;
+                        if (scrollPercent > 0.8) {
+                            markModuleComplete(moduleNumber);
+                        }
+                    }
+                }
+            });
+            updateNavigation();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Press 'B' to bookmark
+            if (e.key === 'b' || e.key === 'B') {
+                if (!e.ctrlKey && !e.altKey) {
+                    saveBookmark();
+                }
+            }
+            // Press 'N' to toggle navigation
+            if (e.key === 'n' || e.key === 'N') {
+                if (!e.ctrlKey && !e.altKey) {
+                    toggleNav();
+                }
+            }
+        });
+
+        // Print-friendly mode
+        window.addEventListener('beforeprint', function() {
+            // Hide navigation elements for printing
+            document.querySelector('.nav-toggle').style.display = 'none';
+            document.querySelector('.bookmark-btn').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+        });
+
+        window.addEventListener('afterprint', function() {
+            // Restore navigation elements after printing
+            document.querySelector('.nav-toggle').style.display = 'block';
+            document.querySelector('.bookmark-btn').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
