@@ -11,12 +11,14 @@
     <style>
         :root {
             --navy: #1a365d;
-            --gold: #d69e2e;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
+            --navy-light: #2c5282;
+            --gold: #059669;
+            --gold-light: #10b981;
+            --gray-50: #f7fafc;
+            --gray-100: #edf2f7;
             --gray-200: #e5e7eb;
-            --gray-600: #4b5563;
-            --gray-800: #1f2937;
+            --gray-600: #4a5568;
+            --gray-800: #2d3748;
             --gray-900: #111827;
             --success: #059669;
             --danger: #dc2626;
@@ -86,7 +88,7 @@
         }
 
         .login-link:hover {
-            background: #f6d55c !important;
+            background: var(--gold-light) !important;
             color: var(--navy) !important;
             transform: translateY(-2px) !important;
         }
@@ -476,12 +478,12 @@
 
         .status-badge.in-progress {
             background: #fef3c7;
-            color: #d69e2e;
+            color: var(--gold);
         }
 
         .status-badge.completed {
             background: #dcfce7;
-            color: #059669;
+            color: var(--gold);
         }
 
         .status-badge.coming-soon {
