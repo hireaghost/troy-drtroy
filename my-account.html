@@ -303,6 +303,7 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
+            align-items: stretch;
         }
 
         .ccu-card {
@@ -311,6 +312,10 @@
             border-radius: 8px;
             padding: 1.5rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 120px;
         }
 
         .ccu-card h4 {
@@ -319,12 +324,27 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        /* Ensure buttons in CCU cards don't interfere with alignment */
+        .ccu-card .btn {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            flex-shrink: 0;
         }
 
         .ccu-card .value {
             font-size: 2rem;
             font-weight: 700;
             color: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.5rem;
+            line-height: 1;
+            text-align: center;
         }
 
         /* Progress Bar */
@@ -492,12 +512,7 @@
         }
 
         /* CCU Management Styles */
-        .ccu-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+        /* ccu-overview styling is defined above - no override needed */
 
         .checkbox-group {
             display: flex;
