@@ -651,7 +651,8 @@
             <div style="margin: 1.5rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
                 <button onclick="showDebugInfo()" class="btn btn-secondary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔍 Show Debug Info</button>
                 <button onclick="forceLogin()" class="btn btn-primary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔧 Force Login</button>
-                <button onclick="forceShowAccount()" class="btn btn-danger" style="margin-bottom: 1rem;">🚨 Force Display</button>
+                <button onclick="forceShowAccount()" class="btn btn-danger" style="margin-bottom: 1rem; margin-right: 0.5rem;">🚨 Force Display</button>
+                <button onclick="recalculateRenewal()" class="btn btn-success" style="margin-bottom: 1rem;">📅 Fix Renewal</button>
                 <div id="debugInfo" style="display: none;">
                     <h4 style="margin-bottom: 0.5rem;">Debug Information:</h4>
                     <div id="debugContent" style="font-family: monospace; font-size: 0.8rem; background: white; padding: 0.5rem; border-radius: 4px; overflow-x: auto;">
@@ -853,6 +854,7 @@
                             <div class="ccu-card">
                                 <h4>Days Until Renewal</h4>
                                 <div class="value" id="daysUntilRenewal">--</div>
+                                <button onclick="recalculateRenewal()" class="btn btn-secondary" style="font-size: 0.7rem; margin-top: 0.5rem; padding: 0.25rem 0.5rem;">🔄 Refresh</button>
                             </div>
                         </div>
                         
@@ -1198,6 +1200,7 @@
                         // Short delay to ensure DOM is ready
                         setTimeout(() => {
                             forceShowAccount();
+                            restoreActiveSection();
                         }, 100);
                         
                         // Secondary fallback in case first attempt fails
@@ -1206,6 +1209,7 @@
                             if (loginStillVisible) {
                                 console.log('🔧 TROY AUTO-FIX - Fallback trigger');
                                 forceShowAccount();
+                                restoreActiveSection();
                             }
                         }, 500);
                         
@@ -1219,6 +1223,39 @@
             checkLoginStatus();
             setupEventListeners();
         });
+
+        // Restore the previously active section after page load
+        function restoreActiveSection() {
+            const savedSection = localStorage.getItem('currentAccountSection');
+            if (savedSection) {
+                console.log('🔧 SECTION RESTORE - Restoring section:', savedSection);
+                
+                // Hide all sections first
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Show the saved section
+                const targetSection = document.getElementById(savedSection);
+                const targetNavLink = document.querySelector(`[onclick="showSection('${savedSection}')"]`);
+                
+                if (targetSection && targetNavLink) {
+                    targetSection.classList.add('active');
+                    targetNavLink.classList.add('active');
+                    console.log('🔧 SECTION RESTORE - Successfully restored:', savedSection);
+                } else {
+                    // Fallback to overview if section doesn't exist
+                    document.getElementById('overview').classList.add('active');
+                    document.querySelector('[onclick="showSection(\'overview\')"]').classList.add('active');
+                    console.log('🔧 SECTION RESTORE - Fallback to overview');
+                }
+            }
+        }
 
         // Check if user is logged in
         function checkLoginStatus() {
@@ -1283,6 +1320,9 @@
                         
                         console.log('🔍 AUTH DEBUG - Calling loadAccountData()');
                         loadAccountData();
+                        
+                        console.log('🔍 AUTH DEBUG - Restoring active section');
+                        restoreActiveSection();
                         
                         console.log('🔍 AUTH DEBUG - Authentication complete');
                     } else {
@@ -1465,8 +1505,35 @@
             console.log('🚨 TROY FIX - Force display complete');
         }
 
-        // Make forceShowAccount available globally for console access
+        // Manual renewal calculation for testing
+        function recalculateRenewal() {
+            console.log('🔧 MANUAL RENEWAL - Forcing renewal calculation');
+            
+            if (!currentAccount || !currentAccount.licenseExpiration) {
+                console.log('❌ No account or license expiration date');
+                alert('No license expiration date found. Please set it in Personal Info section.');
+                return;
+            }
+            
+            const expirationDate = new Date(currentAccount.licenseExpiration);
+            const today = new Date();
+            const daysUntil = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
+            
+            console.log('🔧 MANUAL RENEWAL - Expiration:', expirationDate);
+            console.log('🔧 MANUAL RENEWAL - Today:', today);
+            console.log('🔧 MANUAL RENEWAL - Days until:', daysUntil);
+            
+            const renewalElement = document.getElementById('daysUntilRenewal');
+            if (renewalElement) {
+                renewalElement.textContent = daysUntil > 0 ? daysUntil : 'Expired';
+                alert(`Renewal calculation complete: ${daysUntil > 0 ? daysUntil + ' days' : 'Expired'}`);
+            }
+        }
+
+        // Make functions available globally for console access
         window.forceShowAccount = forceShowAccount;
+        window.recalculateRenewal = recalculateRenewal;
+        window.restoreActiveSection = restoreActiveSection;
 
         // Load account data into forms
         function loadAccountData() {
@@ -1773,11 +1840,27 @@
             document.getElementById('ccuProgressText').textContent = `${totalEarned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
             
             // Calculate days until renewal if expiration date is set
+            console.log('🔍 RENEWAL DEBUG - License expiration:', currentAccount.licenseExpiration);
             if (currentAccount.licenseExpiration) {
                 const expirationDate = new Date(currentAccount.licenseExpiration);
                 const today = new Date();
                 const daysUntil = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
-                document.getElementById('daysUntilRenewal').textContent = daysUntil > 0 ? daysUntil : 'Expired';
+                
+                console.log('🔍 RENEWAL DEBUG - Expiration date:', expirationDate);
+                console.log('🔍 RENEWAL DEBUG - Today:', today);
+                console.log('🔍 RENEWAL DEBUG - Days until renewal:', daysUntil);
+                
+                const renewalElement = document.getElementById('daysUntilRenewal');
+                if (renewalElement) {
+                    renewalElement.textContent = daysUntil > 0 ? daysUntil : 'Expired';
+                    console.log('🔍 RENEWAL DEBUG - Updated renewal display:', renewalElement.textContent);
+                }
+            } else {
+                console.log('🔍 RENEWAL DEBUG - No license expiration date set');
+                const renewalElement = document.getElementById('daysUntilRenewal');
+                if (renewalElement) {
+                    renewalElement.textContent = '--';
+                }
             }
             
             // Update courses display
@@ -1949,6 +2032,9 @@
                 link.classList.remove('active');
             });
             
+            // Save the current section to localStorage for persistence
+            localStorage.setItem('currentAccountSection', sectionId);
+            
             // Show selected section
             document.getElementById(sectionId).classList.add('active');
             
@@ -1985,6 +2071,7 @@
             localStorage.setItem('customerEmail', currentAccount.email);
             
             showAlert('Personal information updated successfully!', 'success');
+            console.log('🔍 SAVE DEBUG - License expiration saved:', currentAccount.licenseExpiration);
             updateCCUDashboard();
         }
 
