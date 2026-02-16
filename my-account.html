@@ -649,8 +649,9 @@
             
             <!-- Debug Info -->
             <div style="margin: 1.5rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
-                <button onclick="showDebugInfo()" class="btn btn-secondary" style="margin-bottom: 1rem; margin-right: 1rem;">🔍 Show Debug Info</button>
-                <button onclick="forceLogin()" class="btn btn-primary" style="margin-bottom: 1rem;">🔧 Force Login (Troy)</button>
+                <button onclick="showDebugInfo()" class="btn btn-secondary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔍 Show Debug Info</button>
+                <button onclick="forceLogin()" class="btn btn-primary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔧 Force Login</button>
+                <button onclick="forceShowAccount()" class="btn btn-danger" style="margin-bottom: 1rem;">🚨 Force Display</button>
                 <div id="debugInfo" style="display: none;">
                     <h4 style="margin-bottom: 0.5rem;">Debug Information:</h4>
                     <div id="debugContent" style="font-family: monospace; font-size: 0.8rem; background: white; padding: 0.5rem; border-radius: 4px; overflow-x: auto;">
@@ -1175,7 +1176,18 @@
 
         // Initialize page when loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('My Account page initializing...');
+            console.log('🔍 PAGE DEBUG - My Account page initializing...');
+            
+            // Check if required elements exist
+            const loginDiv = document.getElementById('loginRequired');
+            const contentDiv = document.getElementById('accountContent');
+            
+            console.log('🔍 PAGE DEBUG - loginRequired div exists:', !!loginDiv);
+            console.log('🔍 PAGE DEBUG - accountContent div exists:', !!contentDiv);
+            
+            if (loginDiv) console.log('🔍 PAGE DEBUG - loginRequired initial display:', loginDiv.style.display);
+            if (contentDiv) console.log('🔍 PAGE DEBUG - accountContent initial display:', contentDiv.style.display);
+            
             checkLoginStatus();
             setupEventListeners();
         });
@@ -1215,11 +1227,19 @@
                     console.log('🔍 DEBUG - Session valid:', session.expires > Date.now());
                     
                     // Check if session is still valid OR if it's Troy (temporary bypass)
-                    if (session.expires > Date.now() || currentAccount.email === 'troy@drtroy.com') {
+                    const sessionValid = session.expires > Date.now();
+                    const isTroy = currentAccount.email === 'troy@drtroy.com';
+                    
+                    console.log('🔍 AUTH DEBUG - Session valid check:', sessionValid);
+                    console.log('🔍 AUTH DEBUG - Is Troy check:', isTroy);
+                    console.log('🔍 AUTH DEBUG - Should allow access:', sessionValid || isTroy);
+                    
+                    if (sessionValid || isTroy) {
                         console.log('✅ User is logged in:', currentAccount.firstName);
+                        console.log('🔍 AUTH DEBUG - About to call showAccountContent()');
                         
                         // If Troy's session expired, create a new one
-                        if (currentAccount.email === 'troy@drtroy.com' && session.expires <= Date.now()) {
+                        if (isTroy && !sessionValid) {
                             console.log('🔧 Extending Troy\'s session...');
                             const newSession = {
                                 userId: session.userId,
@@ -1230,10 +1250,16 @@
                             localStorage.setItem('userSession', JSON.stringify(newSession));
                         }
                         
+                        console.log('🔍 AUTH DEBUG - Calling showAccountContent()');
                         showAccountContent();
+                        
+                        console.log('🔍 AUTH DEBUG - Calling loadAccountData()');
                         loadAccountData();
+                        
+                        console.log('🔍 AUTH DEBUG - Authentication complete');
                     } else {
                         console.log('❌ Session expired');
+                        console.log('🔍 AUTH DEBUG - Calling showLoginRequired()');
                         showLoginRequired();
                     }
                 } catch (error) {
@@ -1254,8 +1280,25 @@
 
         // Show account content
         function showAccountContent() {
-            document.getElementById('loginRequired').style.display = 'none';
-            document.getElementById('accountContent').style.display = 'block';
+            console.log('🔍 DISPLAY DEBUG - showAccountContent() called');
+            
+            const loginDiv = document.getElementById('loginRequired');
+            const contentDiv = document.getElementById('accountContent');
+            
+            console.log('🔍 DISPLAY DEBUG - loginRequired element:', !!loginDiv);
+            console.log('🔍 DISPLAY DEBUG - accountContent element:', !!contentDiv);
+            
+            if (loginDiv) {
+                console.log('🔍 DISPLAY DEBUG - Hiding loginRequired div');
+                loginDiv.style.display = 'none';
+            }
+            
+            if (contentDiv) {
+                console.log('🔍 DISPLAY DEBUG - Showing accountContent div');
+                contentDiv.style.display = 'block';
+            }
+            
+            console.log('🔍 DISPLAY DEBUG - showAccountContent() complete');
         }
 
         // Show login required message
@@ -1359,6 +1402,42 @@
             alert('Force login complete! Refreshing page...');
             location.reload();
         }
+
+        // Emergency display override (for console use)
+        function forceShowAccount() {
+            console.log('🚨 EMERGENCY - Forcing account display');
+            
+            // Force hide login required
+            const loginDiv = document.getElementById('loginRequired');
+            if (loginDiv) {
+                loginDiv.style.display = 'none';
+                console.log('🚨 EMERGENCY - loginRequired hidden');
+            }
+            
+            // Force show account content
+            const contentDiv = document.getElementById('accountContent');
+            if (contentDiv) {
+                contentDiv.style.display = 'block';
+                console.log('🚨 EMERGENCY - accountContent shown');
+            }
+            
+            // Try to load account data
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (accountData) {
+                try {
+                    currentAccount = JSON.parse(accountData);
+                    loadAccountData();
+                    console.log('🚨 EMERGENCY - Account data loaded');
+                } catch (e) {
+                    console.error('🚨 EMERGENCY - Error loading account data:', e);
+                }
+            }
+            
+            console.log('🚨 EMERGENCY - Force display complete');
+        }
+
+        // Make forceShowAccount available globally for console access
+        window.forceShowAccount = forceShowAccount;
 
         // Load account data into forms
         function loadAccountData() {
