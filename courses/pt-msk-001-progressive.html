@@ -731,7 +731,16 @@
             courseProgress.scrollPositions[courseProgress.currentModule] = window.scrollY;
             localStorage.setItem('pt-msk-001-progress', JSON.stringify(courseProgress));
             
-            document.getElementById('saveStatus').textContent = 'Saved just now';
+            // Update save status immediately
+            const saveStatus = document.getElementById('saveStatus');
+            saveStatus.textContent = 'Saved just now';
+            saveStatus.style.color = '#059669';
+            
+            // Reset color after 2 seconds
+            setTimeout(() => {
+                saveStatus.style.color = '#666';
+            }, 2000);
+            
             showNotification('💾 Progress saved!');
         }
 
@@ -791,6 +800,7 @@
             // Open this module
             content.classList.add('active');
             courseProgress.currentModule = moduleNum;
+            updateProgressDisplay(); // Update progress when switching modules
             
             // Scroll to module
             moduleContainer.scrollIntoView({ behavior: 'smooth' });
@@ -815,6 +825,8 @@
             if (showNotification) {
                 showNotification(`🔓 Module ${moduleNum} unlocked!`);
             }
+            
+            updateProgressDisplay(); // Ensure progress updates when unlocking
         }
 
         function markModuleComplete(moduleNum) {
@@ -824,18 +836,22 @@
             const header = moduleContainer.querySelector('.module-header');
             const status = header.querySelector('.module-status');
             
+            // Add visual feedback immediately
             header.classList.add('completed');
             status.innerHTML = '<span class="module-icon">✅</span><span>Completed</span>';
             
+            // Update progress data
             if (!courseProgress.completedModules.includes(moduleNum)) {
                 courseProgress.completedModules.push(moduleNum);
             }
+            
+            // Force UI update
+            updateProgressDisplay();
         }
 
         function unlockNextModule(nextModuleNum) {
             unlockModule(nextModuleNum);
-            updateProgressDisplay();
-            saveProgress();
+            saveProgress(); // Auto-save when unlocking next module
         }
 
         // Knowledge Check Functions
@@ -878,6 +894,8 @@
                 feedback.textContent = '✅ Excellent! You can now continue to the next module.';
                 continueBtn.classList.add('show');
                 markModuleComplete(moduleNum);
+                updateProgressDisplay(); // Update progress immediately
+                saveProgress(); // Auto-save on completion
             } else {
                 feedback.className = 'feedback incorrect';
                 feedback.textContent = '❌ Incorrect. Please review the material and try again.';
