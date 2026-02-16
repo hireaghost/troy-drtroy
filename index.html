@@ -1443,12 +1443,8 @@
                 }
             }
             
-            // Login failed - show debug info
-            const debugInfo = existingAccount ? 
-                `Debug Info:\n• Account found: YES\n• Stored email: ${JSON.parse(existingAccount).email}\n• Password stored: ${JSON.parse(existingAccount).password ? 'YES' : 'NO'}` :
-                'Debug Info:\n• Account found: NO';
-            
-            showModal('Login Failed', `Email or password is incorrect. Please try again or create a new account.\n\n${debugInfo}`);
+            // Login failed - show clean error message
+            showModal('Login Failed', 'Email or password is incorrect. Please try again or create a new account.');
         }
         
         function showUserDashboard(account) {
