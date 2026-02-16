@@ -821,12 +821,15 @@
                 // For demo purposes, simulate success after delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
+                // Assign courses to user account
+                await assignCoursesToUser();
+                
                 // Mark purchase complete and store package
                 localStorage.setItem('purchaseComplete', 'true');
                 localStorage.setItem('purchaseDate', new Date().toISOString());
                 
                 // Redirect to account dashboard
-                window.location.href = 'account.html';
+                window.location.href = 'my-account.html';
                 
             } catch (error) {
                 // Handle payment error
@@ -835,6 +838,80 @@
                 const submitButton = document.getElementById('submit-payment');
                 submitButton.disabled = false;
                 submitButton.classList.remove('btn-loading');
+            }
+        }
+
+        // Package to Course Mapping
+        const PACKAGE_COURSES = {
+            'basic': ['PT-MSK-001'],
+            'professional': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001'],
+            'premium': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001', 'PT-GERIATRIC-001'],
+            'individual-msk': ['PT-MSK-001']
+        };
+
+        // Assign courses to user account after successful purchase
+        async function assignCoursesToUser() {
+            try {
+                const selectedPackage = localStorage.getItem('selectedPackageCode');
+                const accountData = localStorage.getItem('drtroyAccount');
+                
+                console.log('📚 Assigning courses for package:', selectedPackage);
+                
+                if (!accountData) {
+                    console.error('No user account found');
+                    return;
+                }
+                
+                if (!selectedPackage || !PACKAGE_COURSES[selectedPackage]) {
+                    console.error('Invalid package selected:', selectedPackage);
+                    return;
+                }
+                
+                // Get courses for this package
+                const coursesToAssign = PACKAGE_COURSES[selectedPackage];
+                console.log('Courses to assign:', coursesToAssign);
+                
+                // Update user account
+                const account = JSON.parse(accountData);
+                
+                // Initialize enrolledCourses if it doesn't exist
+                if (!account.enrolledCourses) {
+                    account.enrolledCourses = [];
+                }
+                
+                // Add new courses (avoid duplicates)
+                coursesToAssign.forEach(courseId => {
+                    if (!account.enrolledCourses.includes(courseId)) {
+                        account.enrolledCourses.push(courseId);
+                        console.log('✅ Added course:', courseId);
+                    }
+                });
+                
+                // Add purchase information
+                if (!account.purchases) {
+                    account.purchases = [];
+                }
+                
+                account.purchases.push({
+                    packageCode: selectedPackage,
+                    packageName: localStorage.getItem('selectedPackage'),
+                    amount: parseFloat(localStorage.getItem('packagePrice')),
+                    coursesIncluded: coursesToAssign,
+                    purchaseDate: new Date().toISOString(),
+                    status: 'completed'
+                });
+                
+                // Update account timestamp
+                account.updatedAt = new Date().toISOString();
+                
+                // Save updated account
+                localStorage.setItem('drtroyAccount', JSON.stringify(account));
+                
+                console.log('🎓 Course enrollment complete!');
+                console.log('User now has access to:', account.enrolledCourses);
+                
+            } catch (error) {
+                console.error('Error assigning courses:', error);
             }
         }
 

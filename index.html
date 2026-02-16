@@ -1813,12 +1813,12 @@
                     // Get stored account info
                     const accountInfo = JSON.parse(localStorage.getItem('drtroyAccount'));
                     
-                    // Map package names to short codes
+                    // Map package names to course package codes
                     const packageMap = {
-                        'Physical Therapists': 'PT',
-                        'PT Assistants': 'PTA', 
-                        'Occupational Therapists': 'OT',
-                        'OT Assistants': 'COTA'
+                        'Physical Therapists': 'professional',
+                        'PT Assistants': 'basic', 
+                        'Occupational Therapists': 'professional',
+                        'OT Assistants': 'basic'
                     };
                     
                     // Check if user's discipline matches the package
@@ -2175,12 +2175,12 @@
                     // User came from package selection - redirect to checkout
                     const packageData = JSON.parse(selectedPackage);
                     
-                    // Map package names to short codes  
+                    // Map package names to course package codes  
                     const packageMap = {
-                        'Physical Therapists': 'PT',
-                        'PT Assistants': 'PTA',
-                        'Occupational Therapists': 'OT', 
-                        'OT Assistants': 'COTA'
+                        'Physical Therapists': 'professional',
+                        'PT Assistants': 'basic',
+                        'Occupational Therapists': 'professional', 
+                        'OT Assistants': 'basic'
                     };
                     
                     const packageCode = packageMap[packageData.name] || formData.discipline;
