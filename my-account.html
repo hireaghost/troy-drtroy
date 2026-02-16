@@ -652,7 +652,8 @@
                 <button onclick="showDebugInfo()" class="btn btn-secondary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔍 Show Debug Info</button>
                 <button onclick="forceLogin()" class="btn btn-primary" style="margin-bottom: 1rem; margin-right: 0.5rem;">🔧 Force Login</button>
                 <button onclick="forceShowAccount()" class="btn btn-danger" style="margin-bottom: 1rem; margin-right: 0.5rem;">🚨 Force Display</button>
-                <button onclick="recalculateRenewal()" class="btn btn-success" style="margin-bottom: 1rem;">📅 Fix Renewal</button>
+                <button onclick="recalculateRenewal()" class="btn btn-success" style="margin-bottom: 1rem; margin-right: 0.5rem;">📅 Fix Renewal</button>
+                <button onclick="restoreCachedRenewal()" class="btn btn-secondary" style="margin-bottom: 1rem;">🔄 Restore Cached</button>
                 <div id="debugInfo" style="display: none;">
                     <h4 style="margin-bottom: 0.5rem;">Debug Information:</h4>
                     <div id="debugContent" style="font-family: monospace; font-size: 0.8rem; background: white; padding: 0.5rem; border-radius: 4px; overflow-x: auto;">
@@ -1201,6 +1202,17 @@
                         setTimeout(() => {
                             forceShowAccount();
                             restoreActiveSection();
+                            restoreCachedRenewal();
+                            
+                            // Force renewal calculation after everything loads
+                            setTimeout(() => {
+                                if (currentAccount && currentAccount.licenseExpiration) {
+                                    console.log('🔧 TROY AUTO-FIX - Forcing renewal recalculation');
+                                    recalculateRenewal();
+                                } else {
+                                    console.log('🔧 TROY AUTO-FIX - No renewal data, keeping cached value');
+                                }
+                            }, 200);
                         }, 100);
                         
                         // Secondary fallback in case first attempt fails
@@ -1509,24 +1521,82 @@
         function recalculateRenewal() {
             console.log('🔧 MANUAL RENEWAL - Forcing renewal calculation');
             
-            if (!currentAccount || !currentAccount.licenseExpiration) {
-                console.log('❌ No account or license expiration date');
-                alert('No license expiration date found. Please set it in Personal Info section.');
-                return;
+            // Try to get fresh account data
+            const accountData = localStorage.getItem('drtroyAccount');
+            if (accountData) {
+                try {
+                    const freshAccount = JSON.parse(accountData);
+                    if (freshAccount.licenseExpiration) {
+                        currentAccount = freshAccount; // Update current account reference
+                        
+                        const expirationDate = new Date(freshAccount.licenseExpiration);
+                        const today = new Date();
+                        const daysUntil = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
+                        
+                        console.log('🔧 MANUAL RENEWAL - Fresh expiration data:', freshAccount.licenseExpiration);
+                        console.log('🔧 MANUAL RENEWAL - Expiration date object:', expirationDate);
+                        console.log('🔧 MANUAL RENEWAL - Today:', today);
+                        console.log('🔧 MANUAL RENEWAL - Days until:', daysUntil);
+                        
+                        const renewalElement = document.getElementById('daysUntilRenewal');
+                        if (renewalElement) {
+                            const displayText = daysUntil > 0 ? daysUntil : 'Expired';
+                            renewalElement.textContent = displayText;
+                            
+                            // Save the calculated renewal for persistence
+                            localStorage.setItem('lastCalculatedRenewal', JSON.stringify({
+                                daysUntil: daysUntil,
+                                displayText: displayText,
+                                calculatedAt: new Date().toISOString(),
+                                licenseExpiration: freshAccount.licenseExpiration
+                            }));
+                            
+                            console.log('✅ MANUAL RENEWAL - Display updated and saved:', displayText);
+                        }
+                        return;
+                    }
+                } catch (e) {
+                    console.error('❌ MANUAL RENEWAL - Error parsing account data:', e);
+                }
             }
             
-            const expirationDate = new Date(currentAccount.licenseExpiration);
-            const today = new Date();
-            const daysUntil = Math.ceil((expirationDate - today) / (1000 * 60 * 60 * 24));
+            console.log('❌ No license expiration date found');
             
-            console.log('🔧 MANUAL RENEWAL - Expiration:', expirationDate);
-            console.log('🔧 MANUAL RENEWAL - Today:', today);
-            console.log('🔧 MANUAL RENEWAL - Days until:', daysUntil);
-            
-            const renewalElement = document.getElementById('daysUntilRenewal');
-            if (renewalElement) {
-                renewalElement.textContent = daysUntil > 0 ? daysUntil : 'Expired';
-                alert(`Renewal calculation complete: ${daysUntil > 0 ? daysUntil + ' days' : 'Expired'}`);
+            // Try to restore last calculated renewal
+            const lastRenewal = localStorage.getItem('lastCalculatedRenewal');
+            if (lastRenewal) {
+                try {
+                    const renewalData = JSON.parse(lastRenewal);
+                    const renewalElement = document.getElementById('daysUntilRenewal');
+                    if (renewalElement) {
+                        renewalElement.textContent = renewalData.displayText + ' (cached)';
+                        console.log('🔄 MANUAL RENEWAL - Restored cached value:', renewalData.displayText);
+                    }
+                } catch (e) {
+                    console.error('❌ Error restoring cached renewal:', e);
+                }
+            } else {
+                const renewalElement = document.getElementById('daysUntilRenewal');
+                if (renewalElement) {
+                    renewalElement.textContent = '--';
+                }
+            }
+        }
+
+        // Restore cached renewal on page load
+        function restoreCachedRenewal() {
+            const lastRenewal = localStorage.getItem('lastCalculatedRenewal');
+            if (lastRenewal) {
+                try {
+                    const renewalData = JSON.parse(lastRenewal);
+                    const renewalElement = document.getElementById('daysUntilRenewal');
+                    if (renewalElement && renewalElement.textContent === '--') {
+                        renewalElement.textContent = renewalData.displayText;
+                        console.log('🔄 PAGE LOAD - Restored cached renewal:', renewalData.displayText);
+                    }
+                } catch (e) {
+                    console.error('❌ Error restoring cached renewal on load:', e);
+                }
             }
         }
 
@@ -1534,6 +1604,7 @@
         window.forceShowAccount = forceShowAccount;
         window.recalculateRenewal = recalculateRenewal;
         window.restoreActiveSection = restoreActiveSection;
+        window.restoreCachedRenewal = restoreCachedRenewal;
 
         // Load account data into forms
         function loadAccountData() {
@@ -1638,6 +1709,14 @@
             
             // Update CCU dashboard
             updateCCUDashboard();
+            
+            // Force renewal calculation after everything is loaded
+            setTimeout(() => {
+                if (currentAccount && currentAccount.licenseExpiration) {
+                    console.log('🔧 LOAD DATA - Final renewal calculation');
+                    recalculateRenewal();
+                }
+            }, 100);
             
             // Update courses display
             updateCoursesDisplay();
