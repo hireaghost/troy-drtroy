@@ -413,12 +413,12 @@ Email: troyh@texastherapypros.com
         // Course Access Control System
         const COURSE_ID = 'PT-MSK-001';
         
-        // Package to Course Mapping (matches packages on main site)
+        // Package to Course Mapping (matches actual home page packages)
         const PACKAGE_COURSES = {
-            'basic': ['PT-MSK-001'],
-            'professional': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001'],
-            'premium': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001', 'PT-GERIATRIC-001'],
-            'individual-msk': ['PT-MSK-001'] // For individual course purchases
+            'PT': ['PT-MSK-001', 'MOBILITY-001', 'BALANCE-001', 'EXERCISE-001', 'GERIATRIC-001', 'DOCUMENTATION-001', 'MODALITIES-001', 'NEURO-001', 'INFECTION-001'],
+            'PTA': ['MOBILITY-001', 'EXERCISE-001', 'DOCUMENTATION-001', 'MODALITIES-001', 'INFECTION-001', 'EDUCATION-001'],
+            'OT': ['OT-ADL-001', 'MOBILITY-001', 'BALANCE-001', 'EXERCISE-001', 'DOCUMENTATION-001', 'MODALITIES-001', 'NEURO-001', 'EDUCATION-001'],
+            'COTA': ['MOBILITY-001', 'BALANCE-001', 'EXERCISE-001', 'GERIATRIC-001', 'DOCUMENTATION-001', 'MODALITIES-001', 'NEURO-001', 'EDUCATION-001']
         };
 
         // Check if user has access to this course

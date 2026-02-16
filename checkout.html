@@ -841,12 +841,47 @@
             }
         }
 
-        // Package to Course Mapping
+        // Package to Course Mapping (Based on actual home page packages)
         const PACKAGE_COURSES = {
-            'basic': ['PT-MSK-001'],
-            'professional': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001'],
-            'premium': ['PT-MSK-001', 'PT-NEURO-001', 'PT-CARDIO-001', 'PT-GERIATRIC-001'],
-            'individual-msk': ['PT-MSK-001']
+            'PT': [
+                'PT-MSK-001', // PT Musculoskeletal Evaluation and Diagnosis (3 CCUs)
+                'MOBILITY-001', // Comprehensive Mobility and Fall Prevention (3 CCUs)
+                'BALANCE-001', // Balance, Gait, and Vestibular Management (3 CCUs)  
+                'EXERCISE-001', // Post-Surgical and Therapeutic Exercise (3 CCUs)
+                'GERIATRIC-001', // Geriatric Care Across the Continuum (3 CCUs)
+                'DOCUMENTATION-001', // Professional Documentation and Communication (3 CCUs)
+                'MODALITIES-001', // Physical Agents, Modalities, and Wound Care (3 CCUs)
+                'NEURO-001', // Neurological Rehabilitation (3 CCUs)
+                'INFECTION-001' // Infection Control and Patient Safety (3 CCUs)
+            ], // Total: 27 CCUs
+            'PTA': [
+                'MOBILITY-001', // Comprehensive Mobility and Fall Prevention (3 CCUs)
+                'EXERCISE-001', // Post-Surgical and Therapeutic Exercise (3 CCUs)
+                'DOCUMENTATION-001', // Professional Documentation and Communication (3 CCUs)
+                'MODALITIES-001', // Physical Agents, Modalities, and Wound Care (3 CCUs)
+                'INFECTION-001', // Infection Control and Patient Safety (3 CCUs)
+                'EDUCATION-001' // Patient Education and Health Promotion (2 CCUs)
+            ], // Total: 17 CCUs
+            'OT': [
+                'OT-ADL-001', // OT Evaluation and Assessment of ADLs (3 CCUs)
+                'MOBILITY-001', // Comprehensive Mobility and Fall Prevention (3 CCUs)
+                'BALANCE-001', // Balance, Gait, and Vestibular Management (3 CCUs)
+                'EXERCISE-001', // Post-Surgical and Therapeutic Exercise (3 CCUs)
+                'DOCUMENTATION-001', // Professional Documentation and Communication (3 CCUs)
+                'MODALITIES-001', // Physical Agents, Modalities, and Wound Care (3 CCUs)
+                'NEURO-001', // Neurological Rehabilitation (3 CCUs)
+                'EDUCATION-001' // Patient Education and Health Promotion (2 CCUs)
+            ], // Total: 23 CCUs
+            'COTA': [
+                'MOBILITY-001', // Comprehensive Mobility and Fall Prevention (3 CCUs)
+                'BALANCE-001', // Balance, Gait, and Vestibular Management (3 CCUs)
+                'EXERCISE-001', // Post-Surgical and Therapeutic Exercise (3 CCUs)
+                'GERIATRIC-001', // Geriatric Care Across the Continuum (3 CCUs)
+                'DOCUMENTATION-001', // Professional Documentation and Communication (3 CCUs)
+                'MODALITIES-001', // Physical Agents, Modalities, and Wound Care (3 CCUs)
+                'NEURO-001', // Neurological Rehabilitation (3 CCUs)
+                'EDUCATION-001' // Patient Education and Health Promotion (2 CCUs)
+            ] // Total: 23 CCUs
         };
 
         // Assign courses to user account after successful purchase
