@@ -84,6 +84,13 @@
             font-weight: 600 !important;
             text-decoration: none !important;
             margin-left: 1rem !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .login-link:hover {
+            background: #f6d55c !important;
+            color: var(--navy) !important;
+            transform: translateY(-2px) !important;
         }
 
         /* Main Content */
@@ -553,7 +560,7 @@
                 <a href="index.html#about">About</a>
                 <a href="index.html#contact">Contact</a>
                 <a href="my-account.html" class="login-link" id="accountLink">My Account</a>
-                <button onclick="logout()" class="btn" style="background: #dc2626; color: white; margin-left: 1rem; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600;">🚪 Logout</button>
+                <button onclick="logout()" class="login-link" style="background: var(--gold) !important; color: var(--navy) !important; padding: 0.5rem 1rem !important; border-radius: 6px !important; font-weight: 600 !important; margin-left: 1rem; border: none; cursor: pointer; transition: all 0.3s ease !important;">🚪 Logout</button>
             </nav>
         </div>
     </header>
