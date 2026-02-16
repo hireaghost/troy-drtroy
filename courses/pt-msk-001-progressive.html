@@ -437,6 +437,9 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            .figure-box img {
+                max-height: 500px !important; /* Ensure larger images on mobile for better text readability */
+            }
         }
 
         /* Original course styles */
@@ -559,8 +562,60 @@
         .figure-box img {
             max-width: 100%;
             height: auto;
-            max-height: 500px;
+            max-height: 700px; /* Increased from 500px for better text readability */
             border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .figure-box img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Zoom overlay for images */
+        .image-zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            cursor: pointer;
+        }
+
+        .image-zoom-overlay.show {
+            display: flex;
+        }
+
+        .image-zoom-overlay img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .zoom-hint {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .image-click-hint {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+            text-align: center;
         }
 
         .test-box {
@@ -671,8 +726,9 @@
                 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 1: Examination Sequence Flowchart (SOAP Format)</span>
-                    <img src="images/figure_1_examination_sequence.svg" alt="Flowchart showing SOAP examination sequence">
+                    <img src="images/figure_1_examination_sequence.svg" alt="Flowchart showing SOAP examination sequence" onclick="zoomImage(this)">
                     <div class="figure-caption">Illustration showing the systematic examination process: Subjective (patient history, pain assessment, functional limitations), Objective (observation, ROM, special tests, palpation), Assessment (diagnosis, impairments), and Plan (interventions, goals). Arrows indicate the cyclical nature of reassessment.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <p>The systematic examination follows four phases: Subjective, Objective, Assessment, and Plan (SOAP).</p>
@@ -711,8 +767,9 @@
 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 2: Red Flags Decision Tree</span>
-                    <img src="images/figure_2_red_flags.svg" alt="Decision tree for red flag screening">
+                    <img src="images/figure_2_red_flags.svg" alt="Decision tree for red flag screening" onclick="zoomImage(this)">
                     <div class="figure-caption">Flowchart diagram showing the decision-making process for red flag screening. Starting with initial patient presentation, branches lead to various red flag categories (neurological, systemic, oncological, traumatic) with corresponding actions: emergency referral, urgent imaging, or continue with standard examination.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <div class="caution-box">
@@ -723,8 +780,9 @@
 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 3: Pain Mechanism Classification Diagram</span>
-                    <img src="images/figure_3_pain_mechanism.svg" alt="Classification diagram of pain mechanisms">
+                    <img src="images/figure_3_pain_mechanism.svg" alt="Classification diagram of pain mechanisms" onclick="zoomImage(this)">
                     <div class="figure-caption">Classification diagram illustrating the three primary pain mechanisms in physical therapy evaluation: nociceptive pain (tissue damage, localized, mechanical pattern), neuropathic pain (nervous system lesion, dermatomal distribution, burning/shooting quality), and nociplastic pain (altered central processing, widespread distribution, disproportionate to tissue damage). Understanding these mechanisms guides appropriate examination and intervention strategies.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <h3>Nociceptive Pain</h3>
@@ -738,8 +796,9 @@
 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 4: Tissue Healing Phases Timeline</span>
-                    <img src="images/figure_4_tissue_healing.svg" alt="Timeline of tissue healing phases">
+                    <img src="images/figure_4_tissue_healing.svg" alt="Timeline of tissue healing phases" onclick="zoomImage(this)">
                     <div class="figure-caption">Timeline illustrating the three phases of tissue healing: Inflammatory phase (0-6 days), Proliferative phase (3-21 days), and Remodeling phase (21 days to 2+ years). Each phase has distinct cellular activities, clinical presentations, and treatment considerations that guide physical therapy intervention timing and approach.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <!-- Knowledge Check for Module 1 -->
@@ -789,11 +848,11 @@
                     <span class="figure-number">FIGURE 5: Cervical Spine Anatomy — Gray's Anatomy Plates (1918)</span>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
                         <div style="text-align: center;">
-                            <img src="images/gray86_atlas.png" alt="Atlas (C1)" style="width: 100%; max-width: 250px; height: auto; border: 1px solid #ddd;">
+                            <img src="images/gray86_atlas.png" alt="Atlas (C1)" style="width: 100%; max-width: 250px; height: auto; border: 1px solid #ddd; cursor: pointer;" onclick="zoomImage(this)">
                             <div style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Plate 86:</strong> Atlas (C1)</div>
                         </div>
                         <div style="text-align: center;">
-                            <img src="images/gray87_axis_above.png" alt="Axis (C2) from above" style="width: 100%; max-width: 250px; height: auto; border: 1px solid #ddd;">
+                            <img src="images/gray87_axis_above.png" onclick="zoomImage(this)" style="cursor: pointer;" alt="Axis (C2) from above" style="width: 100%; max-width: 250px; height: auto; border: 1px solid #ddd;">
                             <div style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Plate 87:</strong> Axis (C2) — superior view</div>
                         </div>
                         <div style="text-align: center;">
@@ -810,6 +869,7 @@
                         </div>
                     </div>
                     <div class="figure-caption">Classic anatomical illustrations from Henry Gray's <em>Anatomy of the Human Body</em>, 20th edition (1918). Plate 86: Atlas (C1) — supports the skull; Plate 87-88: Axis (C2) — features the dens for rotational movement; Plate 85: Typical cervical vertebra (C3-C6); Plate 89: Vertebra prominens (C7) — long spinous process landmark. Public domain.</div>
+                    <div class="image-click-hint">💡 Click any image to zoom for better text readability</div>
                 </div>
 
                 <h3>Upper Cervical (C0-C2)</h3>
@@ -848,8 +908,9 @@
 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 6: Spurling's Test Illustration</span>
-                    <img src="images/figure_7_spurling.svg?v=3" alt="Spurling's test illustration">
+                    <img src="images/figure_7_spurling.svg?v=3" alt="Spurling's test illustration" onclick="zoomImage(this)">
                     <div class="figure-caption">Illustration showing examiner performing Spurling's test on seated patient. Patient's neck is extended, laterally flexed, and rotated toward the symptomatic side while examiner applies gentle axial compression through the head. Arrows indicate direction of movement and force application.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <div class="test-box">
@@ -862,8 +923,9 @@
 
                 <div class="figure-box">
                     <span class="figure-number">FIGURE 7: Cervical Distraction Test Illustration</span>
-                    <img src="images/figure_distraction_test.svg" alt="Cervical distraction test illustration">
+                    <img src="images/figure_distraction_test.svg" alt="Cervical distraction test illustration" onclick="zoomImage(this)">
                     <div class="figure-caption">Illustration showing therapist performing cervical distraction test. One hand supports the occiput while the other hand controls the chin/jaw. Upward traction opens intervertebral foramina, reducing nerve root compression and relieving radicular symptoms.</div>
+                    <div class="image-click-hint">💡 Click image to zoom</div>
                 </div>
 
                 <div class="test-box">
@@ -1058,6 +1120,12 @@
         </div>
     </div>
 
+    <!-- Image Zoom Overlay -->
+    <div class="image-zoom-overlay" id="imageZoomOverlay" onclick="closeZoom()">
+        <div class="zoom-hint">Click to close • ESC key • Scroll to zoom</div>
+        <img id="zoomedImage" src="" alt="">
+    </div>
+
     <script>
         // Course Progress Management
         let courseProgress = {
@@ -1077,7 +1145,30 @@
             updateProgressDisplay();
             startAutoSave();
             trackTimeSpent();
+            enableImageZoom();
         });
+
+        // Enable zoom for all images
+        function enableImageZoom() {
+            const images = document.querySelectorAll('.figure-box img');
+            images.forEach(img => {
+                if (!img.onclick) {
+                    img.onclick = () => zoomImage(img);
+                    img.style.cursor = 'pointer';
+                }
+            });
+            
+            // Add click hints to figure boxes that don't have them
+            const figureBoxes = document.querySelectorAll('.figure-box');
+            figureBoxes.forEach(box => {
+                if (!box.querySelector('.image-click-hint')) {
+                    const hint = document.createElement('div');
+                    hint.className = 'image-click-hint';
+                    hint.textContent = '💡 Click image to zoom';
+                    box.appendChild(hint);
+                }
+            });
+        }
 
         // Save/Load Functions
         function saveProgress() {
@@ -1425,7 +1516,40 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 hideConfirmModal();
+                closeZoom();
             }
+        });
+
+        // Image Zoom Functions
+        function zoomImage(img) {
+            const overlay = document.getElementById('imageZoomOverlay');
+            const zoomedImg = document.getElementById('zoomedImage');
+            
+            zoomedImg.src = img.src;
+            zoomedImg.alt = img.alt;
+            overlay.classList.add('show');
+            
+            // Prevent body scroll when zoomed
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeZoom() {
+            const overlay = document.getElementById('imageZoomOverlay');
+            overlay.classList.remove('show');
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Zoom with mouse wheel
+        document.getElementById('zoomedImage').addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const img = this;
+            const currentScale = img.style.transform ? parseFloat(img.style.transform.match(/scale\(([\d.]+)\)/)?.[1] || 1) : 1;
+            const scaleFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            const newScale = Math.min(Math.max(currentScale * scaleFactor, 0.5), 3);
+            
+            img.style.transform = `scale(${newScale})`;
         });
     </script>
 </body>
