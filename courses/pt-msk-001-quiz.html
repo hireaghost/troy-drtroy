@@ -223,10 +223,44 @@
 
         .question-review {
             margin-top: 30px;
-            padding: 20px;
-            background: #f8fafc;
+            padding: 0;
+        }
+
+        .review-item {
+            background: white;
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .review-item.correct {
+            border-left: 4px solid #059669;
+        }
+
+        .review-item.incorrect {
+            border-left: 4px solid #dc2626;
+        }
+
+        .review-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #1a365d;
+        }
+
+        .review-your-answer {
+            margin-bottom: 8px;
             font-size: 14px;
+        }
+
+        .review-correct-answer {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .your-answer {
+            color: #dc2626;
+            font-weight: bold;
         }
 
         .correct-answer {
@@ -234,9 +268,27 @@
             font-weight: bold;
         }
 
-        .incorrect-answer {
-            color: #dc2626;
-            font-weight: bold;
+        .answer-explanation {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #374151;
+            margin-top: 10px;
+        }
+
+        .review-summary {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .review-summary h3 {
+            color: #166534;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -291,7 +343,7 @@
             <div id="nextSteps">
                 <!-- Next step buttons will be populated by JavaScript -->
             </div>
-            <div id="questionReview" class="question-review">
+            <div id="questionReview" class="question-review hidden">
                 <!-- Detailed review will be populated by JavaScript -->
             </div>
         </div>
@@ -670,13 +722,16 @@
                 resultMessage.innerHTML = `
                     <h3>Not Quite There Yet</h3>
                     <p>You answered ${correctAnswers} out of ${quizQuestions.length} questions correctly (${score}%).</p>
-                    <p>You need 70% or higher to pass. Please review the course material and try again.</p>
+                    <p>You need 70% or higher to pass. Review your answers below, then try again.</p>
                 `;
 
                 nextSteps.innerHTML = `
                     <button class="btn btn-primary" onclick="location.reload()" style="margin-right: 10px;">Retake Quiz</button>
                     <a href="pt-msk-001.html" class="btn btn-secondary">Review Course Material</a>
                 `;
+
+                // Show detailed review for failed attempts
+                showDetailedReview(correctAnswers, quizQuestions.length);
             }
 
             // Update course progress if passed
@@ -711,6 +766,47 @@
             } catch (error) {
                 console.error('Error updating course progress:', error);
             }
+        }
+
+        // Show detailed review for failed attempts
+        function showDetailedReview(correctAnswers, totalQuestions) {
+            const questionReview = document.getElementById('questionReview');
+            
+            let reviewHTML = `
+                <div class="review-summary">
+                    <h3>📋 Detailed Review</h3>
+                    <p>Review each question to understand the correct answers. You got ${correctAnswers} out of ${totalQuestions} correct.</p>
+                </div>
+            `;
+
+            userAnswers.forEach((userAnswer, index) => {
+                const question = quizQuestions[index];
+                const isCorrect = userAnswer === question.correct;
+                const userAnswerText = userAnswer !== null ? question.options[userAnswer] : 'Not answered';
+                const correctAnswerText = question.options[question.correct];
+
+                reviewHTML += `
+                    <div class="review-item ${isCorrect ? 'correct' : 'incorrect'}">
+                        <div class="review-question">
+                            Question ${index + 1}: ${question.question}
+                        </div>
+                        <div class="review-your-answer">
+                            Your answer: <span class="${isCorrect ? 'correct-answer' : 'your-answer'}">${userAnswer !== null ? String.fromCharCode(65 + userAnswer) : 'None'}. ${userAnswerText}</span>
+                        </div>
+                        ${!isCorrect ? `
+                            <div class="review-correct-answer">
+                                Correct answer: <span class="correct-answer">${String.fromCharCode(65 + question.correct)}. ${correctAnswerText}</span>
+                            </div>
+                        ` : ''}
+                        <div class="answer-explanation">
+                            <strong>Explanation:</strong> ${question.explanation}
+                        </div>
+                    </div>
+                `;
+            });
+
+            questionReview.innerHTML = reviewHTML;
+            questionReview.classList.remove('hidden');
         }
     </script>
 </body>

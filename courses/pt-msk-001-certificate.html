@@ -302,10 +302,8 @@
                 <div class="course-details">
                     <div class="course-title">PT Musculoskeletal Evaluation and Diagnosis</div>
                     <div class="course-info">Course #PT-MSK-001 • 3.0 Continuing Competency Units (CCUs)</div>
-                    <div class="course-info">Approval #DRTROY-PT-MSK-001-2024</div>
                     <div class="course-info">Provider: DrTroy Continuing Education</div>
                     <div class="course-info">Completion Date: <span id="completionDate">Loading...</span></div>
-                    <div class="course-info">Quiz Score: <span id="quizScore">Loading...</span></div>
                 </div>
 
                 <div class="certificate-text">
@@ -368,11 +366,9 @@
                     day: 'numeric'
                 });
                 const certificateId = generateCertificateId(account.id, 'PT-MSK-001');
-                const quizScore = courseProgress.quizScore || 'Passed';
 
                 document.getElementById('participantName').textContent = fullName;
                 document.getElementById('completionDate').textContent = completionDate;
-                document.getElementById('quizScore').textContent = quizScore;
                 document.getElementById('certificateId').textContent = `Certificate ID: ${certificateId}`;
 
                 // Update course progress
@@ -416,8 +412,7 @@
                         title: 'PT Musculoskeletal Evaluation and Diagnosis',
                         credits: 3,
                         completedAt: new Date().toISOString(),
-                        certificateId: certificateId,
-                        approvalNumber: 'DRTROY-PT-MSK-001-2024'
+                        certificateId: certificateId
                     });
                 }
 
