@@ -698,7 +698,7 @@
                         <div class="ccu-overview">
                             <div class="ccu-card">
                                 <h4>CCUs Required</h4>
-                                <div class="value" id="requiredCCUs">27</div>
+                                <div class="value" id="requiredCCUs">30</div>
                             </div>
                             <div class="ccu-card">
                                 <h4>CCUs Earned</h4>
@@ -719,7 +719,7 @@
                             <div class="progress-bar">
                                 <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                             </div>
-                            <div class="progress-text" id="progressText">0 of 27 CCUs completed (0%)</div>
+                            <div class="progress-text" id="progressText">0 of 30 CCUs completed (0%)</div>
                         </div>
                     </div>
 
@@ -828,7 +828,7 @@
                         <div class="ccu-overview">
                             <div class="ccu-card">
                                 <h4>Required This Period</h4>
-                                <div class="value" id="ccuRequired">27</div>
+                                <div class="value" id="ccuRequired">30</div>
                             </div>
                             <div class="ccu-card">
                                 <h4>Course CCUs Earned</h4>
@@ -848,7 +848,7 @@
                             </div>
                             <div class="ccu-card">
                                 <h4>Remaining</h4>
-                                <div class="value" id="ccuRemaining">27</div>
+                                <div class="value" id="ccuRemaining">30</div>
                             </div>
                             <div class="ccu-card">
                                 <h4>Days Until Renewal</h4>
@@ -861,7 +861,7 @@
                             <div class="progress-bar">
                                 <div class="progress-fill" id="ccuProgressFill" style="width: 0%"></div>
                             </div>
-                            <div class="progress-text" id="ccuProgressText">0 of 27 CCUs completed (0%)</div>
+                            <div class="progress-text" id="ccuProgressText">0 of 30 CCUs completed (0%)</div>
                         </div>
 
                         <!-- CCU Management Forms -->
@@ -924,8 +924,8 @@
                                         <div id="summaryEthics">Ethics/Trafficking: <strong id="summaryEthicsCCUs">0</strong></div>
                                         <div>External CCUs: <strong id="summaryExternalCCUs">0</strong></div>
                                         <div>Total Earned: <strong id="summaryTotalCCUs">0</strong></div>
-                                        <div>Required: <strong id="summaryRequiredCCUs">27</strong></div>
-                                        <div>Remaining: <strong id="summaryRemainingCCUs">27</strong></div>
+                                        <div>Required: <strong id="summaryRequiredCCUs">30</strong></div>
+                                        <div>Remaining: <strong id="summaryRemainingCCUs">30</strong></div>
                                     </div>
                                 </div>
                             </div>
@@ -1712,13 +1712,13 @@
             
             const discipline = currentAccount.discipline || 'PT';
             const ccuRequirements = {
-                'PT': 27,
-                'PTA': 17,
-                'OT': 23,
-                'COTA': 23
+                'PT': 30,
+                'PTA': 20,
+                'OT': 24,
+                'COTA': 24
             };
             
-            const required = ccuRequirements[discipline] || 27;
+            const required = ccuRequirements[discipline] || 30;
             
             // Calculate earned CCUs from completed courses
             let courseCCUs = 0;
