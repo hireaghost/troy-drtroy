@@ -475,6 +475,22 @@
             color: white;
         }
 
+        /* Super User Specific Styles */
+        #superuser-status-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .superuser-nav {
+            background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
+            color: white;
+        }
+
+        .superuser-nav:hover {
+            background: linear-gradient(135deg, #6d28d9, #9333ea) !important;
+        }
+
         /* Status Badges */
         .status-badge {
             font-size: 0.75rem;
@@ -605,6 +621,7 @@
                         <li><a href="#" onclick="showSection('password')" class="nav-link">🔐 Password</a></li>
                         <li><a href="#" onclick="showSection('ccu')" class="nav-link">🎓 CCU Dashboard</a></li>
                         <li><a href="#" onclick="showSection('courses')" class="nav-link">📚 My Courses</a></li>
+                        <li><a href="#" onclick="showSection('superuser')" class="nav-link" id="superuser-nav" style="display: none;">⚡ Super User</a></li>
                         <li><a href="#" onclick="showSection('notifications')" class="nav-link">🔔 Notifications</a></li>
                         <li><a href="#" onclick="showSection('security')" class="nav-link">🛡️ Security</a></li>
                         <li><a href="#" onclick="showSection('privacy')" class="nav-link">🔒 Privacy</a></li>
@@ -803,6 +820,109 @@
                         </div>
                     </div>
 
+                    <!-- Super User Section -->
+                    <div id="superuser" class="content-section">
+                        <h2>⚡ Super User Controls</h2>
+                        <p>Advanced administrative controls for platform management.</p>
+                        
+                        <!-- Super User Status -->
+                        <div class="form-card" style="margin-bottom: 2rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <div>
+                                    <h3 style="color: var(--navy); margin-bottom: 0.5rem;">Super User Status</h3>
+                                    <p style="color: var(--gray-600); margin: 0;">Enhanced privileges for course management and platform access</p>
+                                </div>
+                                <div id="superuser-status-badge" style="padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+                                    ⚡ ACTIVE
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Course Management -->
+                        <div class="form-card" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">📚 Course Management</h3>
+                            
+                            <!-- Auto-Enroll All Courses -->
+                            <div style="margin-bottom: 1.5rem;">
+                                <button onclick="enrollAllCourses()" class="btn btn-primary" style="margin-right: 1rem;">
+                                    ➕ Auto-Enroll in All Available Courses
+                                </button>
+                                <button onclick="showAllCoursesAccess()" class="btn btn-secondary">
+                                    👁️ View All Course Access
+                                </button>
+                            </div>
+
+                            <!-- Course Access Override -->
+                            <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">🔓 Direct Course Access</h4>
+                                <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">Access any course directly, bypassing normal enrollment restrictions:</p>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <a href="courses/pt-msk-001-progressive.html" class="btn btn-success" style="font-size: 0.9rem;">MSK Course (Progressive)</a>
+                                    <a href="courses/pt-msk-001.html" class="btn btn-success" style="font-size: 0.9rem;">MSK Course (Original)</a>
+                                    <button onclick="setAdminMode()" class="btn btn-primary" style="font-size: 0.9rem;">🛡️ Enable Admin Mode</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Management -->
+                        <div class="form-card" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">📊 Progress Management</h3>
+                            
+                            <div class="form-grid">
+                                <div>
+                                    <button onclick="viewDetailedProgress()" class="btn btn-secondary" style="width: 100%; margin-bottom: 1rem;">
+                                        📈 View Detailed Progress Data
+                                    </button>
+                                    <button onclick="resetSpecificCourse()" class="btn btn-secondary" style="width: 100%;">
+                                        🎯 Reset Specific Course
+                                    </button>
+                                </div>
+                                <div>
+                                    <button onclick="resetAllProgress()" class="btn btn-danger" style="width: 100%; margin-bottom: 1rem;">
+                                        🔄 Reset ALL Course Progress
+                                    </button>
+                                    <button onclick="simulateCourseCompletion()" class="btn btn-success" style="width: 100%;">
+                                        ✅ Simulate Course Completion
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Progress Details Display -->
+                            <div id="detailed-progress" style="display: none; margin-top: 1.5rem; background: var(--gray-50); border-radius: 6px; padding: 1rem;">
+                                <h4>Current Progress Data:</h4>
+                                <pre id="progress-data-display" style="background: white; padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.8rem;"></pre>
+                            </div>
+                        </div>
+
+                        <!-- Account Management -->
+                        <div class="form-card" style="margin-bottom: 2rem;">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">👤 Account Management</h3>
+                            
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                                <button onclick="exportAccountData()" class="btn btn-secondary">💾 Export Account Data</button>
+                                <button onclick="viewStorageData()" class="btn btn-secondary">🗄️ View localStorage Data</button>
+                                <button onclick="clearAllData()" class="btn btn-danger">🗑️ Clear All Data</button>
+                            </div>
+
+                            <!-- Toggle Super User Status -->
+                            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 1rem;">
+                                <h4 style="margin-bottom: 0.5rem;">⚠️ Manage Super User Status</h4>
+                                <p style="font-size: 0.9rem; margin-bottom: 1rem;">Disable super user privileges to return to normal user experience:</p>
+                                <button onclick="toggleSuperUser()" class="btn btn-danger" style="font-size: 0.9rem;">Disable Super User Mode</button>
+                            </div>
+                        </div>
+
+                        <!-- Platform Access -->
+                        <div class="form-card">
+                            <h3 style="color: var(--navy); margin-bottom: 1rem;">🔧 Platform Access</h3>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <a href="admin.html" class="btn btn-primary" target="_blank">🛡️ Admin Dashboard</a>
+                                <a href="courses.html" class="btn btn-secondary">📚 Browse All Courses</a>
+                                <button onclick="openDevConsole()" class="btn btn-secondary">💻 Developer Tools Guide</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Notifications Section -->
                     <div id="notifications" class="content-section">
                         <h2>Notification Preferences</h2>
@@ -977,12 +1097,31 @@
             
             console.log('Loading account data...');
             
+            // Check for super user status and show/hide nav
+            const isSuperUser = currentAccount.superUser === true || 
+                               localStorage.getItem('troyadmin') === 'true' ||
+                               currentAccount.email === 'troyh@texastherapypros.com';
+            
+            if (isSuperUser) {
+                currentAccount.superUser = true;
+                document.getElementById('superuser-nav').style.display = 'block';
+            }
+
             // Ensure user has access to MSK course (until we have proper enrollment system)
             if (!currentAccount.enrolledCourses) {
                 currentAccount.enrolledCourses = [];
             }
             if (!currentAccount.enrolledCourses.includes('PT-MSK-001')) {
                 currentAccount.enrolledCourses.push('PT-MSK-001');
+            }
+            
+            // Super users get access to ALL courses
+            if (isSuperUser) {
+                Object.keys(COURSE_DATABASE).forEach(courseId => {
+                    if (!currentAccount.enrolledCourses.includes(courseId)) {
+                        currentAccount.enrolledCourses.push(courseId);
+                    }
+                });
             }
             
             // Ensure course progress exists and MSK course is marked as accessible
@@ -1610,6 +1749,305 @@
         }
 
         // Emergency account function removed per user request
+
+        // ===============================
+        // SUPER USER FUNCTIONS
+        // ===============================
+
+        // Enroll in all available courses
+        function enrollAllCourses() {
+            if (!currentAccount) return;
+            
+            const allCourseIds = Object.keys(COURSE_DATABASE);
+            const newEnrollments = [];
+            
+            allCourseIds.forEach(courseId => {
+                if (!currentAccount.enrolledCourses.includes(courseId)) {
+                    currentAccount.enrolledCourses.push(courseId);
+                    newEnrollments.push(COURSE_DATABASE[courseId].title);
+                    
+                    // Add course progress entry
+                    if (!currentAccount.courseProgress[courseId]) {
+                        currentAccount.courseProgress[courseId] = {
+                            enrolledAt: new Date().toISOString(),
+                            startedAt: null,
+                            completed: false,
+                            completedAt: null,
+                            progress: 0
+                        };
+                    }
+                }
+            });
+            
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            updateCoursesDisplay();
+            updateCCUDashboard();
+            
+            if (newEnrollments.length > 0) {
+                showAlert(`✅ Enrolled in ${newEnrollments.length} new courses: ${newEnrollments.join(', ')}`, 'success');
+            } else {
+                showAlert('ℹ️ Already enrolled in all available courses', 'info');
+            }
+        }
+
+        // Show all course access details
+        function showAllCoursesAccess() {
+            const allCourses = Object.keys(COURSE_DATABASE).map(courseId => {
+                const course = COURSE_DATABASE[courseId];
+                const enrolled = currentAccount.enrolledCourses?.includes(courseId) ? '✅' : '❌';
+                const progress = currentAccount.courseProgress?.[courseId];
+                const status = progress?.completed ? 'Completed' : progress?.startedAt ? 'In Progress' : 'Not Started';
+                
+                return `${enrolled} ${course.title} (${course.credits} CCUs) - ${status}`;
+            }).join('\n');
+            
+            alert(`Course Access Status:\n\n${allCourses}\n\n✅ = Enrolled\n❌ = Not Enrolled`);
+        }
+
+        // Set admin mode for courses
+        function setAdminMode() {
+            localStorage.setItem('troyadmin', 'true');
+            showAlert('🛡️ Admin mode activated! You now have admin privileges in all courses.', 'success');
+        }
+
+        // View detailed progress data
+        function viewDetailedProgress() {
+            const progressDiv = document.getElementById('detailed-progress');
+            const dataDisplay = document.getElementById('progress-data-display');
+            
+            const progressData = {
+                enrolledCourses: currentAccount.enrolledCourses || [],
+                courseProgress: currentAccount.courseProgress || {},
+                superUser: currentAccount.superUser || false,
+                lastUpdated: currentAccount.updatedAt || 'Never'
+            };
+            
+            dataDisplay.textContent = JSON.stringify(progressData, null, 2);
+            progressDiv.style.display = progressDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Reset specific course
+        function resetSpecificCourse() {
+            if (!currentAccount.enrolledCourses || currentAccount.enrolledCourses.length === 0) {
+                showAlert('No enrolled courses to reset', 'info');
+                return;
+            }
+            
+            const courseList = currentAccount.enrolledCourses.map(courseId => {
+                const course = COURSE_DATABASE[courseId];
+                return `${courseId}: ${course?.title || 'Unknown Course'}`;
+            }).join('\n');
+            
+            const selectedCourse = prompt(`Enter Course ID to reset:\n\n${courseList}\n\nCourse ID:`);
+            
+            if (selectedCourse && currentAccount.enrolledCourses.includes(selectedCourse)) {
+                // Reset course progress
+                if (currentAccount.courseProgress[selectedCourse]) {
+                    currentAccount.courseProgress[selectedCourse] = {
+                        enrolledAt: currentAccount.courseProgress[selectedCourse].enrolledAt,
+                        startedAt: null,
+                        completed: false,
+                        completedAt: null,
+                        progress: 0
+                    };
+                }
+                
+                // Clear course-specific localStorage
+                localStorage.removeItem(`${selectedCourse}-progress`);
+                localStorage.removeItem(`${selectedCourse}-feedback`);
+                localStorage.removeItem(`${selectedCourse}-exam-results`);
+                
+                localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+                updateCoursesDisplay();
+                updateCCUDashboard();
+                
+                showAlert(`✅ Course ${selectedCourse} progress has been reset`, 'success');
+            } else if (selectedCourse) {
+                showAlert('❌ Invalid course ID or not enrolled in that course', 'danger');
+            }
+        }
+
+        // Reset all progress
+        function resetAllProgress() {
+            const confirmReset = confirm('⚠️ WARNING: This will reset ALL course progress and cannot be undone.\n\nThis will:\n- Reset all course completion status\n- Clear all course progress data\n- Remove all exam results and certificates\n- Keep course enrollments intact\n\nAre you sure you want to continue?');
+            
+            if (!confirmReset) return;
+            
+            const doubleConfirm = confirm('🔴 FINAL CONFIRMATION\n\nYou are about to reset ALL progress for ALL courses.\n\nType "RESET" in the next prompt to confirm.');
+            
+            if (!doubleConfirm) return;
+            
+            const resetConfirmation = prompt('Type "RESET" in ALL CAPS to confirm:');
+            
+            if (resetConfirmation !== 'RESET') {
+                showAlert('❌ Reset cancelled - confirmation text did not match', 'info');
+                return;
+            }
+            
+            // Reset all course progress but keep enrollments
+            if (currentAccount.courseProgress) {
+                Object.keys(currentAccount.courseProgress).forEach(courseId => {
+                    currentAccount.courseProgress[courseId] = {
+                        enrolledAt: currentAccount.courseProgress[courseId].enrolledAt || new Date().toISOString(),
+                        startedAt: null,
+                        completed: false,
+                        completedAt: null,
+                        progress: 0
+                    };
+                });
+            }
+            
+            // Clear all course-related localStorage
+            Object.keys(COURSE_DATABASE).forEach(courseId => {
+                localStorage.removeItem(`${courseId}-progress`);
+                localStorage.removeItem(`${courseId}-feedback`);
+                localStorage.removeItem(`${courseId}-exam-results`);
+                localStorage.removeItem(`${courseId}-exam-progress`);
+            });
+            
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            updateCoursesDisplay();
+            updateCCUDashboard();
+            
+            showAlert('✅ ALL course progress has been reset. Course enrollments preserved.', 'success');
+        }
+
+        // Simulate course completion
+        function simulateCourseCompletion() {
+            if (!currentAccount.enrolledCourses || currentAccount.enrolledCourses.length === 0) {
+                showAlert('No enrolled courses to mark as completed', 'info');
+                return;
+            }
+            
+            const courseList = currentAccount.enrolledCourses.map(courseId => {
+                const course = COURSE_DATABASE[courseId];
+                const completed = currentAccount.courseProgress?.[courseId]?.completed ? '✅' : '❌';
+                return `${completed} ${courseId}: ${course?.title || 'Unknown Course'}`;
+            }).join('\n');
+            
+            const selectedCourse = prompt(`Select Course to Mark as Completed:\n\n${courseList}\n\n✅ = Already Completed\n❌ = Not Completed\n\nCourse ID:`);
+            
+            if (selectedCourse && currentAccount.enrolledCourses.includes(selectedCourse)) {
+                if (!currentAccount.courseProgress[selectedCourse]) {
+                    currentAccount.courseProgress[selectedCourse] = {};
+                }
+                
+                currentAccount.courseProgress[selectedCourse] = {
+                    ...currentAccount.courseProgress[selectedCourse],
+                    startedAt: currentAccount.courseProgress[selectedCourse].startedAt || new Date().toISOString(),
+                    completed: true,
+                    completedAt: new Date().toISOString(),
+                    progress: 100
+                };
+                
+                localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+                updateCoursesDisplay();
+                updateCCUDashboard();
+                
+                const course = COURSE_DATABASE[selectedCourse];
+                showAlert(`✅ ${course?.title || selectedCourse} marked as completed (+${course?.credits || 0} CCUs)`, 'success');
+            } else if (selectedCourse) {
+                showAlert('❌ Invalid course ID or not enrolled in that course', 'danger');
+            }
+        }
+
+        // View localStorage data
+        function viewStorageData() {
+            const storageData = {
+                drtroyAccount: localStorage.getItem('drtroyAccount'),
+                userSession: localStorage.getItem('userSession'),
+                troyadmin: localStorage.getItem('troyadmin'),
+                coursesData: {}
+            };
+            
+            // Get all course-specific data
+            Object.keys(COURSE_DATABASE).forEach(courseId => {
+                const progress = localStorage.getItem(`${courseId}-progress`);
+                const feedback = localStorage.getItem(`${courseId}-feedback`);
+                const examResults = localStorage.getItem(`${courseId}-exam-results`);
+                
+                if (progress || feedback || examResults) {
+                    storageData.coursesData[courseId] = {
+                        progress: progress ? JSON.parse(progress) : null,
+                        feedback: feedback ? JSON.parse(feedback) : null,
+                        examResults: examResults ? JSON.parse(examResults) : null
+                    };
+                }
+            });
+            
+            const dataWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes');
+            dataWindow.document.write(`
+                <html>
+                <head><title>localStorage Data - DrTroy.com</title></head>
+                <body style="font-family: monospace; padding: 20px;">
+                    <h2>localStorage Data</h2>
+                    <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow: auto;">
+                        ${JSON.stringify(storageData, null, 2)}
+                    </pre>
+                </body>
+                </html>
+            `);
+        }
+
+        // Clear all data
+        function clearAllData() {
+            const confirmClear = confirm('🚨 DANGER: This will delete ALL account data and cannot be undone!\n\nThis will:\n- Delete your account completely\n- Remove all course progress\n- Clear all certificates and achievements\n- Log you out immediately\n\nAre you absolutely sure?');
+            
+            if (!confirmClear) return;
+            
+            const finalConfirm = prompt('Type "DELETE EVERYTHING" to confirm complete data deletion:');
+            
+            if (finalConfirm !== 'DELETE EVERYTHING') {
+                showAlert('❌ Data deletion cancelled', 'info');
+                return;
+            }
+            
+            // Clear all localStorage
+            localStorage.clear();
+            
+            showAlert('🗑️ All data deleted. Redirecting to homepage...', 'danger');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+
+        // Toggle super user status
+        function toggleSuperUser() {
+            const confirm = prompt('Are you sure you want to disable Super User mode?\n\nType "DISABLE" to confirm:');
+            
+            if (confirm === 'DISABLE') {
+                currentAccount.superUser = false;
+                localStorage.removeItem('troyadmin');
+                localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+                
+                showAlert('⚡ Super User mode disabled. Refreshing page...', 'info');
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        }
+
+        // Developer tools guide
+        function openDevConsole() {
+            alert(`💻 Developer Tools Guide:
+
+🔧 Useful Console Commands:
+• localStorage.setItem('troyadmin', 'true') - Enable admin mode
+• localStorage.clear() - Clear all data
+• JSON.parse(localStorage.getItem('drtroyAccount')) - View account data
+
+🛡️ Super User Commands:
+• enrollAllCourses() - Auto-enroll in all courses
+• resetAllProgress() - Reset all progress
+• viewStorageData() - View all stored data
+
+⌨️ To open console:
+• Chrome/Edge: F12 or Ctrl+Shift+I
+• Safari: Cmd+Option+I
+• Firefox: F12 or Ctrl+Shift+K`);
+        }
 
         // Show alert message
         function showAlert(message, type = 'info') {
