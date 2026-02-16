@@ -777,16 +777,16 @@
     <header class="course-header">
         <div class="course-header-container">
             <div class="logo">
-                <a href="../index.html">
-                    <img src="../images/drtroy_logo_new.jpg" alt="DrTroy.com - Continuing Education">
+                <a href="../index.html" onclick="autoSaveAndNavigate(event, '../index.html')">
+                    <img src="images/drtroy_logo_new.jpg" alt="DrTroy.com - Continuing Education">
                 </a>
             </div>
             <nav class="course-nav">
-                <a href="../index.html">Home</a>
-                <a href="../my-account.html">My Account</a>
-                <a href="../courses.html">Courses</a>
-                <a href="../about.html">About</a>
-                <a href="../contact.html">Contact</a>
+                <a href="../index.html" onclick="autoSaveAndNavigate(event, '../index.html')">Home</a>
+                <a href="../my-account.html" onclick="autoSaveAndNavigate(event, '../my-account.html')">My Account</a>
+                <a href="../courses.html" onclick="autoSaveAndNavigate(event, '../courses.html')">Courses</a>
+                <a href="../about.html" onclick="autoSaveAndNavigate(event, '../about.html')">About</a>
+                <a href="../contact.html" onclick="autoSaveAndNavigate(event, '../contact.html')">Contact</a>
                 <button class="logout-btn" onclick="logout()">Logout</button>
             </nav>
         </div>
@@ -829,9 +829,10 @@
             <p>Experience the new progressive learning system! This demo includes the first 3 modules with full functionality.</p>
             <ul>
                 <li><strong>Progressive Unlocking:</strong> Complete each module to unlock the next</li>
-                <li><strong>Auto-Save:</strong> Your progress is automatically saved every 5 minutes</li>
+                <li><strong>Smart Auto-Save:</strong> Progress saved automatically every 5 minutes + when navigating</li>
                 <li><strong>Resume Anytime:</strong> Come back later and continue where you left off</li>
                 <li><strong>Knowledge Checks:</strong> One question per module reinforces key concepts</li>
+                <li><strong>Safe Navigation:</strong> Click any menu item or logo - your progress is preserved</li>
             </ul>
             <div style="background: #e8f4f8; padding: 15px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #059669;">
                 <strong>🎯 Demo Modules:</strong> Introduction to MSK Evaluation, Cervical Spine, Thoracic Spine<br>
@@ -1298,7 +1299,7 @@
         }
 
         // Save/Load Functions
-        function saveProgress() {
+        function saveProgress(showNotificationMessage = true) {
             courseProgress.lastSaved = new Date().toISOString();
             courseProgress.scrollPositions[courseProgress.currentModule] = window.scrollY;
             localStorage.setItem('pt-msk-001-progress', JSON.stringify(courseProgress));
@@ -1313,7 +1314,9 @@
                 saveStatus.style.color = '#666';
             }, 2000);
             
-            showNotification('💾 Progress saved!');
+            if (showNotificationMessage) {
+                showNotification('💾 Progress saved!');
+            }
         }
 
         function loadProgress() {
@@ -1342,7 +1345,7 @@
         // Auto-save every 5 minutes
         function startAutoSave() {
             setInterval(() => {
-                saveProgress();
+                saveProgress(false); // Don't show notification for background saves
             }, 300000); // 5 minutes
         }
 
@@ -1517,14 +1520,44 @@
             clearTimeout(scrollSaveTimeout);
             scrollSaveTimeout = setTimeout(() => {
                 courseProgress.scrollPositions[courseProgress.currentModule] = window.scrollY;
-                saveProgress();
+                saveProgress(false); // Silent save for scroll-based saves
             }, 30000);
         });
 
-        // Save before page unload
-        window.addEventListener('beforeunload', function() {
-            saveProgress();
+        // Save before page unload with prompt
+        window.addEventListener('beforeunload', function(e) {
+            // Auto-save progress silently
+            saveProgress(false);
+            
+            // Show prompt if they have progress to lose
+            if (courseProgress.completedModules.length > 0 || courseProgress.currentModule > 1) {
+                e.preventDefault();
+                e.returnValue = 'Your course progress has been auto-saved. Are you sure you want to leave?';
+                return 'Your course progress has been auto-saved. Are you sure you want to leave?';
+            }
         });
+
+        // Auto-save and navigate function
+        function autoSaveAndNavigate(event, url) {
+            event.preventDefault();
+            
+            // Save progress first (with visual feedback)
+            saveProgress(false); // Don't double-notify
+            
+            // Show custom navigation notification
+            showNotification('💾 Progress saved! Navigating...');
+            
+            // Add visual feedback to save button
+            const saveStatus = document.getElementById('saveStatus');
+            saveStatus.style.color = '#059669';
+            saveStatus.style.fontWeight = 'bold';
+            saveStatus.textContent = '✅ Auto-saved for navigation';
+            
+            // Navigate after short delay
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1200);
+        }
 
         // Show message for modules not yet implemented
         function showMoreModulesMessage() {
