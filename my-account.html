@@ -491,6 +491,51 @@
             background: linear-gradient(135deg, #6d28d9, #9333ea) !important;
         }
 
+        /* CCU Management Styles */
+        .ccu-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            transform: scale(1.1);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        #ethicsSection .checkbox-group label {
+            font-weight: 500;
+        }
+
+        /* External CCU entries */
+        .external-ccu-entry {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .external-ccu-entry:hover {
+            border-color: var(--navy);
+        }
+
         /* Status Badges */
         .status-badge {
             font-size: 0.75rem;
@@ -772,8 +817,20 @@
                                 <div class="value" id="ccuRequired">27</div>
                             </div>
                             <div class="ccu-card">
-                                <h4>Currently Earned</h4>
+                                <h4>Course CCUs Earned</h4>
                                 <div class="value" id="ccuEarned">0</div>
+                            </div>
+                            <div class="ccu-card" id="ethicsCard">
+                                <h4 id="ethicsCardTitle">Ethics & Human Trafficking</h4>
+                                <div class="value" id="ethicsCCUs">0</div>
+                            </div>
+                            <div class="ccu-card">
+                                <h4>External CCUs</h4>
+                                <div class="value" id="externalCCUs">0</div>
+                            </div>
+                            <div class="ccu-card">
+                                <h4>Total Earned</h4>
+                                <div class="value" id="totalCCUs">0</div>
                             </div>
                             <div class="ccu-card">
                                 <h4>Remaining</h4>
@@ -791,6 +848,73 @@
                                 <div class="progress-fill" id="ccuProgressFill" style="width: 0%"></div>
                             </div>
                             <div class="progress-text" id="ccuProgressText">0 of 27 CCUs completed (0%)</div>
+                        </div>
+
+                        <!-- CCU Management Forms -->
+                        <div style="margin-top: 2rem;">
+                            <div class="form-card" style="margin-bottom: 1.5rem;">
+                                <h3 style="color: var(--navy); margin-bottom: 1rem;">📋 Manage Your CCU Credits</h3>
+                                
+                                <!-- Ethics and Human Trafficking Section -->
+                                <div id="ethicsSection" style="background: var(--gray-50); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem;" id="ethicsSectionTitle">Ethics & Human Trafficking Requirements</h4>
+                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;" id="ethicsDescription">
+                                        For PT/PTA: Complete Jurisprudence Exam + approved Human Trafficking course (3 CCUs total)
+                                    </p>
+                                    
+                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="jurisprudenceCompleted" onchange="updateEthicsCCUs()">
+                                            <label for="jurisprudenceCompleted" id="jurisprudenceLabel">Jurisprudence Exam Completed (2 CCUs)</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="humanTrafficingCompleted" onchange="updateEthicsCCUs()">
+                                            <label for="humanTrafficingCompleted">Human Trafficking Course Completed (1 CCU)</label>
+                                        </div>
+                                        <button onclick="saveEthicsCCUs()" class="btn btn-primary" style="font-size: 0.9rem;">💾 Save</button>
+                                    </div>
+                                </div>
+
+                                <!-- External CCU Management -->
+                                <div style="background: var(--gray-50); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem;">🌐 External CCU Credits</h4>
+                                    <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 1rem;">
+                                        Add CCU credits you've earned from other providers or courses outside this platform.
+                                    </p>
+                                    
+                                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem;">
+                                        <div style="flex: 1; min-width: 200px;">
+                                            <label for="externalCCUHours" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">CCU Hours:</label>
+                                            <input type="number" id="externalCCUHours" class="form-input" placeholder="0" min="0" max="50" step="0.5" style="width: 100px;">
+                                        </div>
+                                        <div style="flex: 2; min-width: 200px;">
+                                            <label for="externalCCUDescription" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Description:</label>
+                                            <input type="text" id="externalCCUDescription" class="form-input" placeholder="e.g., APTA Conference, Webinar Series, etc.">
+                                        </div>
+                                        <button onclick="addExternalCCUs()" class="btn btn-success" style="white-space: nowrap;">➕ Add CCUs</button>
+                                    </div>
+
+                                    <!-- External CCU List -->
+                                    <div id="externalCCUList">
+                                        <div style="text-align: center; color: var(--gray-600); padding: 1rem; font-style: italic;">
+                                            No external CCUs added yet
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CCU Summary -->
+                                <div style="background: linear-gradient(135deg, var(--navy), #1e40af); color: white; border-radius: 6px; padding: 1rem;">
+                                    <h4 style="margin-bottom: 0.5rem; color: white;">📊 CCU Summary</h4>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; font-size: 0.9rem;">
+                                        <div>Course CCUs: <strong id="summaryCourseCCUs">0</strong></div>
+                                        <div id="summaryEthics">Ethics/Trafficking: <strong id="summaryEthicsCCUs">0</strong></div>
+                                        <div>External CCUs: <strong id="summaryExternalCCUs">0</strong></div>
+                                        <div>Total Earned: <strong id="summaryTotalCCUs">0</strong></div>
+                                        <div>Required: <strong id="summaryRequiredCCUs">27</strong></div>
+                                        <div>Remaining: <strong id="summaryRemainingCCUs">27</strong></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div style="margin-top: 2rem;">
@@ -1170,6 +1294,28 @@
                 document.getElementById('marketingConsent').checked = currentAccount.privacy.marketingConsent === true;
             }
             
+            // Initialize ethics and external CCU data
+            if (!currentAccount.ethicsCCUs) {
+                currentAccount.ethicsCCUs = {
+                    jurisprudenceCompleted: false,
+                    humanTrafficingCompleted: false,
+                    totalEthicsCCUs: 0
+                };
+            }
+            if (!currentAccount.externalCCUs) {
+                currentAccount.externalCCUs = [];
+            }
+
+            // Load ethics CCU checkboxes
+            document.getElementById('jurisprudenceCompleted').checked = currentAccount.ethicsCCUs.jurisprudenceCompleted;
+            document.getElementById('humanTrafficingCompleted').checked = currentAccount.ethicsCCUs.humanTrafficingCompleted;
+            
+            // Update ethics section based on discipline
+            updateEthicsSection();
+            
+            // Update external CCU display
+            updateExternalCCUDisplay();
+            
             // Update CCU dashboard
             updateCCUDashboard();
             
@@ -1322,34 +1468,56 @@
             const required = ccuRequirements[discipline] || 27;
             
             // Calculate earned CCUs from completed courses
-            let earned = 0;
+            let courseCCUs = 0;
             let completedCount = 0;
             
             if (currentAccount.courseProgress) {
                 Object.keys(currentAccount.courseProgress).forEach(courseId => {
                     if (currentAccount.courseProgress[courseId].completed && COURSE_DATABASE[courseId]) {
-                        earned += COURSE_DATABASE[courseId].credits;
+                        courseCCUs += COURSE_DATABASE[courseId].credits;
                         completedCount++;
                     }
                 });
             }
             
-            const remaining = Math.max(0, required - earned);
-            const percentage = Math.min(100, (earned / required) * 100);
+            // Calculate ethics/human trafficking CCUs
+            const ethicsCCUs = currentAccount.ethicsCCUs ? currentAccount.ethicsCCUs.totalEthicsCCUs : 0;
             
-            // Update displays
-            document.getElementById('requiredCCUs').textContent = required;
-            document.getElementById('earnedCCUs').textContent = earned;
+            // Calculate external CCUs
+            const externalCCUsTotal = currentAccount.externalCCUs ? 
+                currentAccount.externalCCUs.reduce((sum, entry) => sum + entry.hours, 0) : 0;
+            
+            // Calculate totals
+            const totalEarned = courseCCUs + ethicsCCUs + externalCCUsTotal;
+            const remaining = Math.max(0, required - totalEarned);
+            const percentage = Math.min(100, (totalEarned / required) * 100);
+            
+            // Update individual displays
             document.getElementById('ccuRequired').textContent = required;
-            document.getElementById('ccuEarned').textContent = earned;
+            document.getElementById('ccuEarned').textContent = courseCCUs;
+            document.getElementById('ethicsCCUs').textContent = ethicsCCUs;
+            document.getElementById('externalCCUs').textContent = externalCCUsTotal;
+            document.getElementById('totalCCUs').textContent = totalEarned;
             document.getElementById('ccuRemaining').textContent = remaining;
             document.getElementById('coursesCompleted').textContent = completedCount;
             
-            // Update progress bars
+            // Update legacy displays for compatibility
+            document.getElementById('requiredCCUs').textContent = required;
+            document.getElementById('earnedCCUs').textContent = courseCCUs;
+            
+            // Update summary displays
+            document.getElementById('summaryCourseCCUs').textContent = courseCCUs;
+            document.getElementById('summaryEthicsCCUs').textContent = ethicsCCUs;
+            document.getElementById('summaryExternalCCUs').textContent = externalCCUsTotal;
+            document.getElementById('summaryTotalCCUs').textContent = totalEarned;
+            document.getElementById('summaryRequiredCCUs').textContent = required;
+            document.getElementById('summaryRemainingCCUs').textContent = remaining;
+            
+            // Update progress bars (based on total earned)
             document.getElementById('progressFill').style.width = percentage + '%';
             document.getElementById('ccuProgressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${earned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
-            document.getElementById('ccuProgressText').textContent = `${earned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
+            document.getElementById('progressText').textContent = `${totalEarned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
+            document.getElementById('ccuProgressText').textContent = `${totalEarned} of ${required} CCUs completed (${Math.round(percentage)}%)`;
             
             // Calculate days until renewal if expiration date is set
             if (currentAccount.licenseExpiration) {
@@ -1749,6 +1917,189 @@
         }
 
         // Emergency account function removed per user request
+
+        // ===============================
+        // CCU MANAGEMENT FUNCTIONS
+        // ===============================
+
+        // Update ethics section based on discipline
+        function updateEthicsSection() {
+            if (!currentAccount || !currentAccount.discipline) return;
+            
+            const discipline = currentAccount.discipline;
+            const ethicsSection = document.getElementById('ethicsSection');
+            const ethicsCard = document.getElementById('ethicsCard');
+            const ethicsCardTitle = document.getElementById('ethicsCardTitle');
+            const ethicsSectionTitle = document.getElementById('ethicsSectionTitle');
+            const ethicsDescription = document.getElementById('ethicsDescription');
+            const jurisprudenceLabel = document.getElementById('jurisprudenceLabel');
+            const jurisprudenceCheckbox = document.getElementById('jurisprudenceCompleted');
+            
+            if (discipline === 'PT' || discipline === 'PTA') {
+                // PT/PTA: Both Jurisprudence Exam and Human Trafficking
+                ethicsCardTitle.textContent = 'Ethics & Human Trafficking';
+                ethicsSectionTitle.textContent = 'Ethics & Human Trafficking Requirements';
+                ethicsDescription.textContent = 'For PT/PTA: Complete Jurisprudence Exam + approved Human Trafficking course (3 CCUs total)';
+                jurisprudenceLabel.textContent = 'Jurisprudence Exam Completed (2 CCUs)';
+                jurisprudenceCheckbox.style.display = 'inline-block';
+                jurisprudenceCheckbox.parentElement.style.display = 'block';
+                document.getElementById('summaryEthics').textContent = 'Ethics/Trafficking: ';
+            } else if (discipline === 'OT' || discipline === 'COTA') {
+                // OT/COTA: Only Human Trafficking
+                ethicsCardTitle.textContent = 'Human Trafficking';
+                ethicsSectionTitle.textContent = 'Human Trafficking Requirements';
+                ethicsDescription.textContent = 'For OT/COTA: Complete approved Human Trafficking course (1 CCU)';
+                jurisprudenceCheckbox.style.display = 'none';
+                jurisprudenceCheckbox.parentElement.style.display = 'none';
+                jurisprudenceCheckbox.checked = false; // Always unchecked for OT/COTA
+                document.getElementById('summaryEthics').textContent = 'Trafficking: ';
+            }
+            
+            updateEthicsCCUs();
+        }
+
+        // Update ethics CCUs based on checkboxes
+        function updateEthicsCCUs() {
+            if (!currentAccount) return;
+            
+            const discipline = currentAccount.discipline;
+            const jurisprudenceCompleted = document.getElementById('jurisprudenceCompleted').checked;
+            const humanTrafficingCompleted = document.getElementById('humanTrafficingCompleted').checked;
+            
+            let totalEthicsCCUs = 0;
+            
+            if (discipline === 'PT' || discipline === 'PTA') {
+                // PT/PTA: 2 CCUs for Jurisprudence + 1 CCU for Human Trafficking
+                if (jurisprudenceCompleted) totalEthicsCCUs += 2;
+                if (humanTrafficingCompleted) totalEthicsCCUs += 1;
+            } else if (discipline === 'OT' || discipline === 'COTA') {
+                // OT/COTA: Only 1 CCU for Human Trafficking
+                if (humanTrafficingCompleted) totalEthicsCCUs += 1;
+            }
+            
+            currentAccount.ethicsCCUs = {
+                jurisprudenceCompleted: jurisprudenceCompleted,
+                humanTrafficingCompleted: humanTrafficingCompleted,
+                totalEthicsCCUs: totalEthicsCCUs
+            };
+            
+            // Update display
+            document.getElementById('ethicsCCUs').textContent = totalEthicsCCUs;
+            updateCCUDashboard();
+        }
+
+        // Save ethics CCUs
+        function saveEthicsCCUs() {
+            if (!currentAccount) return;
+            
+            updateEthicsCCUs();
+            currentAccount.updatedAt = new Date().toISOString();
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            const discipline = currentAccount.discipline;
+            const total = currentAccount.ethicsCCUs.totalEthicsCCUs;
+            
+            if (discipline === 'PT' || discipline === 'PTA') {
+                showAlert(`✅ Ethics & Human Trafficking CCUs saved: ${total}/3 CCUs`, 'success');
+            } else {
+                showAlert(`✅ Human Trafficking CCUs saved: ${total}/1 CCU`, 'success');
+            }
+        }
+
+        // Add external CCUs
+        function addExternalCCUs() {
+            if (!currentAccount) return;
+            
+            const hoursInput = document.getElementById('externalCCUHours');
+            const descriptionInput = document.getElementById('externalCCUDescription');
+            
+            const hours = parseFloat(hoursInput.value);
+            const description = descriptionInput.value.trim();
+            
+            if (!hours || hours <= 0) {
+                showAlert('Please enter a valid number of CCU hours', 'danger');
+                return;
+            }
+            
+            if (!description) {
+                showAlert('Please enter a description for these CCUs', 'danger');
+                return;
+            }
+            
+            // Add to external CCUs array
+            const newEntry = {
+                id: Date.now(),
+                hours: hours,
+                description: description,
+                dateAdded: new Date().toISOString()
+            };
+            
+            currentAccount.externalCCUs.push(newEntry);
+            currentAccount.updatedAt = new Date().toISOString();
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            // Clear form
+            hoursInput.value = '';
+            descriptionInput.value = '';
+            
+            // Update displays
+            updateExternalCCUDisplay();
+            updateCCUDashboard();
+            
+            showAlert(`✅ Added ${hours} external CCUs: ${description}`, 'success');
+        }
+
+        // Update external CCU display
+        function updateExternalCCUDisplay() {
+            if (!currentAccount || !currentAccount.externalCCUs) return;
+            
+            const listContainer = document.getElementById('externalCCUList');
+            const externalCCUs = currentAccount.externalCCUs;
+            
+            if (externalCCUs.length === 0) {
+                listContainer.innerHTML = `
+                    <div style="text-align: center; color: var(--gray-600); padding: 1rem; font-style: italic;">
+                        No external CCUs added yet
+                    </div>
+                `;
+                return;
+            }
+            
+            const totalExternal = externalCCUs.reduce((sum, entry) => sum + entry.hours, 0);
+            
+            listContainer.innerHTML = `
+                <h5 style="margin-bottom: 0.5rem;">External CCU Entries (${totalExternal} total hours):</h5>
+                ${externalCCUs.map(entry => `
+                    <div style="background: white; border: 1px solid var(--gray-200); border-radius: 4px; padding: 0.75rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${entry.hours} CCU${entry.hours !== 1 ? 's' : ''}</strong> - ${entry.description}
+                            <div style="font-size: 0.8rem; color: var(--gray-600);">Added: ${new Date(entry.dateAdded).toLocaleDateString()}</div>
+                        </div>
+                        <button onclick="removeExternalCCU(${entry.id})" class="btn btn-danger" style="font-size: 0.8rem; padding: 0.25rem 0.5rem;">🗑️ Remove</button>
+                    </div>
+                `).join('')}
+            `;
+            
+            // Update external CCUs display
+            document.getElementById('externalCCUs').textContent = totalExternal;
+        }
+
+        // Remove external CCU entry
+        function removeExternalCCU(entryId) {
+            if (!currentAccount || !confirm('Remove this external CCU entry?')) return;
+            
+            const entry = currentAccount.externalCCUs.find(e => e.id === entryId);
+            if (!entry) return;
+            
+            currentAccount.externalCCUs = currentAccount.externalCCUs.filter(e => e.id !== entryId);
+            currentAccount.updatedAt = new Date().toISOString();
+            localStorage.setItem('drtroyAccount', JSON.stringify(currentAccount));
+            
+            updateExternalCCUDisplay();
+            updateCCUDashboard();
+            
+            showAlert(`🗑️ Removed ${entry.hours} CCUs: ${entry.description}`, 'info');
+        }
 
         // ===============================
         // SUPER USER FUNCTIONS
