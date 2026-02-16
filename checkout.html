@@ -884,29 +884,88 @@
             ] // Total: 23 CCUs
         };
 
+        // Individual Course Database (for individual purchases)
+        const INDIVIDUAL_COURSES = {
+            'PT-MSK-001': {
+                title: 'PT Musculoskeletal Evaluation and Diagnosis',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-PT-MSK-001-2024'
+            },
+            'OT-ADL-001': {
+                title: 'OT Evaluation and Assessment of ADLs',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-OT-ADL-001-2024'
+            },
+            'MOBILITY-001': {
+                title: 'Comprehensive Mobility and Fall Prevention',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-MOBILITY-001-2024'
+            },
+            'BALANCE-001': {
+                title: 'Balance, Gait, and Vestibular Management',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-BALANCE-001-2024'
+            },
+            'EXERCISE-001': {
+                title: 'Post-Surgical and Therapeutic Exercise',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-EXERCISE-001-2024'
+            },
+            'GERIATRIC-001': {
+                title: 'Geriatric Care Across the Continuum',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-GERIATRIC-001-2024'
+            },
+            'DOCUMENTATION-001': {
+                title: 'Professional Documentation and Communication',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-DOC-001-2024'
+            },
+            'MODALITIES-001': {
+                title: 'Physical Agents, Modalities, and Wound Care',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-MODALITIES-001-2024'
+            },
+            'NEURO-001': {
+                title: 'Neurological Rehabilitation',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-NEURO-001-2024'
+            },
+            'INFECTION-001': {
+                title: 'Infection Control and Patient Safety',
+                credits: 3,
+                price: 45,
+                approvalNumber: 'DRTROY-INFECTION-001-2024'
+            },
+            'EDUCATION-001': {
+                title: 'Patient Education and Health Promotion',
+                credits: 2,
+                price: 30,
+                approvalNumber: 'DRTROY-EDUCATION-001-2024'
+            }
+        };
+
+        // Individual Course Sales Settings (Hidden until enabled)
+        const INDIVIDUAL_SALES_ENABLED = false;
+
         // Assign courses to user account after successful purchase
         async function assignCoursesToUser() {
             try {
-                const selectedPackage = localStorage.getItem('selectedPackageCode');
                 const accountData = localStorage.getItem('drtroyAccount');
-                
-                console.log('📚 Assigning courses for package:', selectedPackage);
-                
                 if (!accountData) {
                     console.error('No user account found');
                     return;
                 }
                 
-                if (!selectedPackage || !PACKAGE_COURSES[selectedPackage]) {
-                    console.error('Invalid package selected:', selectedPackage);
-                    return;
-                }
-                
-                // Get courses for this package
-                const coursesToAssign = PACKAGE_COURSES[selectedPackage];
-                console.log('Courses to assign:', coursesToAssign);
-                
-                // Update user account
                 const account = JSON.parse(accountData);
                 
                 // Initialize enrolledCourses if it doesn't exist
@@ -914,27 +973,79 @@
                     account.enrolledCourses = [];
                 }
                 
-                // Add new courses (avoid duplicates)
-                coursesToAssign.forEach(courseId => {
-                    if (!account.enrolledCourses.includes(courseId)) {
-                        account.enrolledCourses.push(courseId);
-                        console.log('✅ Added course:', courseId);
-                    }
-                });
-                
-                // Add purchase information
+                // Initialize purchases if it doesn't exist
                 if (!account.purchases) {
                     account.purchases = [];
                 }
                 
-                account.purchases.push({
-                    packageCode: selectedPackage,
-                    packageName: localStorage.getItem('selectedPackage'),
-                    amount: parseFloat(localStorage.getItem('packagePrice')),
-                    coursesIncluded: coursesToAssign,
-                    purchaseDate: new Date().toISOString(),
-                    status: 'completed'
-                });
+                // Check if this is a package or individual course purchase
+                const urlParams = new URLSearchParams(window.location.search);
+                const purchaseType = urlParams.get('type');
+                
+                if (purchaseType === 'individual') {
+                    // Individual course purchase
+                    const courseId = urlParams.get('course');
+                    const courseData = localStorage.getItem('selectedCourse');
+                    
+                    if (!courseId || !courseData || !INDIVIDUAL_COURSES[courseId]) {
+                        console.error('Invalid individual course purchase');
+                        return;
+                    }
+                    
+                    const course = JSON.parse(courseData);
+                    console.log('📚 Assigning individual course:', courseId);
+                    
+                    // Add course to enrolled courses (avoid duplicates)
+                    if (!account.enrolledCourses.includes(courseId)) {
+                        account.enrolledCourses.push(courseId);
+                        console.log('✅ Added individual course:', courseId);
+                    }
+                    
+                    // Add individual purchase record
+                    account.purchases.push({
+                        type: 'individual',
+                        courseId: courseId,
+                        courseTitle: course.title,
+                        amount: course.price,
+                        credits: course.credits,
+                        approvalNumber: INDIVIDUAL_COURSES[courseId].approvalNumber,
+                        purchaseDate: new Date().toISOString(),
+                        status: 'completed'
+                    });
+                    
+                } else {
+                    // Package purchase (existing logic)
+                    const selectedPackage = localStorage.getItem('selectedPackageCode');
+                    console.log('📚 Assigning courses for package:', selectedPackage);
+                    
+                    if (!selectedPackage || !PACKAGE_COURSES[selectedPackage]) {
+                        console.error('Invalid package selected:', selectedPackage);
+                        return;
+                    }
+                    
+                    // Get courses for this package
+                    const coursesToAssign = PACKAGE_COURSES[selectedPackage];
+                    console.log('Courses to assign:', coursesToAssign);
+                    
+                    // Add new courses (avoid duplicates)
+                    coursesToAssign.forEach(courseId => {
+                        if (!account.enrolledCourses.includes(courseId)) {
+                            account.enrolledCourses.push(courseId);
+                            console.log('✅ Added course:', courseId);
+                        }
+                    });
+                    
+                    // Add package purchase record
+                    account.purchases.push({
+                        type: 'package',
+                        packageCode: selectedPackage,
+                        packageName: localStorage.getItem('selectedPackage'),
+                        amount: parseFloat(localStorage.getItem('packagePrice')),
+                        coursesIncluded: coursesToAssign,
+                        purchaseDate: new Date().toISOString(),
+                        status: 'completed'
+                    });
+                }
                 
                 // Update account timestamp
                 account.updatedAt = new Date().toISOString();

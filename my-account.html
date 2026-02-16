@@ -418,15 +418,41 @@
             font-size: 0.9rem;
         }
 
+        .course-details {
+            margin-bottom: 1.5rem;
+        }
+
         .course-credits {
             font-weight: 600;
             color: var(--gold);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-approval {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            font-family: monospace;
+            background: var(--gray-100);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
         }
 
         .course-actions {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border: 1px solid var(--navy);
+        }
+
+        .btn-outline:hover {
+            background: var(--navy);
+            color: white;
         }
 
         /* Status Badges */
@@ -963,7 +989,7 @@
             updateCCUDashboard();
         }
 
-        // Course Information Database (Based on actual home page course listings)
+        // Course Information Database (Enhanced with individual pricing & approval numbers)
         const COURSE_DATABASE = {
             // PT-Specific Course (Available Now)
             'PT-MSK-001': {
@@ -971,7 +997,10 @@
                 credits: 3,
                 description: 'Comprehensive MSK evaluation and treatment approaches',
                 url: 'courses/pt-msk-001.html',
-                status: 'available'
+                status: 'available',
+                approvalNumber: 'DRTROY-PT-MSK-001-2024',
+                individualPrice: 45, // $15 per CCU
+                provider: 'DrTroy Continuing Education'
             },
             // OT-Specific Course (Coming Soon)
             'OT-ADL-001': {
@@ -979,7 +1008,10 @@
                 credits: 3,
                 description: 'Comprehensive ADL assessment and intervention strategies',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-OT-ADL-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             // Core Courses (Coming This Week)
             'MOBILITY-001': {
@@ -987,64 +1019,99 @@
                 credits: 3,
                 description: 'Evidence-based mobility assessment and fall prevention strategies',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-MOBILITY-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'BALANCE-001': {
                 title: 'Balance, Gait, and Vestibular Management',
                 credits: 3,
                 description: 'Assessment and treatment of balance and vestibular disorders',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-BALANCE-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'EXERCISE-001': {
                 title: 'Post-Surgical and Therapeutic Exercise',
                 credits: 3,
                 description: 'Post-operative rehabilitation and exercise prescription',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-EXERCISE-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'GERIATRIC-001': {
                 title: 'Geriatric Care Across the Continuum',
                 credits: 3,
                 description: 'Comprehensive geriatric rehabilitation approaches',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-GERIATRIC-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'DOCUMENTATION-001': {
                 title: 'Professional Documentation and Communication',
                 credits: 3,
                 description: 'Clinical documentation and professional communication skills',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-DOC-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'MODALITIES-001': {
                 title: 'Physical Agents, Modalities, and Wound Care',
                 credits: 3,
                 description: 'Therapeutic modalities and wound care management',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-MODALITIES-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'NEURO-001': {
                 title: 'Neurological Rehabilitation',
                 credits: 3,
                 description: 'Evidence-based neurological rehabilitation techniques',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-NEURO-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'INFECTION-001': {
                 title: 'Infection Control and Patient Safety',
                 credits: 3,
                 description: 'Infection prevention and patient safety protocols',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-INFECTION-001-2024',
+                individualPrice: 45,
+                provider: 'DrTroy Continuing Education'
             },
             'EDUCATION-001': {
                 title: 'Patient Education and Health Promotion',
                 credits: 2,
                 description: 'Patient education strategies and health promotion',
                 url: '#',
-                status: 'coming-soon'
+                status: 'coming-soon',
+                approvalNumber: 'DRTROY-EDUCATION-001-2024',
+                individualPrice: 30, // $15 per CCU
+                provider: 'DrTroy Continuing Education'
             }
+        };
+
+        // Individual Course Sales Settings (Hidden until enabled)
+        const INDIVIDUAL_SALES_CONFIG = {
+            enabled: false, // Set to true when ready to enable individual sales
+            newAccountDiscount: 10, // $10 off individual courses for new accounts
+            bulkDiscountThreshold: 3, // Buy 3+ individual courses for discount
+            bulkDiscountPercent: 15 // 15% off when buying 3+ individual courses
         };
 
         // Update CCU dashboard and course display
@@ -1148,6 +1215,17 @@
                     actionButton = `<a href="${course.url}" class="btn btn-primary">Start Course</a>`;
                 }
                 
+                // Individual pricing button (hidden unless enabled)
+                let individualPriceButton = '';
+                if (INDIVIDUAL_SALES_CONFIG.enabled && course.status === 'available') {
+                    const discountPrice = currentAccount?.hasDiscount ? course.individualPrice - INDIVIDUAL_SALES_CONFIG.newAccountDiscount : course.individualPrice;
+                    individualPriceButton = `
+                        <button class="btn btn-outline" onclick="purchaseIndividualCourse('${courseId}')">
+                            Buy Individual - $${discountPrice}
+                        </button>
+                    `;
+                }
+
                 coursesHTML += `
                     <div class="course-card">
                         <div class="course-header">
@@ -1155,9 +1233,13 @@
                             ${statusBadge}
                         </div>
                         <p class="course-description">${course.description}</p>
-                        <div class="course-credits">${course.credits} CCUs</div>
+                        <div class="course-details">
+                            <div class="course-credits">${course.credits} CCUs</div>
+                            <div class="course-approval">Approval #: ${course.approvalNumber}</div>
+                        </div>
                         <div class="course-actions">
                             ${actionButton}
+                            ${individualPriceButton}
                         </div>
                     </div>
                 `;
@@ -1165,6 +1247,53 @@
             
             coursesHTML += '</div>';
             coursesList.innerHTML = coursesHTML;
+        }
+
+        // Individual Course Purchase (Hidden until enabled)
+        function purchaseIndividualCourse(courseId) {
+            if (!INDIVIDUAL_SALES_CONFIG.enabled) {
+                showAlert('Individual course sales are not yet available. Please purchase a package.', 'info');
+                return;
+            }
+
+            const course = COURSE_DATABASE[courseId];
+            if (!course) {
+                showAlert('Course not found.', 'danger');
+                return;
+            }
+
+            const basePrice = course.individualPrice;
+            const discountAmount = currentAccount?.hasDiscount ? INDIVIDUAL_SALES_CONFIG.newAccountDiscount : 0;
+            const finalPrice = basePrice - discountAmount;
+
+            const confirmMessage = `
+                <div style="text-align: center;">
+                    <h3>Purchase Individual Course</h3>
+                    <div class="course-purchase-details">
+                        <p><strong>${course.title}</strong></p>
+                        <p>${course.credits} CCUs</p>
+                        <p>Approval #: ${course.approvalNumber}</p>
+                        <div class="price-breakdown">
+                            <div>Course Price: $${basePrice}</div>
+                            ${discountAmount > 0 ? `<div>New Account Discount: -$${discountAmount}</div>` : ''}
+                            <div><strong>Total: $${finalPrice}</strong></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (confirm(confirmMessage)) {
+                // Store individual course purchase data
+                localStorage.setItem('selectedCourse', JSON.stringify({
+                    courseId: courseId,
+                    title: course.title,
+                    price: finalPrice,
+                    credits: course.credits
+                }));
+                
+                // Redirect to individual course checkout
+                window.location.href = 'checkout.html?type=individual&course=' + courseId;
+            }
         }
 
         // Setup event listeners
