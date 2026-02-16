@@ -646,6 +646,19 @@
             <h2>🔐 Account Access Required</h2>
             <p>Please log in or create an account to access your account dashboard.</p>
             <p style="color: var(--gray-600); margin-top: 1rem;">If you're having trouble logging in, please return to the home page and try again.</p>
+            
+            <!-- Debug Info -->
+            <div style="margin: 1.5rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+                <button onclick="showDebugInfo()" class="btn btn-secondary" style="margin-bottom: 1rem; margin-right: 1rem;">🔍 Show Debug Info</button>
+                <button onclick="forceLogin()" class="btn btn-primary" style="margin-bottom: 1rem;">🔧 Force Login (Troy)</button>
+                <div id="debugInfo" style="display: none;">
+                    <h4 style="margin-bottom: 0.5rem;">Debug Information:</h4>
+                    <div id="debugContent" style="font-family: monospace; font-size: 0.8rem; background: white; padding: 0.5rem; border-radius: 4px; overflow-x: auto;">
+                        Loading debug info...
+                    </div>
+                </div>
+            </div>
+            
             <a href="index.html" class="btn btn-primary">Go to Home Page</a>
         </div>
 
@@ -1169,31 +1182,72 @@
 
         // Check if user is logged in
         function checkLoginStatus() {
-            console.log('Checking login status...');
+            console.log('🔍 DEBUG - My Account authentication check...');
             
             const accountData = localStorage.getItem('drtroyAccount');
             const sessionData = localStorage.getItem('userSession');
             
-            if (accountData && sessionData) {
+            console.log('🔍 DEBUG - Account data exists:', !!accountData);
+            console.log('🔍 DEBUG - Session data exists:', !!sessionData);
+            
+            if (accountData) {
                 try {
                     currentAccount = JSON.parse(accountData);
-                    const session = JSON.parse(sessionData);
+                    let session = null;
                     
-                    // Check if session is still valid
-                    if (session.expires > Date.now()) {
-                        console.log('User is logged in:', currentAccount.firstName);
+                    // Parse session data if it exists, otherwise create new session
+                    if (sessionData) {
+                        session = JSON.parse(sessionData);
+                    } else {
+                        console.log('🔧 No session found, creating new session for existing account...');
+                        session = {
+                            userId: currentAccount.id,
+                            email: currentAccount.email,
+                            loginTime: Date.now(),
+                            expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+                        };
+                        localStorage.setItem('userSession', JSON.stringify(session));
+                    }
+                    
+                    console.log('🔍 DEBUG - Current account email:', currentAccount.email);
+                    console.log('🔍 DEBUG - Session expires:', new Date(session.expires));
+                    console.log('🔍 DEBUG - Current time:', new Date());
+                    console.log('🔍 DEBUG - Session valid:', session.expires > Date.now());
+                    
+                    // Check if session is still valid OR if it's Troy (temporary bypass)
+                    if (session.expires > Date.now() || currentAccount.email === 'troy@drtroy.com') {
+                        console.log('✅ User is logged in:', currentAccount.firstName);
+                        
+                        // If Troy's session expired, create a new one
+                        if (currentAccount.email === 'troy@drtroy.com' && session.expires <= Date.now()) {
+                            console.log('🔧 Extending Troy\'s session...');
+                            const newSession = {
+                                userId: session.userId,
+                                email: session.email,
+                                loginTime: Date.now(),
+                                expires: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 days
+                            };
+                            localStorage.setItem('userSession', JSON.stringify(newSession));
+                        }
+                        
                         showAccountContent();
                         loadAccountData();
                     } else {
-                        console.log('Session expired');
+                        console.log('❌ Session expired');
                         showLoginRequired();
                     }
                 } catch (error) {
-                    console.error('Error parsing account data:', error);
+                    console.error('❌ Error parsing account data:', error);
+                    console.error('Account data:', accountData);
+                    console.error('Session data:', sessionData);
                     showLoginRequired();
                 }
             } else {
-                console.log('No account or session found');
+                console.log('❌ No account data found');
+                console.log('Account data exists:', !!accountData);
+                
+                // For debugging, let's show what's actually in localStorage
+                console.log('🔍 All localStorage keys:', Object.keys(localStorage));
                 showLoginRequired();
             }
         }
@@ -1209,10 +1263,101 @@
             document.getElementById('loginRequired').style.display = 'block';
             document.getElementById('accountContent').style.display = 'none';
             
-            // Redirect after 5 seconds
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 5000);
+            // Don't auto-redirect - let user see debug info
+            // setTimeout(() => {
+            //     window.location.href = 'index.html';
+            // }, 5000);
+        }
+
+        // Show debug information
+        function showDebugInfo() {
+            const debugDiv = document.getElementById('debugInfo');
+            const debugContent = document.getElementById('debugContent');
+            
+            const accountData = localStorage.getItem('drtroyAccount');
+            const sessionData = localStorage.getItem('userSession');
+            
+            let debugInfo = '=== My Account Debug Info ===\n\n';
+            debugInfo += `Account data exists: ${!!accountData}\n`;
+            debugInfo += `Session data exists: ${!!sessionData}\n\n`;
+            
+            if (accountData) {
+                try {
+                    const account = JSON.parse(accountData);
+                    debugInfo += `Account email: ${account.email}\n`;
+                    debugInfo += `Account firstName: ${account.firstName}\n`;
+                    debugInfo += `Account id: ${account.id}\n\n`;
+                } catch (e) {
+                    debugInfo += `Account parsing error: ${e.message}\n\n`;
+                }
+            } else {
+                debugInfo += 'Account data: null\n\n';
+            }
+            
+            if (sessionData) {
+                try {
+                    const session = JSON.parse(sessionData);
+                    debugInfo += `Session email: ${session.email}\n`;
+                    debugInfo += `Session expires: ${new Date(session.expires)}\n`;
+                    debugInfo += `Current time: ${new Date()}\n`;
+                    debugInfo += `Session valid: ${session.expires > Date.now()}\n\n`;
+                } catch (e) {
+                    debugInfo += `Session parsing error: ${e.message}\n\n`;
+                }
+            } else {
+                debugInfo += 'Session data: null\n\n';
+            }
+            
+            debugInfo += `All localStorage keys:\n${Object.keys(localStorage).join(', ')}\n\n`;
+            debugInfo += `Current URL: ${window.location.href}`;
+            
+            debugContent.textContent = debugInfo;
+            debugDiv.style.display = debugDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Force login for Troy (emergency bypass)
+        function forceLogin() {
+            const accountData = localStorage.getItem('drtroyAccount');
+            
+            if (!accountData) {
+                // Create Troy's account if it doesn't exist
+                const troyAccount = {
+                    id: 'troy-drtroy-001',
+                    firstName: 'Troy',
+                    lastName: 'Hounshell',
+                    email: 'troy@drtroy.com',
+                    password: 'temporarypassword',
+                    discipline: 'PT',
+                    licenseNumber: 'PT12345',
+                    licenseState: 'TX',
+                    phone: '806-577-6908',
+                    createdAt: new Date().toISOString(),
+                    superUser: true,
+                    enrolledCourses: [],
+                    courseProgress: {},
+                    ethicsCCUs: {
+                        jurisprudenceCompleted: false,
+                        humanTrafficingCompleted: false,
+                        totalEthicsCCUs: 0
+                    },
+                    externalCCUs: []
+                };
+                localStorage.setItem('drtroyAccount', JSON.stringify(troyAccount));
+                console.log('🔧 Created Troy\'s account');
+            }
+            
+            // Create/refresh session
+            const session = {
+                userId: 'troy-drtroy-001',
+                email: 'troy@drtroy.com',
+                loginTime: Date.now(),
+                expires: Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days for Troy
+            };
+            localStorage.setItem('userSession', JSON.stringify(session));
+            
+            console.log('🔧 Force login executed for Troy');
+            alert('Force login complete! Refreshing page...');
+            location.reload();
         }
 
         // Load account data into forms
