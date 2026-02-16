@@ -389,36 +389,7 @@
             height: 18px;
         }
 
-        /* Emergency Access */
-        .emergency-access {
-            background: #fef3c7;
-            border: 1px solid #d97706;
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .emergency-access h3 {
-            color: #92400e;
-            margin-bottom: 1rem;
-        }
-
-        .emergency-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .emergency-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
+        /* Emergency Access styles removed per user request */
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -466,16 +437,8 @@
         <div id="loginRequired" class="login-required" style="display: none;">
             <h2>🔐 Account Access Required</h2>
             <p>Please log in or create an account to access your account dashboard.</p>
+            <p style="color: var(--gray-600); margin-top: 1rem;">If you're having trouble logging in, please return to the home page and try again.</p>
             <a href="index.html" class="btn btn-primary">Go to Home Page</a>
-            
-            <div class="emergency-access">
-                <h3>🚨 Emergency Access</h3>
-                <p>If you're having login issues, use the button below to create a test account:</p>
-                <div class="emergency-buttons">
-                    <button onclick="createEmergencyAccount()" class="emergency-btn" style="background: var(--navy); color: white;">👤 Create Test Account</button>
-                    <a href="index.html" class="emergency-btn" style="background: var(--gray-600); color: white;">🏠 Back to Home</a>
-                </div>
-            </div>
         </div>
 
         <!-- Account Content -->
@@ -1195,55 +1158,7 @@
             }
         }
 
-        // Create emergency account
-        function createEmergencyAccount() {
-            if (confirm('🚨 Create emergency test account for Troy Hounshell?\n\nEmail: troyh@texastherapypros.com\nPassword: DrTroy2026!')) {
-                const testAccount = {
-                    id: 'emergency_' + Date.now(),
-                    firstName: 'Troy',
-                    lastName: 'Hounshell',
-                    email: 'troyh@texastherapypros.com',
-                    password: 'DrTroy2026!',
-                    discipline: 'PT',
-                    phone: '806-577-6908',
-                    address: '',
-                    city: '',
-                    state: '',
-                    zipCode: '',
-                    licenseNumber: '',
-                    licenseState: '',
-                    licenseExpiration: '',
-                    licenseRenewalReminders: true,
-                    createdAt: new Date().toISOString(),
-                    notifications: {
-                        courseUpdates: true,
-                        licenseReminders: true,
-                        promotions: false,
-                        weeklyDigest: false
-                    },
-                    privacy: {
-                        dataAnalytics: true,
-                        marketingConsent: false
-                    }
-                };
-                
-                const testSession = {
-                    userId: testAccount.id,
-                    email: testAccount.email,
-                    loginTime: Date.now(),
-                    expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
-                };
-                
-                localStorage.setItem('drtroyAccount', JSON.stringify(testAccount));
-                localStorage.setItem('userSession', JSON.stringify(testSession));
-                localStorage.setItem('customerName', 'Troy Hounshell');
-                localStorage.setItem('customerEmail', 'troyh@texastherapypros.com');
-                localStorage.setItem('customerDiscipline', 'PT');
-                
-                alert('✅ Emergency account created successfully!\n\nReloading page...');
-                location.reload();
-            }
-        }
+        // Emergency account function removed per user request
 
         // Show alert message
         function showAlert(message, type = 'info') {
