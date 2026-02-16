@@ -258,6 +258,18 @@
                 grid-template-columns: 1fr;
                 max-width: 100%;
             }
+
+            .original-price {
+                font-size: 1.3rem;
+            }
+
+            .new-account-price {
+                font-size: 2rem;
+            }
+
+            .new-account-label {
+                font-size: 0.8rem;
+            }
         }
 
         .package-card {
@@ -291,9 +303,31 @@
         }
 
         .package-price {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .original-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-decoration: line-through;
+            display: block;
+            margin-bottom: -0.2rem;
+        }
+
+        .new-account-price {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--gold);
+            display: block;
+        }
+
+        .new-account-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--success);
+            margin-top: 0.2rem;
         }
 
         .package-content {
@@ -976,7 +1010,7 @@
     <section class="optin">
         <div class="optin-container">
             <h2>Create Your Free Account</h2>
-            <p>Get $10 off and save your course progress. Pick up right where you left off.</p>
+            <p>Get <strong>$10 off every package</strong> and save your course progress. Pick up right where you left off.</p>
             <form class="optin-form" id="accountCreationForm">
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
                     <input type="text" id="firstName" placeholder="First name" required style="flex: 1;" maxlength="50">
@@ -992,7 +1026,7 @@
                 </select>
                 <input type="password" id="password" placeholder="Create password (min 8 characters)" required style="margin-bottom: 0.5rem; width: 100%;" minlength="8" maxlength="128">
                 <input type="password" id="confirmPassword" placeholder="Confirm password" required style="margin-bottom: 0.5rem; width: 100%;" maxlength="128">
-                <button type="submit">Create Free Account + Get $10 Off</button>
+            <button type="submit">Create Free Account + Save $10</button>
             </form>
             <p style="font-size: 0.85rem; color: var(--gray-600); text-align: center; margin-top: 1rem;">
                 Password must be at least 8 characters with mixed case, numbers, and symbols.
@@ -1015,7 +1049,11 @@
             <div class="package-card">
                 <div class="package-header">
                     <h3>Physical Therapists</h3>
-                    <div class="package-price">$109</div>
+                    <div class="package-price">
+                        <span class="original-price">$109</span>
+                        <span class="new-account-price">$99</span>
+                        <div class="new-account-label">for new accounts</div>
+                    </div>
                 </div>
                 <div class="package-content">
                     <div class="total-hours">27 Total CCUs</div>
@@ -1057,7 +1095,11 @@
             <div class="package-card">
                 <div class="package-header">
                     <h3>PT Assistants</h3>
-                    <div class="package-price">$89</div>
+                    <div class="package-price">
+                        <span class="original-price">$89</span>
+                        <span class="new-account-price">$79</span>
+                        <div class="new-account-label">for new accounts</div>
+                    </div>
                 </div>
                 <div class="package-content">
                     <div class="total-hours">17 Total CCUs</div>
@@ -1091,7 +1133,11 @@
             <div class="package-card">
                 <div class="package-header">
                     <h3>Occupational Therapists</h3>
-                    <div class="package-price">$109</div>
+                    <div class="package-price">
+                        <span class="original-price">$109</span>
+                        <span class="new-account-price">$99</span>
+                        <div class="new-account-label">for new accounts</div>
+                    </div>
                 </div>
                 <div class="package-content">
                     <div class="total-hours">23 Total CCUs</div>
@@ -1132,7 +1178,11 @@
             <div class="package-card">
                 <div class="package-header">
                     <h3>OT Assistants</h3>
-                    <div class="package-price">$89</div>
+                    <div class="package-price">
+                        <span class="original-price">$89</span>
+                        <span class="new-account-price">$79</span>
+                        <div class="new-account-label">for new accounts</div>
+                    </div>
                 </div>
                 <div class="package-content">
                     <div class="total-hours">23 Total CCUs</div>
