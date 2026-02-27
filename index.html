@@ -356,7 +356,8 @@
             <h2>Get Notified When We Launch</h2>
             <p class="form-desc">Be the first to access our courses and get exclusive early-bird pricing.</p>
 
-            <form id="notifyForm">
+            <form id="notifyForm" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <input type="hidden" name="form-name" value="waitlist">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="firstName">First Name *</label>
@@ -419,10 +420,6 @@
 </footer>
 
 <script>
-    // Supabase config
-    const SUPABASE_URL = 'https://pnqoxulxdmlmbywcpbyx.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBucW94dWx4ZG1sbWJ5d2NwYnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc1NzQ1NTYsImV4cCI6MjA1MzE1MDU1Nn0.iXYSjTGv67IYGqzOTkb5L6f3x9HyxYNn1oH3kQzTmOc';
-
     let captchaAnswer = 0;
 
     function generateCaptcha() {
@@ -482,32 +479,25 @@
         status.style.display = 'none';
 
         try {
-            // Insert into Supabase waitlist table
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+            // Submit via Netlify Forms
+            const formData = new URLSearchParams();
+            formData.append('form-name', 'waitlist');
+            formData.append('first_name', firstName);
+            formData.append('last_name', lastName);
+            formData.append('email', email);
+            formData.append('discipline', discipline);
+
+            const response = await fetch('/', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Prefer': 'return=minimal'
-                },
-                body: JSON.stringify({
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: email,
-                    discipline: discipline || null,
-                    source: 'coming_soon'
-                })
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
             });
 
-            if (response.ok || response.status === 201) {
+            if (response.ok) {
                 status.textContent = '🎉 You\'re on the list! We\'ll email you as soon as we launch.';
                 status.className = 'form-status success';
                 e.target.reset();
                 generateCaptcha();
-            } else if (response.status === 409) {
-                status.textContent = 'You\'re already on our list! We\'ll be in touch soon.';
-                status.className = 'form-status success';
             } else {
                 throw new Error('Signup failed');
             }
